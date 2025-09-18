@@ -171,7 +171,7 @@ export const ConfirmationList = () => {
 			header: 'Full Name',
 			size: 200,
 			enableClickToCopy: true,
-			Cell: ({row}) => format(`${row.original.firstName} ${row.original.lastName} ${row.original.lastName}`),
+			Cell: ({row}) => format(`${row.original.firstName} ${row.original.lastName}`),
 		}),
 		columnHelper.accessor('confirmationNumber', {
 			header: 'Confirmation Number',

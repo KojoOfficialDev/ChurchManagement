@@ -3,15 +3,15 @@ import { getAxios, getConfig } from "../utility";
 const axiosService = () => getAxios("https://catholicportal.net/api/");
 import axios from 'axios';
 
-const configId = 1
+const configId = 2
 
 // export const GetMarriageList = async (payload: IPaginatableRequestPayload, is_export: boolean = false) => await axios().post('/Marriage/GetAll/' + (is_export ? '?export=true' : ""), payload);
 export const GetContributionTypeList = async ( is_export: boolean = false) => await axiosService().get(`/ContributionTypes/GetAll?id=${configId}`);
 
 // export const GetContributionType = async () => await axiosService().get(`/ContributionType/GetAll?id=${configId}`);
 
-export const Search = async ( search: string) => await axiosService().get(`/ContributionTypes/Search?search=${search}&id=${configId}`);
-export const Check = async ( search: string) => await axiosService().get(`/ContributionTypes/CheckIdExist?search=${search}&id=${configId}`);
+export const Search = async ( search: string) => await axiosService().get(`/ContributionTypes/Search?search='+search+'&id=${configId}`);
+export const Check = async ( search: string) => await axiosService().get(`/ContributionTypes/CheckIdExist?search='+search+'&id=${configId}`);
 export const SaveContributionTypeType = async (payload: ContributionType) => await axiosService().post('/ContributionTypes/Save',payload).then(res=> {console.log(res.data);})
 .catch(err=> console.log(err));
 

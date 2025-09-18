@@ -75,7 +75,7 @@ const EditConfirmationModal: React.FC<EditConfirmationModalProps> = ({
 				lastName: rowData.lastName || '',
 				godParent: rowData.godParent || '',
 				revMinister: rowData.revMinister || '',
-				confirmationDate: rowData.confirmationDate ? new Date(rowData.confirmationDate).toISOString().split('T')[0] : '',
+				confirmationDate: rowData.confirmationDate || '',
 				placeOfConfirmation: rowData.placeOfConfirmation || '',
 				ministerId: rowData.ministerId || appState?.config?.ministerId,
 				createdDate: rowData.createdDate || '',
@@ -85,7 +85,6 @@ const EditConfirmationModal: React.FC<EditConfirmationModalProps> = ({
 				isActive: rowData.isActive || true,
 				churchId: appState?.config?.churchId,
 			});
-			setSelectedDate(new Date(new Date(rowData.confirmationDate).toISOString().split('T')[0]))
 		}
 	}, [isOpen, rowData]);
 

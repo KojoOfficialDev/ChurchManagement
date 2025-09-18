@@ -3,7 +3,7 @@ import { getAxios, getConfig } from "../utility";
 const axiosService = () => getAxios("https://catholicportal.net/api/");
 import axios from 'axios';
 
-const configId = 1
+const configId = 2
 
 // export const GetMemberList = async (payload: IPaginatableRequestPayload, is_export: boolean = false) => await axios().post('/Member/GetAll/' + (is_export ? '?export=true' : ""), payload);
 // export const GetMinistersList = async (payload: IPaginatableRequestPayload, is_export: boolean = false) => await axios().post('/Member/GetAllMinisters/' + (is_export ? '?export=true' : ""), payload);
@@ -15,7 +15,7 @@ export const GetNationalityList = async ( is_export: boolean = false) => await a
 export const GetSocietiesList = async ( is_export: boolean = false) => await axiosService().get(`/Societies/GetAll?id=${configId}`);
 export const GetExpensesCategoryList = async ( is_export: boolean = false) => await axiosService().get(`/ExpensesCategory/GetAll?id=${configId}`);
 export const GetExpensesList = async ( is_export: boolean = false) => await axiosService().get(`/Expenses/GetAll?id=${configId}`);
-export const SearchMemberList = async ( search: string) => await axiosService().get(`/Member/Search?search=${search}&id=${configId}`);
+export const SearchMemberList = async ( search: string) => await axiosService().get(`/Member/Search?search='+search+'&id=${configId}`);
 export const GetMinistersList = async ( is_export: boolean = false) => await axiosService().get('/Member/GetAllMinisters');
 export const SaveMember = async (payload: Member) => await axiosService().post('/Member/Save',payload).then(res=> { console.log(res.data);})
 .catch(err=> console.log(err));

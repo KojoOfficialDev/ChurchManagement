@@ -243,7 +243,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({isOpen, onClose, loading
 
 	const fetchMember = async (memberId: any) => {
 		try {
-			const responseData = await fetch(`https://catholicportal.net/api/Member/GenerateId?code=1000&id=1`);
+			const responseData = await fetch(`https://catholicportal.net/api/Member/GenerateId?code=1000&id=2`);
 			if (responseData.ok) {
 				const membershipNumber = await responseData.text();
 				member.membershipNumber = membershipNumber;

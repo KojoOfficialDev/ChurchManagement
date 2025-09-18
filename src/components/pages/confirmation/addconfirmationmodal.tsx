@@ -81,7 +81,7 @@ const AddConfirmationModal: React.FC<AddConfirmationModalProps> = ({ isOpen, onC
         }
 
         const responseData = await Check(Confirmation.confirmationNumber)
-        if (responseData.data) {
+        if (responseData) {
             toast.Error("Error", "Sorry N.L.Conf already Exist");
             return;
         };

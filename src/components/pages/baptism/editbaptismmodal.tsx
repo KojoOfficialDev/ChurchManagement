@@ -56,17 +56,15 @@ const EditBaptismModal: React.FC<EditBaptismModalProps> = ({isOpen, onClose, row
 		modifiedBy: appState?.config?.modifiedBy,
 		isActive: true,
 		churchId: appState?.config?.churchId,
-		baptismDOB : "",
 	});
 
-	
 	useEffect(() => {
 		if (isOpen && rowData) {
 			setFormData({
 				id: rowData.id || appState?.config?.id,
 				memberId: rowData.memberId || '',
 				baptismNumber: rowData.baptismNumber || '',
-				baptismDate: rowData.baptismDate ? new Date(rowData.baptismDate).toISOString().split('T')[0] : '',
+				baptismDate: rowData.baptismDate || '',
 				placeOfBaptism: rowData.placeOfBaptism || '',
 				firstName: rowData.firstName || '',
 				middleName: rowData.middleName || '',
@@ -78,7 +76,6 @@ const EditBaptismModal: React.FC<EditBaptismModalProps> = ({isOpen, onClose, row
 				godParent: rowData.godParent || '',
 				fathersName: rowData.fathersName || '',
 				mothersName: rowData.mothersName || '',
-				baptismDOB : rowData.baptismDOB || '',
 				revMinister: rowData.revMinister || '',
 				ministerId: rowData.ministerId || appState?.config?.ministerId,
 				createdDate: rowData.createdDate || '',
@@ -87,9 +84,7 @@ const EditBaptismModal: React.FC<EditBaptismModalProps> = ({isOpen, onClose, row
 				modifiedBy: rowData.modifiedBy || appState?.config?.modifiedBy,
 				isActive: rowData.isActive || true,
 				churchId: appState?.config?.churchId,
-
 			});
-		 	setSelectedBaptismDate(new Date(new Date(rowData.baptismDate).toISOString().split('T')[0]))
 		}
 	}, [isOpen, rowData]);
 
@@ -126,14 +121,12 @@ const EditBaptismModal: React.FC<EditBaptismModalProps> = ({isOpen, onClose, row
 		}
 
 		const today = new Date();
-		 
 		formData.baptismDate = new Date(selectedBaptismDate).toISOString();
-		formData.dateOfBirth = today.toISOString();
+		formData.dateOfBirth = new Date(selectedDateOfBirth).toISOString();
 		formData.modifiedDate = today.toISOString();
 		formData.createdDate = today.toISOString();
 
 		setIsloading(true);
-		console.log(JSON.stringify(formData))
 		const response = await fetch('https://catholicportal.net/api/Baptism/Update', {
 			method: 'POST',
 			headers: {
@@ -277,7 +270,6 @@ const EditBaptismModal: React.FC<EditBaptismModalProps> = ({isOpen, onClose, row
 														className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
 														id='baptismDate'
                                                         disabled={isView}
-														
 													/>
 													<input
 														type='hidden'
@@ -340,7 +332,7 @@ const EditBaptismModal: React.FC<EditBaptismModalProps> = ({isOpen, onClose, row
 															setFormData({...formData, placeOfBaptism: e.target.value})
 														}
 														className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-														placeholder="Enter Place Of Baptism"
+														placeholder="Enter father's name"
 														id='placeOfBaptism'
 														type='text'
 														name='placeOfBaptism'
@@ -477,18 +469,12 @@ const EditBaptismModal: React.FC<EditBaptismModalProps> = ({isOpen, onClose, row
 													>
 														Date Of Birth
 													</label>
-													<input
-														{...register('baptismDOB', {required: true})}
-														value={formData.baptismDOB}
-														// onChange={handleChange}
-														onChange={(e) =>
-															setFormData({...formData, baptismDOB: e.target.value})
-														}
+													<DatePicker
+														{...register('dateOfBirth', {required: true})}
+														value={formData.dateOfBirth}
+														onChange={handleBirthDateChange}
 														className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-														placeholder="Enter Date Of Birth"
-														id='baptismDOB'
-														type='text'
-														name='baptismDOB'
+														id='dateOfBirth'
 														disabled={isView}
 													/>
 													{errors.dateOfBirth && (
@@ -542,7 +528,7 @@ const EditBaptismModal: React.FC<EditBaptismModalProps> = ({isOpen, onClose, row
 															setFormData({...formData, placeOfBirth: e.target.value})
 														}
 														className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-														placeholder='Enter Place of Birth'
+														placeholder='Enter last name'
 														id='placeOfBirth'
 														type='text'
 														name='memberId'

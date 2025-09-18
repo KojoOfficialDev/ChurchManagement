@@ -169,7 +169,7 @@ export const BaptismList = () => {
 			header: 'Full Name',
 			size: 200,
 			enableClickToCopy: true,
-			Cell: ({row}) => format(`${row.original.firstName} ${row.original.middleName} ${row.original.lastName}`),
+			Cell: ({row}) => format(`${row.original.firstName} ${row.original.lastName}`),
 		}),
 		columnHelper.accessor('nlb', {
 			header: 'Baptism Number',

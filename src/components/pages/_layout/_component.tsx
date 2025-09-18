@@ -362,7 +362,7 @@ export const PageLayout = () => {
 			{/* <MtnCurve className='fill-[#fc0]' /> */}
 			{/* <div className="bg-[#9a24cd] font-medium text-center pt-8 pb-14 h-16"> */}
 			<div className='bg-[#0054a0] text-white font-medium text-center pt-8 pb-14 h-16'>
-				&copy; ST. MAURICE CATHOLIC CHURCH
+				&copy; ST. THOMAS CATHEDRAL, OBUASI
 			</div>
 			<Toast position='top-right' onInit={(e) => (toast = e)} />
 		</>

@@ -85,7 +85,6 @@ const EditFirstCommunionModal: React.FC<EditFirstCommunionModalProps> = ({
 				isActive: rowData.isActive || true,
 				churchId: appState?.config?.churchId,
 			});
-			setSelectedDate(new Date(new Date(rowData.firstCommunionDate).toISOString().split('T')[0]))
 		}
 	}, [isOpen, rowData]);
 

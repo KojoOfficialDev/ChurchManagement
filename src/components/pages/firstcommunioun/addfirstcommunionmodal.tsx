@@ -89,7 +89,7 @@ const AddFirstCommunionModal: React.FC<AddFirstCommunionModalProps> = ({ isOpen,
         }
 
         const responseData = await Check(FirstCommunion.firstCommunionNumber)
-        if (responseData.data) {
+        if (responseData) {
             toast.Error("Error", "Sorry N.L.C already Exist");
             return;
         };
@@ -122,7 +122,7 @@ const AddFirstCommunionModal: React.FC<AddFirstCommunionModalProps> = ({ isOpen,
                 modifiedDate: "",
                 modifiedBy: appState?.config?.modifiedBy,
                 isActive: true,
-                churchId: appState?.config?.churchId
+                churchId: appState?.config?.church
             });
             setSelectedMinister("");
             setIsloading(false);

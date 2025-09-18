@@ -82,7 +82,7 @@ const EditMarriageModal: React.FC<EditMarriageModalProps> = ({isOpen, onClose, r
 				marriageType: rowData.marriageType || '',
 				placeOfStay: rowData.placeOfStay || '',
 				homeDistrict: rowData.homeDistrict || '',
-				marriageDate: rowData.marriageDate ? new Date(rowData.marriageDate).toISOString().split('T')[0] : '',
+				marriageDate: rowData.marriageDate || '',
 				nuptialBlessingDate: rowData.nuptialBlessingDate || '',
 				placeOfMarriage: rowData.placeOfMarriage || '',
 				coupleName: rowData.coupleName || '',
@@ -98,8 +98,6 @@ const EditMarriageModal: React.FC<EditMarriageModalProps> = ({isOpen, onClose, r
 				isActive: rowData.isActive || true,
 				churchId: rowData.churchId || appState?.config?.churchId,
 			});
-				setSelectedMarriageDate(new Date(new Date(rowData.marriageDate).toISOString().split('T')[0]))
-				setSelectedNuptialDate(new Date(rowData.nuptialBlessingDate))
 		}
 	}, [isOpen, rowData]);
 

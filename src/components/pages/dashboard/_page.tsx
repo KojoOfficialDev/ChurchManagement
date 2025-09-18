@@ -129,7 +129,7 @@ const Dashboard = () => {
 		<>
 			<Box sx={{padding: '16px'}}>
 				<Typography variant='h4' gutterBottom>
-					Welcome to St. Maurice Catholic Church
+					Welcome to ST. Thomas Cathedral, Obuasi Portal
 				</Typography>
 				<Typography variant='body1' color='textSecondary' paragraph>
 					You can view and manage all services available.
