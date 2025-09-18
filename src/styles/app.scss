@@ -1,0 +1,468 @@
+$primary-color: #f7ca16;
+
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #f2f2f2;
+  color: #000;
+  font-weight: 300;
+
+  * {
+    font-family: MTNBrighterSans !important;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  .required {
+    &::after {
+      content: '*';
+      color: #f30;
+      padding-left: 4px;
+    }
+  }
+
+  .reporting-table {
+    .rdg-row .rdg-cell[aria-colindex="1"] {
+      @apply text-black;
+    }
+
+    .rdg-cell[aria-colindex="1"] {
+      @apply bg-gray-100;
+    }
+  }
+
+  .flatpickr-monthSelect-month {
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 400;
+    margin: 0.5px;
+    justify-content: center;
+    padding: 10px;
+    position: relative;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    text-align: center;
+    width: 33%;
+
+    &:hover {
+      background-color: #6a727a;
+      &.flatpickr-disabled{
+        background-color: none !important;
+      }
+    }
+
+    &.flatpickr-disabled {
+      color: #6a727a;
+ 
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .parent:hover .child {
+    opacity: 1;
+    height: auto;
+    overflow: none;
+    transform: translateY(0);
+    z-index: 100;
+  }
+
+  .child {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transform: translateY(-10%);
+  }
+}
+
+.datatable {
+  background-color: white;
+  border-radius: 10px;
+}
+
+.table-section {
+  display: block;
+  padding: 20px 0;
+  align-items: center;
+  margin-top: 15px;
+  background: white;
+}
+
+.table-section .loader {
+  height: 100px;
+  justify-content: center;
+  text-align: center;
+}
+
+.table-section .custom-table {
+  width: 100%;
+}
+
+.table-section .custom-table table {
+  width: 100%;
+  border-spacing: 0;
+}
+
+.table-section .custom-table table tbody tr:hover td {
+  cursor: pointer;
+  background-color: #efefef;
+}
+
+.table-section .custom-table table tbody tr td {
+  text-align: left;
+  padding: 0 0 0 10px;
+  height: 40px;
+  color: #000;
+  background-color: white;
+  border-bottom: solid 1px #efefef;
+  letter-spacing: 0.5px;
+  font-family: MTNBrighterSans;
+  transition: all 0.3s;
+  font-size: 11px;
+}
+
+.table-section .custom-table table tbody tr td:first-child {
+  padding-left: 20px;
+}
+
+.table-section .custom-table table tbody tr td .btn-details {
+  padding: 4px 15px !important;
+  background-color: #ffca00;
+  color: black;
+  text-decoration: none;
+  border-radius: 20px;
+  border: none !important;
+  cursor: pointer;
+}
+
+.table-section .custom-table table tbody tr:hover td:first-child {
+  border-left: 5px solid black;
+}
+
+.table-section .custom-table table thead th {
+  font-size: 11px;
+  height: 40px;
+  color: #000;
+  padding: 0 10px;
+  letter-spacing: 0.5px;
+  position: relative;
+  border-bottom: solid 1px #efefef;
+}
+
+.table-section .custom-table table thead th:first-child {
+  padding-left: 20px;
+}
+
+.table-section .custom-table table thead th div {
+  font-family: MTNBrighterSans;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.pagination .text-center {
+  display: flex;
+}
+
+.pagination .text-center .pagination-btn {
+  height: 30px;
+  width: 30px;
+  font-size: 16px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 0;
+  box-shadow: none;
+  outline: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.pagination-more {
+  align-items: baseline !important;
+}
+
+.pagination .text-center .pagination-btn.active {
+  background-color: black;
+  color: white;
+}
+
+.pagination .text-center .next,
+.pagination .text-center .prev {
+  background-color: black;
+  color: white;
+}
+
+.__formFields {
+  outline: none;
+  border: none;
+  background-color: #efefef;
+  border-radius: 6px;
+  padding: 6px 17px;
+  width: 100%;
+  font-size: 12px;
+  font-weight: 300;
+  margin-top: 4px;
+}
+
+.__formFields_label {
+  color: rgb(106, 106, 106);
+  font-size: 12px;
+}
+
+.c_shadow {
+  box-shadow: 1px 1px 10px rgb(12 12 12 / 17%)
+}
+
+.animate-right {
+  position: relative;
+  animation: animateright 0.4s;
+}
+
+@keyframes animateright {
+  from {
+    right: -300px;
+    opacity: 0;
+  }
+
+  to {
+    right: 0;
+    opacity: 1;
+  }
+}
+
+
+.paginationBttns {
+  width: 40px;
+  height: 40px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 9px 14px;
+}
+
+.paginationBttns a {
+  font-size: 14px;
+  margin: 3px;
+  border-radius: 100% !important;
+  color: black;
+  cursor: pointer;
+  background-color: white;
+  padding: 9px 14px;
+  display: block;
+}
+
+.paginationActive a {
+  background-color: black;
+  color: white;
+  border-radius: 100%;
+  font-size: 14px;
+  padding: 9px 14px;
+}
+
+.previousBttn {
+  background-color: black !important;
+  color: white !important;
+  border-radius: 100% !important;
+  padding: 13px !important;
+  margin-right: 15px !important;
+}
+
+.previousBttn img {
+  max-width: none !important;
+  width: 10px;
+}
+
+.nextBttn img {
+  max-width: none !important;
+  width: 10px;
+}
+
+.nextBttn {
+  background-color: black !important;
+  color: white !important;
+  border-radius: 100% !important;
+  padding: 13px !important;
+  margin-left: 15px !important;
+}
+
+.animate-left {
+  position: relative;
+  animation: animateleft 0.4s;
+}
+
+@keyframes animateleft {
+  from {
+    left: -300px;
+    opacity: 0;
+  }
+
+  to {
+    left: 0;
+    opacity: 1;
+  }
+}
+
+.animate-zoom {
+  animation: animatezoom 0.6s;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  display: inline-block;
+  border-radius: 50%;
+  right: 0px;
+  bottom: 0px;
+  margin: 0px 2.5px;
+  position: relative;
+}
+
+.dots-cont>.dot {
+  position: relative;
+  bottom: 0px;
+  animation-name: jump;
+  animation-duration: .3s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease;
+}
+
+.dots-cont .dot-1 {
+  -webkit-animation-delay: 100ms;
+  animation-delay: 100ms;
+}
+
+.dots-cont .dot-2 {
+  -webkit-animation-delay: 200ms;
+  animation-delay: 200ms;
+}
+
+.dots-cont .dot-3 {
+  -webkit-animation-delay: 300ms;
+  animation-delay: 300ms;
+}
+
+.swal2-confirm {
+  background-color: #096ea6;
+}
+
+// swal2-styled
+
+@keyframes jump {
+  from {
+    bottom: 0px
+  }
+
+  to {
+    bottom: 7px
+  }
+}
+
+@-webkit-keyframes jump {
+  from {
+    bottom: 0px
+  }
+
+  to {
+    bottom: 10px
+  }
+}
+
+@keyframes animatezoom {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.animate-opacity {
+  animation: opac 0.8s;
+}
+
+@keyframes opac {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.date-picker {
+
+  .react-datetime-picker__wrapper,
+  .react-date-picker__wrapper {
+    border: none;
+  }
+}
+
+.flatpickr-input.no-outline {
+  border: none;
+  border-radius: 0;
+  outline: none;
+  background-color: transparent;
+  width: 100%;
+  padding: 0;
+}
+
+.flatpickr-input {
+  padding: 5px 10px;
+  border: 1px solid #d2cdcd;
+  border-radius: 4px;
+  outline: none;
+}
+
+
+.animated-success {
+  $size: 80px;
+  $color: rgb(34 197 94);
+
+  display: block;
+  height: $size;
+  width: $size;
+  color: $color;
+
+  /* SVG path use currentColor to inherit this */
+  .circle {
+    stroke-dasharray: 76;
+    stroke-dashoffset: 76;
+    animation: draw 1s forwards;
+  }
+
+  .tick {
+    stroke-dasharray: 18;
+    stroke-dashoffset: 18;
+    animation: draw 1s forwards 1s;
+  }
+
+
+
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0
+  }
+}

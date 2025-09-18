@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1"
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+	<style type="text/css">
+	.radio-btn{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	</style>
+	<line class="radio-btn" x1="17" y1="5" x2="29" y2="5"/>
+	<line class="radio-btn" x1="17" y1="9" x2="24" y2="9"/>
+	<line class="radio-btn" x1="17" y1="21" x2="29" y2="21"/>
+	<line class="radio-btn" x1="17" y1="25" x2="24" y2="25"/>
+	<circle class="radio-btn" cx="8" cy="8" r="5"/>
+	<circle class="radio-btn" cx="8" cy="24" r="5"/>
+	<circle class="radio-btn" cx="8" cy="8" r="1"/>
+</svg>

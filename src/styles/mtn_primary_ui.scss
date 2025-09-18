@@ -1,0 +1,71 @@
+ .primary-input {
+     @apply appearance-none placeholder:text-xs text-[12px] block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded;
+     @apply py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500;
+ }
+ 
+ .secondary-input {
+     @apply block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid rounded-full transition;
+     @apply ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none; 
+     @apply border-gray-300 focus:border-blue-600 focus:shadow-blue-400 text-sm;
+
+     &.error{
+        @apply border-red-400 focus:border-red-600 focus:shadow-red-400;
+     }
+ }
+
+ .label {
+     @apply block tracking-wide text-black text-sm;
+ }
+
+ .mtn-radio{
+    @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600;
+ }
+
+ .mtn-checkbox{
+    @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600;
+ }
+
+ .mtn-button {
+     @apply inline-block px-6 py-2.5 font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg;
+     @apply focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full;
+
+     &__disabled {
+         @apply disabled:bg-gray-200 disabled:hover:bg-gray-200 disabled:hover:text-gray-400 disabled:text-gray-400 disabled:shadow-none cursor-not-allowed;
+     }
+ }
+
+ .error-label{
+    @apply text-red-500 animate-pulse block w-full font-light text-[12px];
+ }
+
+ .mtn-card{
+    @apply bg-white p-6 rounded-lg shadow-lg;
+ }
+
+ svg.progress-circular {
+    $primary-color: currentColor;
+    display: inline-flex;
+    vertical-align: bottom; 
+
+    circle {
+        stroke: currentColor;
+        stroke-width: 5px;
+        stroke-dasharray: 0;
+        fill: none;
+        opacity: 0.25;
+    }
+
+    .meter {
+        stroke-width: 5px;
+        stroke: $primary-color;
+        fill: none;
+        transition: stroke-dashoffset 1s cubic-bezier(0.43, 0.41, 0.22, 0.91);
+        transform-origin: center center;
+        transform: rotate(-90deg) scaleX(-1);
+    }
+
+    text {
+        fill: $primary-color;
+        font-weight: bold;
+    }
+}

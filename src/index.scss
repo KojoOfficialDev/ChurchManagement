@@ -1,0 +1,18 @@
+
+@tailwind base;
+@tailwind components;
+@layer components {
+    @import './styles/mtn_primary_ui.scss';
+}
+@tailwind utilities;
+
+
+
+@import './styles/mtn_fonts.scss';
+@import './styles/app.scss';
+@import './datagrid.scss';
+
+
+
+
+ 
