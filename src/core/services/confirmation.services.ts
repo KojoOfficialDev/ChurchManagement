@@ -3,12 +3,12 @@ import { getAxios, getConfig } from "../utility";
 const axiosService = () => getAxios("https://catholicportal.net/api/");
 import axios from 'axios';
 
-const configId = 1
+const configId = 3
 
 // export const GetConfirmationList = async (payload: IPaginatableRequestPayload, is_export: boolean = false) => await axios().post('/Confirmation/GetAll/' + (is_export ? '?export=true' : ""), payload);
 export const GetConfirmationList = async ( is_export: boolean = false) => await axiosService().get(`/Confirmation/GetAll?id=${configId}`);
-export const Search = async ( search: string) => await axiosService().get(`/Confirmation/Search?search=${search}&id=${configId}`);
-export const Check = async ( search: string) => await axiosService().get(`/Confirmation/CheckIdExist?search=${search}&id=${configId}`);
+export const Search = async ( search: string) => await axiosService().get(`/Confirmation/Search?search='+search+'&id=${configId}`);
+export const Check = async ( search: string) => await axiosService().get(`/Confirmation/CheckIdExist?search='+search+'&id=${configId}`);
 export const SaveConfirmation = async (payload: Confirmation) => await axiosService().post('/Confirmation/Save',payload).then(res=> {console.log(res.data);})
 .catch(err=> console.log(err));
 

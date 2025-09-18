@@ -60,9 +60,7 @@ const AddContributionModal: React.FC<AddContributionModalProps> = ({ isOpen, onC
         memberId: null,
         member: null,
         churchId: 1,
-        church: null,
-        reference:"",
-        taxDeductable : false
+        church: null
     });
 
 
@@ -119,9 +117,7 @@ const AddContributionModal: React.FC<AddContributionModalProps> = ({ isOpen, onC
                 memberId: 0,
                 member: "",
                 churchId: 1,
-                church: null,
-                reference:updatedContribution.reference,
-                taxDeductable : updatedContribution.taxDeductable
+                church: null
             });
             setIsloading(false);
             swal("Great! Contribution data submitted successfully!", {
@@ -361,7 +357,7 @@ const AddContributionModal: React.FC<AddContributionModalProps> = ({ isOpen, onC
 
                                             <div className="mt-16 md:flex justify-end w-full">
                                                 <div className="md:w-1/4">
-                                                    <MtnButton className="form-wizard-submit bg-[#318fe8] hover:bg-[#0054a0] text-white" type={"submit"} label={"Submit Request"} />
+                                                    <MtnButton className="form-wizard-submit" type={"submit"} label={"Submit Request"} />
                                                 </div>
                                             </div>
                                         </form>

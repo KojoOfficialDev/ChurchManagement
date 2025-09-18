@@ -3,12 +3,12 @@ import { getAxios, getConfig } from "../utility";
 const axiosService = () => getAxios("https://catholicportal.net/api/");
 import axios from 'axios';
 
-const configId = 1
+const configId = 3
 
 // export const GetMarriageList = async (payload: IPaginatableRequestPayload, is_export: boolean = false) => await axios().post('/Marriage/GetAll/' + (is_export ? '?export=true' : ""), payload);
 export const GetMarriageList = async ( is_export: boolean = false) => await axiosService().get(`/Marriage/GetAll?id=${configId}`);
-export const Search = async ( search: string) => await axiosService().get(`/Marriage/Search?search=${search}&id=${configId}`);
-export const Check = async ( search: string) => await axiosService().get(`/Marriage/CheckIdExist?search=${search}&id=${configId}`);
+export const Search = async ( search: string) => await axiosService().get(`/Marriage/Search?search='+search+'&id=${configId}`);
+export const Check = async ( search: string) => await axiosService().get(`/Marriage/CheckIdExist?search='+search+'&id=${configId}`);
 export const SaveMarriage = async (payload: Marriage) => await axiosService().post('/Marriage/Save',payload).then(res=> {console.log(res.data);})
 .catch(err=> console.log(err));
 

@@ -81,7 +81,7 @@ const AddConfirmationModal: React.FC<AddConfirmationModalProps> = ({ isOpen, onC
         }
 
         const responseData = await Check(Confirmation.confirmationNumber)
-        if (responseData.data) {
+        if (responseData) {
             toast.Error("Error", "Sorry N.L.Conf already Exist");
             return;
         };
@@ -343,25 +343,25 @@ const AddConfirmationModal: React.FC<AddConfirmationModalProps> = ({ isOpen, onC
 
                                                 <div className="mb-4 w-1/2">
                                                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="revMinister">
-                                                        Name of Rev Father
+                                                        Name of Rev Minister
                                                     </label>
                                                     <input
                                                         {...register("revMinister", { required: true })}
                                                         value={Confirmation.revMinister}
                                                         onChange={(e) => setConfirmation({ ...Confirmation, revMinister: e.target.value })}
                                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                        placeholder="Enter name of Rev Father"
+                                                        placeholder="Enter name of Rev Minister"
                                                         id="revMinister"
                                                         type="text"
                                                         name="revMinister"
                                                     />
-                                                    {errors.revMinister && <span className="text-red-500 text-xs italic">Name of Rev Father is required.</span>}
+                                                    {errors.revMinister && <span className="text-red-500 text-xs italic">Name of Rev Minister is required.</span>}
                                                 </div>
                                             </div>
 
                                             <div className="mt-16 md:flex justify-end w-full">
                                                 <div className="md:w-1/4">
-                                                    <MtnButton className="form-wizard-submit bg-[#318fe8] hover:bg-[#0054a0] text-white" type={"submit"} label={"Submit Request"} />
+                                                    <MtnButton className="form-wizard-submit" type={"submit"} label={"Submit Request"} />
                                                 </div>
                                             </div>
                                         </form>

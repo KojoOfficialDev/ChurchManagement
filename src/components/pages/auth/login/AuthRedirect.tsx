@@ -8,7 +8,7 @@ interface User {
 
 const useRedirectToAdminPage = (page: string): void => {
   const navigate = useNavigate();
-  const [ user,setUser ] = useState<any>(null);
+  const [ user,setUser ] = useState({accessRole : "",id : 0});
 
   useEffect(() => {
     const storedUser = JSON.parse(JSON.stringify(localStorage.getItem("user")));

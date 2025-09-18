@@ -65,31 +65,6 @@ export type IUserAdditionalInfo = {
     displayName?:string;
 }
   
-export interface ExpensesCategory{
-    id: number,
-    name: string,
-    active: boolean,
-    churchId:  number;
-}
-
-export interface Expenses{
-    id: number;
-    name: string;
-    description: string;
-    createdDate: string;
-    createdBy: number;
-    modifiedDate:string;
-    modifiedBy: number;
-    isActive: boolean;
-    expensesCategoryId: number;
-    expensesCategory: ExpensesCategory,
-    amountSpent: number;
-    paymentMethod: string;
-    suppliersName: string;
-    expenseDate:string;
-    churchId:  number;
-    church: ChurchSetup,
-}
 
 export interface Baptism {
     id: number;
@@ -185,7 +160,6 @@ export interface Member {
     gender: string;
     notes: string;
     dateOfBirth: string;
-    dayBorn: string;
     placeOfStay: string;
     homeDistrict: string;
     region: string;
@@ -225,9 +199,7 @@ export interface Contribution {
     memberId: number;
     member: string;
     churchId: number;
-    church: ChurchSetup;
-    reference:"",
-    taxDeductable : false
+    church: string;
     // church: ChurchSetup[];
 }
 
@@ -240,7 +212,6 @@ export interface ContributionType {
     initialAmount: number;
     churchId: number;
     church: string;
-
     // church: ChurchSetup[];
 }
 

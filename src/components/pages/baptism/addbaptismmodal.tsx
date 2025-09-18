@@ -55,7 +55,6 @@ const AddBaptismModal: React.FC<AddBaptismModalProps> = ({ isOpen, onClose, load
         modifiedDate: "",
         modifiedBy: appState?.config?.modifiedBy,
         isActive: true,
-         baptismDOB : "",
         churchId: appState?.config?.churchId
     });
 
@@ -98,7 +97,7 @@ const AddBaptismModal: React.FC<AddBaptismModalProps> = ({ isOpen, onClose, load
         }
 
         const responseData = await Check(baptism.baptismNumber)
-        if (responseData.data) {
+        if (responseData) {
             toast.Error("Error", "Sorry N.L.B  already Exist");
             return;
         };
@@ -106,8 +105,8 @@ const AddBaptismModal: React.FC<AddBaptismModalProps> = ({ isOpen, onClose, load
         setIsloading(true);
         const today = new Date();
         baptism.ministerId = Number(selectedMinister);
-        baptism.baptismDate =  new Date(selectedDate).toISOString();
-        baptism.dateOfBirth = today.toISOString();
+        baptism.baptismDate = selectedDate.toISOString();
+        baptism.dateOfBirth = new Date(selectedBirthDate).toISOString();
         baptism.createdDate = today.toISOString();
         baptism.modifiedDate = today.toISOString();
 
@@ -144,8 +143,7 @@ const AddBaptismModal: React.FC<AddBaptismModalProps> = ({ isOpen, onClose, load
                 createdBy: appState?.config?.createdBy,
                 modifiedDate: "",
                 modifiedBy: appState?.config?.modifiedBy,
-                isActive: true,
-                 baptismDOB : ""
+                isActive: true
             });
             setSelectedMinister("");
             setIsloading(false);
@@ -302,7 +300,7 @@ const AddBaptismModal: React.FC<AddBaptismModalProps> = ({ isOpen, onClose, load
                                                         value={baptism.placeOfBaptism}
                                                         onChange={(e) => setBaptism({ ...baptism, placeOfBaptism: e.target.value })}
                                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                        placeholder="Enter Place Of Baptism"
+                                                        placeholder="Enter father's name"
                                                         id="placeOfBaptism"
                                                         type="text"
                                                         name="placeOfBaptism"
@@ -394,15 +392,12 @@ const AddBaptismModal: React.FC<AddBaptismModalProps> = ({ isOpen, onClose, load
                                                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="dateOfBirth">
                                                         Date Of Birth
                                                     </label>
-                                                    <input
-                                                        {...register("baptismDOB", { required: true })}
-                                                        value={baptism.baptismDOB}
-                                                        onChange={(e) => setBaptism({ ...baptism, baptismDOB: e.target.value })}
+                                                    <DatePicker
+                                                        {...register("dateOfBirth", { required: true })}
+                                                        value={baptism.dateOfBirth}
+                                                        onChange={handleBirthDateChange}
                                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                        placeholder="Date Of Birth"
-                                                        id="baptismDOB"
-                                                        type="text"
-                                                        name="baptismDOB"
+                                                        id="dateOfBirth"
                                                     />
                                                     {errors.dateOfBirth && <span className="text-red-500 text-xs italic">Birth date is required.</span>}
                                                 </div>
@@ -436,7 +431,7 @@ const AddBaptismModal: React.FC<AddBaptismModalProps> = ({ isOpen, onClose, load
                                                         value={baptism.placeOfBirth}
                                                         onChange={(e) => setBaptism({ ...baptism, placeOfBirth: e.target.value })}
                                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                        placeholder="Enter Place of Birth"
+                                                        placeholder="Enter last name"
                                                         id="placeOfBirth"
                                                         type="text"
                                                         name="memberId"
@@ -447,14 +442,14 @@ const AddBaptismModal: React.FC<AddBaptismModalProps> = ({ isOpen, onClose, load
 
                                                 <div className="mb-4 w-1/2">
                                                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="revMinister">
-                                                        Rev Father
+                                                        Rev Minister
                                                     </label>
                                                     <input
                                                         {...register("revMinister", { required: true })}
                                                         value={baptism.revMinister}
                                                         onChange={(e) => setBaptism({ ...baptism, revMinister: e.target.value })}
                                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                        placeholder="Enter name of Rev Father"
+                                                        placeholder="Enter name of Rev Minister"
                                                         id="revMinister"
                                                         type="text"
                                                         name="revMinister"
@@ -484,7 +479,7 @@ const AddBaptismModal: React.FC<AddBaptismModalProps> = ({ isOpen, onClose, load
                                             </div>
                                             <div className="mt-5 md:flex justify-end w-full">
                                                 <div className="md:w-1/4">
-                                                    <MtnButton className="form-wizard-submit bg-[#318fe8] hover:bg-[#0054a0] text-white" type={"submit"} label={"Submit Request"} />
+                                                    <MtnButton className="form-wizard-submit" type={"submit"} label={"Submit Request"} />
                                                 </div>
                                             </div>
                                         </form>

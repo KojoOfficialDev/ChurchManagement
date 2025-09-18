@@ -3,13 +3,13 @@ import { getAxios, getConfig } from "../utility";
 const axiosService = () => getAxios("https://catholicportal.net/api/");
 import axios from 'axios';
 
-const configId = 1
+const configId = 3
 
 // export const GetBaptismList = async (payload: IPaginatableRequestPayload, is_export: boolean = false) => await axios().post('/Baptism/GetAll/' + (is_export ? '?export=true' : ""), payload);
 
 export const GetBaptismList = async ( is_export: boolean = false) => await axiosService().get(`/Baptism/GetAll?id=${configId}`);
-export const Search = async ( search: string ) => await axiosService().get(`/Baptism/Search?search=${search}&id=${configId}`);
-export const Check = async ( search: string ) => await axiosService().get(`/Baptism/CheckIdExist?search=${search}&id=${configId}`);
+export const Search = async ( search: string ) => await axiosService().get(`/Baptism/Search?search='+search+'&id=${configId}`);
+export const Check = async ( search: string ) => await axiosService().get(`/Baptism/CheckIdExist?search='+search+'&id=${configId}`);
 export const SaveBaptism = async ( payload: Baptism ) => await axiosService().post('/Baptism/Save',payload).then(res=> {console.log(res.data);})
 .catch(err=> console.log(err));
 

@@ -150,7 +150,7 @@ const EditCountryModal: React.FC<EditCountryModalProps> = ({ isOpen, onClose, ro
                                     leaveFrom="opacity-100 scale-100"
                                     leaveTo="opacity-0 scale-95"
                                 >
-                                    <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-[30%] sm:p-10">
+                                    <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  w-[80%] sm:p-10">
                                         <div className="flex justify-between items-start mb-4 border-b-2 border-red-50">
                                             <Dialog.Title as="h3" className="text-lg leading-6 font-bold text-gray-900 uppercase">
                                                 Edit Country
@@ -167,7 +167,7 @@ const EditCountryModal: React.FC<EditCountryModalProps> = ({ isOpen, onClose, ro
 
 
                                                 <div className="!bg-white w-full mt-4 p-5 rounded shadow">
-                                                    <div className="mb-4 w-full">
+                                                    <div className="mb-4 w-1/2">
                                                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="countryName">
                                                             Country
                                                         </label>
@@ -178,7 +178,7 @@ const EditCountryModal: React.FC<EditCountryModalProps> = ({ isOpen, onClose, ro
 
                                                 <div className="mt-10 md:flex justify-end w-full">
                                                     <div className="md:w-1/4">
-                                                        <MtnButton className="form-wizard-submit bg-[#318fe8] hover:bg-[#0054a0] text-white" type={"submit"} label={"Submit"} />
+                                                        <MtnButton className="form-wizard-submit" type={"submit"} label={"Submit"} />
                                                     </div>
                                                 </div>
                                             </form>

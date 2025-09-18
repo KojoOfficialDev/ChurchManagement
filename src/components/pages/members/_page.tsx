@@ -1,33 +1,36 @@
-import {useQuery} from '@tanstack/react-query';
-import {exportCsv} from 'json2csv-export';
-import {useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {GetMemberList, DeleteMember} from '../../../core/services/member.services';
-import {setAppLoading} from '../../../core/stores/slices/app_slice';
-import {Icons} from '../../Assets';
-import {MtnButton} from '../../layout/MtnButton';
-import {IToastHandler, Toast} from '../../layout/Toast';
-import {format} from 'react-string-format';
-import {LazyLoadImage} from 'react-lazy-load-image-component';
-import AddMemberModal from './addmembermodal';
-import EditMemberModal from './editmembermodal';
-import {Member} from '../../../core/interfaces';
-import {jsPDF} from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import moment from 'moment';
-import {MaterialReactTable, type MRT_Row, useMaterialReactTable, createMRTColumnHelper} from 'material-react-table';
-import {Box, Button, IconButton} from '@mui/material';
-import AddPersonIcon from '@mui/icons-material/PersonAdd';
+import { useQuery } from "@tanstack/react-query";
+import { exportCsv } from "json2csv-export";
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { GetMemberList, DeleteMember, SearchMemberList } from "../../../core/services/member.services";
+import { setAppLoading } from "../../../core/stores/slices/app_slice";
+import { Icons } from "../../Assets";
+import { MtnButton } from "../../layout/MtnButton";
+import { IToastHandler, Toast } from "../../layout/Toast";
+import { format } from "react-string-format";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import AddMemberModal from "./addmembermodal";
+import EditMemberModal from "./editmembermodal";
+import { IUserState, Member } from "../../../core/interfaces";
+import moment from "moment";
+import {
+	MaterialReactTable,
+	MRT_ColumnDef,
+	useMaterialReactTable,
+	type MRT_Row,
+	createMRTColumnHelper,
+} from 'material-react-table';
+import { Box, Button } from "@mui/material";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import swal from 'sweetalert';
-import useRedirectToAdminPage from '../auth/login/AuthRedirect';
-import {checkUserRole, getUserSession, noAccessPrompt} from '../../../core/utility';
-import {useNavigate} from 'react-router-dom';
+import swal from 'sweetalert'
+import useRedirectToAdminPage from "../auth/login/AuthRedirect";
+import { RootState } from "../../../core/stores";
 
-const dateFormat = 'MMM D, YYYY';
+const dateFormat = "MMM D, YYYY";
 
 export const MemberList = () => {
-	useRedirectToAdminPage('member/memberlist');
+	 useRedirectToAdminPage("member/memberlist");
 	const dispatch = useDispatch();
 	// const navigate = useNavigate();
 
@@ -38,7 +41,6 @@ export const MemberList = () => {
 	const [limit, setLimit] = useState(10);
 	const [rowsTotal, setRowsTotal] = useState(0);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [isView, setIsView] = useState(false);
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 	const [selectedRowData, setSelectedRowData] = useState<Member | null>(null);
 	const [pageIndex, setPageIndex] = useState(0);
@@ -52,16 +54,16 @@ export const MemberList = () => {
 	const formatMemberData = (data: Member[]) => {
 		return data.map((member) => ({
 			...member,
-			dateOfBirth: member.dateOfBirth ? moment(member.dateOfBirth).format(dateFormat) : 'N/A',
-			createdDate: member.createdDate ? moment(member.createdDate).format(dateFormat) : 'N/A',
-			modifiedDate: member.modifiedDate ? moment(member.modifiedDate).format(dateFormat) : 'N/A',
+			dateOfBirth: member.dateOfBirth ? moment(member.dateOfBirth).format(dateFormat) : "N/A",
+			createdDate: member.createdDate ? moment(member.createdDate).format(dateFormat) : "N/A",
+			modifiedDate: member.modifiedDate ? moment(member.modifiedDate).format(dateFormat) : "N/A",
 		}));
 	};
 
 	const memberListQuery = useQuery({
 		retry: (count) => count < 1,
 		staleTime: Infinity,
-		queryKey: ['GetMemberList'],
+		queryKey: ["GetMemberList"],
 		queryFn: () => GetMemberList().then((res) => res.data),
 		onSuccess: (data) => {
 			const formattedData = formatMemberData(data);
@@ -78,122 +80,75 @@ export const MemberList = () => {
 		memberListQuery?.refetch();
 	}, [pageIndex, limit]);
 
-	const handleExportRows = (rowsToExport: MRT_Row<Member>[]) => {
-		console.log(rowsToExport);
-		console.log(columns);
+	const handleExportRows = (rowsToExport: Member[]) => {
 		const header = {
-			membershipNumber: 'Member Number',
-			title: 'Title',
-			firstName: 'First Name',
-			middleName: 'Middle Name',
-			lastName: 'Last Name',
-			gender: 'Gender',
-			occupation: 'Occupation',
-			email: 'Email',
-			dateOfBirth: 'Date Of Birth',
-			homeDistrict: 'Home District',
-			region: 'Region',
-			placeOfStay: 'Region',
+			membershipNumber: "Member Number",
+			title: "Title",
+			firstName: "First Name",
+			middleName: "Middle Name",
+			lastName: "Last Name",
+			gender: "Gender",
+			occupation: "Occupation",
+			email: "Email",
+			dateOfBirth: "Date Of Birth",
+			homeDistrict: "Home District",
+			region: "Region",
+			placeOfStay: "Region",
 			fathersName: "Father's Name",
 			mothersName: "Mother's Name",
-			phoneNumber: 'Phone Number',
-			isDeceased: 'Deceased',
-			isMinister: 'Minister',
-			createdDate: 'Created Date',
-			createdBy: 'Created By',
-			modifiedDate: 'Modified Date',
-			modifiedBy: 'Modified By',
-			isActive: 'Active',
+			phoneNumber: "Phone Number",
+			isDeceased: "Deceased",
+			isMinister: "Minister",
+			createdDate: "Created Date",
+			createdBy: "Created By",
+			modifiedDate: "Modified Date",
+			modifiedBy: "Modified By",
+			isActive: "Active",
 		};
 
-		// exportCsv({
-		// 	header,
-		// 	data: rowsToExport,
-		// 	filename: 'members-list',
-		// });
-
-		// const tableData = rowsToExport.map((row) => Object.values(row.original));
-		const doc = new jsPDF();
-		const tableData = rowsToExport.map((row) => {
-			return [
-				'',
-				row.original.membershipNumber,
-				`${row.original.title ? row.original.title : ''} ${
-					row.original.firstName ? row.original.firstName : ''
-				} ${row.original.lastName ? row.original.lastName : ''}`,
-				row.original.gender,
-				row.original.dayBorn,
-				row.original.email,
-				row.original.occupation,
-				'',
-			];
+		exportCsv({
+			header,
+			data: rowsToExport,
+			filename: "members-list",
 		});
-		const tableHeaders = columns.map((c) => c.header);
-
-		console.log(tableHeaders);
-		console.log(tableData);
-
-		autoTable(doc, {
-			head: [tableHeaders],
-			body: tableData,
-		});
-
-		doc.save('Members List ' + moment().format('LLL'));
-		// doc.save('mrt-pdf-example.pdf');
 	};
 
 	// Updated handleExportData function
 	const handleExportData = () => {
 		// Exports all the rows fetched from the server (ignores pagination, sorting, and filtering)
-		// handleExportRows(rows);
-		handleExportRows(table.getPrePaginationRowModel().rows);
+		handleExportRows(rows);
 	};
 
 	const handleExportAllRows = () => {
 		// Exports all rows after filtering but before pagination (ignores pagination, respects filtering and sorting)
-		// handleExportRows(table.getPrePaginationRowModel().rows.map((row) => row.original));
-		handleExportRows(table.getPrePaginationRowModel().rows);
+		handleExportRows(table.getPrePaginationRowModel().rows.map((row) => row.original));
 	};
 
 	const handleExportPageRows = () => {
 		// Exports the currently displayed page rows (respects pagination, sorting, and filtering)
-		// handleExportRows(table.getRowModel().rows.map((row) => row.original));
-		handleExportRows(table.getRowModel().rows);
+		handleExportRows(table.getRowModel().rows.map((row) => row.original));
 	};
 
 	const handleExportSelectedRows = () => {
 		// Exports only selected rows
-		// handleExportRows(table.getSelectedRowModel().rows.map((row) => row.original));
-		handleExportRows(table.getSelectedRowModel().rows);
+		handleExportRows(table.getSelectedRowModel().rows.map((row) => row.original));
 	};
 
 	const columnHelper = createMRTColumnHelper<Member>();
 
-	const navigate = useNavigate();
-
-	useEffect(() => {
-		const session = localStorage.getItem('user');
-		const user = session ? JSON.parse(session) : undefined;
-		console.log(user);
-
-		if (user && !user?.roles.includes('Administrator') && !user?.roles.includes('Frontdesk')) {
-			noAccessPrompt();
-			navigate('/');
-		}
-	}, []);
-
 	const columns = [
+
 		columnHelper.accessor('imageUrl', {
 			header: '',
 			size: 100,
-			Cell: ({row}) => (
-				<Box sx={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+			Cell: ({ row }) => (
+				<Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
 					<LazyLoadImage
 						src={row.original.imageUrl}
-						className='w-20 h-10 rounded-md'
-						alt='Avatar'
+						className="w-20 h-10 rounded-md"
+						alt="Avatar"
 						height={10}
-						loading='lazy'
+						loading="lazy"
 					/>
 				</Box>
 			),
@@ -207,7 +162,7 @@ export const MemberList = () => {
 			header: 'Full Name',
 			size: 200,
 			enableClickToCopy: true,
-			Cell: ({row}) => format(`${row.original.title} ${row.original.firstName} ${row.original.lastName}`),
+			Cell: ({ row }) => format(`${row.original.title} ${row.original.firstName} ${row.original.lastName}`),
 		}),
 		columnHelper.accessor('gender', {
 			header: 'Gender',
@@ -235,60 +190,49 @@ export const MemberList = () => {
 		columnHelper.accessor('action', {
 			header: '',
 			size: 20,
-			Cell: ({row}) => (
-				<div className='flex gap-3'>
-					<Icons.EyeNew
+			Cell: ({ row }) => (
+				<div className="flex gap-3">
+					<Icons.Edit
 						onClick={() => {
 							setSelectedRowData(row.original);
 							setIsEditModalOpen(true);
-							setIsView(true);
 						}}
-						className='w-4 h-5 text-blue-500 cursor-pointer'
-					/>
-					<Icons.EditNew
-						onClick={() => {
-							setSelectedRowData(row.original);
-							setIsEditModalOpen(true);
-							setIsView(false);
-						}}
-						className='w-4 h-5 text-blue-500 cursor-pointer'
+						className="w-4 h-5 text-blue-500 cursor-pointer"
 					/>
 					<Icons.Delete
 						onClick={() => {
 							swal({
-								title: 'Are you sure?',
-								text: 'Once deleted, you will not be able to recover this record!',
-								icon: 'warning',
+								title: "Are you sure?",
+								text: "Once deleted, you will not be able to recover this record!",
+								icon: "warning",
 								buttons: true,
 								dangerMode: true,
 							}).then((willDelete) => {
 								if (willDelete) {
 									DeleteRecord(row.original.id);
-									swal('Poof! Your record has been deleted!', {
-										icon: 'success',
+									swal("Poof! Your record has been deleted!", {
+										icon: "success",
 									});
 								} else {
-									swal('Your record is safe!');
+									swal("Your record is safe!");
 								}
 							});
 						}}
-						className='w-4 h-5 text-red-500 cursor-pointer'
+						className="w-4 h-5 text-red-500 cursor-pointer"
 					/>
 				</div>
 			),
 		}),
-	];
+	]
 
 	const table = useMaterialReactTable({
 		columns,
 		data: rows,
-		// globalFilterFn: 'startsWith',
-		globalFilterModeOptions: ['startsWith', 'contains', 'endsWith'],
 		enableRowSelection: true,
 		columnFilterDisplayMode: 'popover',
 		paginationDisplayMode: 'pages',
 		positionToolbarAlertBanner: 'bottom',
-		renderTopToolbarCustomActions: ({table}) => (
+		renderTopToolbarCustomActions: ({ table }) => (
 			<Box
 				sx={{
 					display: 'flex',
@@ -299,10 +243,10 @@ export const MemberList = () => {
 			>
 				<Button
 					//export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-					onClick={handleExportAllRows}
+					onClick={handleExportData}
 					startIcon={<FileDownloadIcon />}
 				>
-					Export All Data / Print
+					Export All Data
 				</Button>
 				{/* <Button
 					disabled={table.getPrePaginationRowModel().rows.length === 0}
@@ -316,47 +260,36 @@ export const MemberList = () => {
 					onClick={handleExportPageRows}
 					startIcon={<FileDownloadIcon />}
 				>
-					Export Page Rows / Print
+					Export Page Rows
 				</Button>
 				<Button
-					disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()}
+					disabled={
+						!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
+					}
 					onClick={handleExportSelectedRows}
 					startIcon={<FileDownloadIcon />}
 				>
-					Export Selected Rows / Print
+					Export Selected Rows
 				</Button>
 			</Box>
-		),
-	});
+		)
+	})
 
 	return (
-		<div className='relative p-4 w-full'>
-			<div className='flex flex-row justify-between items-center w-full'>
-				<p className='font-medium text-2xl pb-4'>Membership List</p>
-				<div>
-					{/* <AddIconButton
-						onClick={() => setIsModalOpen(true)}
-						icon={<Icons.Edit />}
-						size={'large'}
-					/> */}
-					{/* <IconButton aria-label='add' sx={{paddingX: 1, marginBottom: 1}} onClick={() => setIsModalOpen(true)}>
-						<AddIcon
-							className='bg-blue-500 text-white rounded-full'
-							sx={{fontSize: 50}}
-						/>
-					</IconButton> */}
-					<MtnButton
-						label='Add Member'
-						onClick={() => setIsModalOpen(true)}
-						className='w-full px-10 mb-5 bg-blue-500 items-center text-white text-sm hover:bg-blue-700'
-						icon={<AddPersonIcon />}
-					/>
-				</div>
+		<div className="relative p-4">
+			<p className="font-medium text-2xl pb-4">Membership List</p>
+			<div className="flex flex-row mb-4 gap-10 w-full">
+				<MtnButton
+					label="Add Member"
+					onClick={() => setIsModalOpen(true)}
+					className="w-1/2 p-3 mb-0 bg-blue-500 text-white text-sm hover:bg-blue-700"
+				/>
 			</div>
+
 
 			<MaterialReactTable table={table} />
 
-			<Toast position='top-right' onInit={(e) => (toast = e)} />
+			<Toast position="top-right" onInit={e => toast = e} />
 			<AddMemberModal
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
@@ -370,13 +303,37 @@ export const MemberList = () => {
 				rowData={selectedRowData}
 				loading={isLoadingModalOpen}
 				done={() => setIsLoadingModalOpen(false)}
-				isView={isView}
 			/>
 		</div>
 	);
 };
 
 export default MemberList;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import {
 // 	MaterialReactTable,

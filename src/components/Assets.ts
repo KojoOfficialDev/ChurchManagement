@@ -54,13 +54,6 @@ import { ReactComponent as CheckedSuccess } from '../assets/icons/CheckedSuccess
 import { ReactComponent as Checked } from '../assets/icons/checked.svg';
 import { ReactComponent as Download } from '../assets/icons/download.svg';
 import { ReactComponent as App } from '../assets/icons/app.svg';
-import { ReactComponent as Eye } from '../assets/icons/eye.svg';
-import { ReactComponent as EyeNew } from '../assets/icons/neweye.svg';
-import { ReactComponent as EditNew } from '../assets/icons/newedit.svg';
-import { ReactComponent as Cake } from '../assets/icons/cake.svg';
-import { ReactComponent as Profile } from '../assets/icons/profile.svg';
-import { ReactComponent as Society } from '../assets/icons/society.svg';
-import { ReactComponent as Ancestors } from '../assets/icons/ancestors.svg';
 
 import NothingFound from '../assets/nothing-found.png';
 import MtnMomo from '../assets/mtn-momo.png';
@@ -105,7 +98,7 @@ export const Icons = {
 	Filter,
 	File,
 	CsvFile,Calendar,
-	PowerButton,EyeSlash, Waiting,CheckedSuccess, Eye, EyeNew, EditNew, Cake, Profile, Society, Ancestors,
+	PowerButton,EyeSlash, Waiting,CheckedSuccess,
 	ChevronDown, WinnerIcon, MenuIcon, ReloadIcon, Search, Report,
 	Books,Home2,Cart,Flow, Chart,Users,UserColored, Search2, PlusCircle,App
 };

@@ -89,7 +89,7 @@ const AddFirstCommunionModal: React.FC<AddFirstCommunionModalProps> = ({ isOpen,
         }
 
         const responseData = await Check(FirstCommunion.firstCommunionNumber)
-        if (responseData.data) {
+        if (responseData) {
             toast.Error("Error", "Sorry N.L.C already Exist");
             return;
         };
@@ -122,7 +122,7 @@ const AddFirstCommunionModal: React.FC<AddFirstCommunionModalProps> = ({ isOpen,
                 modifiedDate: "",
                 modifiedBy: appState?.config?.modifiedBy,
                 isActive: true,
-                churchId: appState?.config?.churchId
+                churchId: appState?.config?.church
             });
             setSelectedMinister("");
             setIsloading(false);
@@ -308,19 +308,19 @@ const AddFirstCommunionModal: React.FC<AddFirstCommunionModalProps> = ({ isOpen,
 
                                                 <div className="mb-4 w-1/2">
                                                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="revMinister">
-                                                        Name of Rev Father
+                                                        Name of Rev Minister
                                                     </label>
                                                     <input
                                                         {...register("revMinister", { required: true })}
                                                         value={FirstCommunion.revMinister}
                                                         onChange={(e) => setFirstCommunion({ ...FirstCommunion, revMinister: e.target.value })}
                                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                        placeholder="Enter name of Rev Father"
+                                                        placeholder="Enter name of Rev Minister"
                                                         id="revMinister"
                                                         type="text"
                                                         name="revMinister"
                                                     />
-                                                    {errors.revMinister && <span className="text-red-500 text-xs italic">Name of Rev Father is required.</span>}
+                                                    {errors.revMinister && <span className="text-red-500 text-xs italic">Name of Rev Minister is required.</span>}
                                                 </div>
                                             </div>
 
@@ -347,7 +347,7 @@ const AddFirstCommunionModal: React.FC<AddFirstCommunionModalProps> = ({ isOpen,
 
                                             <div className="mt-16 md:flex justify-end w-full">
                                                 <div className="md:w-1/4">
-                                                    <MtnButton className="form-wizard-submit bg-[#318fe8] hover:bg-[#0054a0] text-white" type={"submit"} label={"Submit Request"} />
+                                                    <MtnButton className="form-wizard-submit" type={"submit"} label={"Submit Request"} />
                                                 </div>
                                             </div>
                                         </form>
