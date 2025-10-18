@@ -1,0 +1,31 @@
+export type User = {
+  id: string
+  userName: string
+  normalizedUserName: string
+  email: string
+  normalizedEmail: string
+  emailConfirmed: true
+  passwordHash: string
+  securityStamp: string
+  concurrencyStamp: string
+  phoneNumber: string
+  phoneNumberConfirmed: true
+  twoFactorEnabled: true
+  lockoutEnd: string
+  lockoutEnabled: true
+  accessFailedCount: number
+  initials: string
+  clientId: string
+  clientName: string
+  description: string
+  accessTokenLifeTime: number
+  absoluteRefreshTokenLifetime: number
+  clientClaimsPrefix: string
+  active: true
+  userType: number
+  userCode: string
+  msisdn: string
+  fullName: string
+  password: string
+  accessRole: string
+}
