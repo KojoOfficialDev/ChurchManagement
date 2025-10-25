@@ -9,11 +9,15 @@ import { cn } from '@/lib/utils'
 import {
   Select,
   SelectContent,
+  SelectCreatable,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  type SelectCreatableConfig,
 } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
+import { useCallback, useMemo, useState } from 'react'
+import type { SelectType } from '@/lib/types'
 
 type SelectInputProps<TFieldValues extends FieldValues> = {
   items: Array<{ value: string; label: string }>
@@ -26,7 +30,10 @@ type SelectInputProps<TFieldValues extends FieldValues> = {
   labelClassName?: string
   triggerClassName?: string
   empty?: string
+  allowCreate?: boolean
+  createConfig?: SelectCreatableConfig
 }
+
 const SelectInputComponent = <TFieldValues extends FieldValues>({
   items,
   placeholder,
@@ -38,7 +45,26 @@ const SelectInputComponent = <TFieldValues extends FieldValues>({
   triggerClassName = '',
   empty,
   error,
+  allowCreate = false,
+  createConfig,
 }: SelectInputProps<TFieldValues>) => {
+  const [createdItems, setCreatedItems] = useState<
+    { value: string; label: string }[]
+  >([])
+
+  const itemsList = useMemo(() => {
+    return [...items, ...createdItems]
+  }, [items, createdItems])
+
+  const handleValueCreated = useCallback(
+    (newValue: SelectType, onChange: (value: string) => void) => {
+      onChange(newValue.value)
+      console.log("field.value", onChange)
+      console.log('newValue', newValue)
+      setCreatedItems((prev) => [...prev, newValue])
+    },
+    [],
+  )
   return (
     <Controller
       control={control}
@@ -73,16 +99,37 @@ const SelectInputComponent = <TFieldValues extends FieldValues>({
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
-              {items.length > 0 ? (
-                items.map((item, index) => (
-                  <SelectItem value={item.value.toString()} key={index}>
-                    {item.label}
-                  </SelectItem>
-                ))
+              {itemsList.length > 0 ? (
+                <>
+                  {itemsList.map((item, index) => (
+                    <SelectItem value={item.value.toString()} key={index}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                  {allowCreate && (
+                    <SelectCreatable
+                      config={createConfig!}
+                      onValueCreated={(newValue) =>
+                        handleValueCreated(newValue, field.onChange)
+                      }
+                    />
+                  )}
+                </>
+              ) : allowCreate ? (
+                <>
+                  <SelectCreatable
+                    config={createConfig!}
+                    onValueCreated={(newValue) =>
+                      handleValueCreated(newValue, field.onChange)
+                    }
+                  />
+                </>
               ) : (
-                <SelectItem className="whitespace-wrap" value="">
-                  {empty || 'no items to choose from'}
-                </SelectItem>
+                <div>
+                  <p className="text-sm text-muted-foreground text-center py-2">
+                    {empty || 'no items to choose from'}
+                  </p>
+                </div>
               )}
             </SelectContent>
           </Select>

@@ -1,15 +1,18 @@
 import { CheckboxInput } from '@/components/checkbox-input'
 import { DateInput } from '@/components/date-input'
+import { PhoneInput } from '@/components/phone-input'
 import { SelectInput } from '@/components/select-component'
 import { TextAreaInput } from '@/components/text-area-Input'
 import { TextInput } from '@/components/text-input'
-import type { MemberFormField, MemberFormFieldType } from '@/lib/constants'
+import type { FormField, FormFieldType } from '@/lib/types'
 import type { Control, FieldValues, Path, UseFormReturn } from 'react-hook-form'
+import { ImageInput } from '../image-input'
+import { MultiSelectInput } from '@/components/multiselect-input'
 
 type FieldTypeToRenderProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>
-  fieldType: MemberFormFieldType
-  field: MemberFormField
+  fieldType: FormFieldType
+  field: FormField
   form: UseFormReturn<TFieldValues>
 }
 export const FieldTypeToRender = <TFieldValues extends FieldValues>({
@@ -18,7 +21,6 @@ export const FieldTypeToRender = <TFieldValues extends FieldValues>({
   form,
   fieldType,
 }: FieldTypeToRenderProps<TFieldValues>) => {
-  console.log(form.formState.errors)
   switch (fieldType) {
     case 'text':
     case 'password':
@@ -37,6 +39,15 @@ export const FieldTypeToRender = <TFieldValues extends FieldValues>({
               | 'number'
               | 'time'
           }
+          disabled={
+            typeof field.disabled === 'function'
+              ? field.disabled(
+                  form.getValues(field.name as Path<TFieldValues>) as
+                    | string
+                    | Date,
+                )
+              : field.disabled
+          }
           placeholder={field.placeholder}
           label={field.label}
           error={
@@ -52,11 +63,13 @@ export const FieldTypeToRender = <TFieldValues extends FieldValues>({
           name={field.name as Path<TFieldValues>}
           items={field.options!}
           placeholder={field.placeholder || 'Select an option'}
+          allowCreate={field.allowCreate}
           label={field.label}
           error={
             form.formState.errors[field.name as Path<TFieldValues>]
               ?.message as string
           }
+          createConfig={field.createConfig}
         />
       )
     case 'date':
@@ -70,6 +83,7 @@ export const FieldTypeToRender = <TFieldValues extends FieldValues>({
               ?.message as string
           }
           placeholder={field.placeholder || 'Select a date'}
+          disabled={field.disabled}
         />
       )
     case 'textarea':
@@ -96,7 +110,63 @@ export const FieldTypeToRender = <TFieldValues extends FieldValues>({
             form.formState.errors[field.name as Path<TFieldValues>]
               ?.message as string
           }
-              
+          onChange={(checked) => {
+            // Forward cascading: auto-fill dependent fields when checked
+            if (checked && field.autoFills) {
+              field.autoFills.forEach((fieldName) => {
+                form.setValue(fieldName as Path<TFieldValues>, true as any)
+              })
+            }
+            // Reverse cascading: auto-clear dependent fields when unchecked
+            if (!checked && field.autoClearsFrom) {
+              field.autoClearsFrom.forEach((fieldName) => {
+                form.setValue(fieldName as Path<TFieldValues>, false as any)
+              })
+            }
+          }}
+        />
+      )
+    case 'tel':
+      return (
+        <PhoneInput
+          control={control}
+          name={field.name as Path<TFieldValues>}
+          label={field.label}
+          error={
+            form.formState.errors[field.name as Path<TFieldValues>]
+              ?.message as string
+          }
+          placeholder={field.placeholder || 'Enter your phone number'}
+        />
+      )
+    case 'file':
+      return (
+        <ImageInput
+          control={control}
+          name={field.name as Path<TFieldValues>}
+          label={field.label}
+          error={
+            form.formState.errors[field.name as Path<TFieldValues>]
+              ?.message as string
+          }
+          placeholder={field.placeholder || 'Upload image'}
+          onUpload={field.onUpload}
+        />
+      )
+    case 'multi-select':
+      return (
+        <MultiSelectInput
+          control={control}
+          name={field.name as Path<TFieldValues>}
+          label={field.label}
+          items={field.options!}
+          placeholder={field.placeholder || 'Select an option'}
+          allowCreate={field.allowCreate}
+          createConfig={field.createConfig}
+          error={
+            form.formState.errors[field.name as Path<TFieldValues>]
+              ?.message as string
+          }
         />
       )
     default:

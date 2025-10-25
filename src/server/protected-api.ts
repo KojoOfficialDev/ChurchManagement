@@ -2,12 +2,9 @@ import axios from 'axios'
 import { sessionOptions } from '@/services/auth/queries'
 import { RefreshToken } from '@/services/auth/refresh'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
+import { API_URL } from '@/server/api'
 
-const API_URL =
-  process.env.NODE_ENV === 'production'
-    ? 'https://api.catholicportal.net/api'
-    : 'http://api.catholicportal.net/api'
-// Create axios instance with default config
+
 export const protectedApi = axios.create({
   baseURL: API_URL,
   headers: {
@@ -43,8 +40,8 @@ const queryClient = getContext().queryClient
 protectedApi.interceptors.request.use(
   async (config) => {
     // Get access token from session query
-    const sessionData = await queryClient.fetchQuery(sessionOptions)
-    if (sessionData.accessToken) {
+    const sessionData = await queryClient.ensureQueryData(sessionOptions).catch(() => null)
+    if (sessionData && sessionData.accessToken) {
       config.headers.Authorization = `Bearer ${sessionData.accessToken}`
     }
     return config

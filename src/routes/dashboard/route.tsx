@@ -6,21 +6,23 @@ import { sessionOptions } from '@/services/auth/queries'
 import { redirect } from '@tanstack/react-router'
 import DashboardHeader from '@/components/dashboard/dashboard-header'
 import { SidebarProvider } from '@/lib/contexts/sidebar.context'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/dashboard')({
   component: DashboardLayout,
   beforeLoad: async ({ context: { queryClient }, location }) => {
-    const session = await queryClient.fetchQuery(sessionOptions)
+    const session = await queryClient
+      .ensureQueryData(sessionOptions)
+      .catch(() => null)
 
     /**
-     * if the user user is coming from the login page, the session is not refetched since it is already in the query client and is returned from cache
-     * if the user is coming is reloading the dashboard, the session is refetched since it is not in the query client and is not returned from cache
-     *
-     * if the user is logged in, continue to the dashboard
+     ** if the user user is coming from the login page, the session is not refetched since it is already in the query client and is returned from cache
+     **if the user is coming is reloading the dashboard, the session is refetched since it is not in the query client and is not returned from cache
      */
 
     // if the user is not logged in, redirect to the login page
     if (!session || !session.accessToken) {
+      toast.error('Session expired, please login again')
       throw redirect({
         to: '/login',
         search: { redirect: location.pathname },
@@ -29,16 +31,16 @@ export const Route = createFileRoute('/dashboard')({
       })
     }
   },
+  loader: async ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(sessionOptions),
+
   pendingComponent: () => {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-2center justify-center min-h-screen">
         <Loader />
       </div>
     )
   },
-  // loader: ({ context: { queryClient } }) => {
-  //   queryClient.ensureQueryData(userProfileOptions) // This is not awaited to prevent blocking the main thread
-  // },
 })
 
 function DashboardLayout() {

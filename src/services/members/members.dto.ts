@@ -1,106 +1,143 @@
+import { isValidPhoneNumber } from 'react-phone-number-input'
 import { z } from 'zod/v3'
 
 export const genderEnum = z.enum(['male', 'female'], {
   invalid_type_error: 'Invalid gender',
   required_error: 'Gender is required',
-  message: 'Invalid gender',
+  message: 'Gender is required',
 })
-export const maritalStatusEnum = z.enum(
-  ['single', 'married', 'divorced', 'widowed'],
-  {
-    invalid_type_error: 'Invalid marital status',
-    required_error: 'Marital status is required',
-    message: 'Marital status is required',
-  },
-)
-export const employmentStatusEnum = z.enum(
-  ['employed', 'unemployed', 'self-employed', 'student', 'retired'],
-  {
-    invalid_type_error: 'Invalid employment status',
-    required_error: 'Employment status is required',
-    message: 'Invalid employment status',
-  },
-)
 
-export const createMemberSchema = z.object({
+// Base member schema - always required fields
+const baseMemberSchema = z.object({
+  image: z.any().optional(),
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
   middleName: z.string().optional(),
-  email: z
-    .string()
-    .min(1, 'Email is required')
-    .email({ message: 'Invalid email address' })
-    .optional(),
-  phone: z
-    .string()
-    .min(1, 'Phone number is required')
-    .refine(
-      (val) => {
-        if (val.startsWith('+233') && val.length === 13) return true
-        if (val.startsWith('0') && val.length === 10) return true
-        return false
-      },
-      {
-        message: 'Invalid phone number',
-      },
-    ),
-  whatsapp: z
-    .string()
-    .optional()
-    .refine(
-      (val) => {
-        if (val === '') return true
-        if (val === undefined) return true
-        if (val.startsWith('+233') && val.length === 13) return true
-        if (val.startsWith('0') && val.length === 10) return true
-        return false
-      },
-      {
-        message: 'Invalid WhatsApp number',
-      },
-    ),
-  ghanaCardNumber: z.string().min(1, 'Ghana Card number is required'),
   gender: genderEnum,
-  dob: z.date(),
+  dob: z.date({ required_error: 'Date of birth is required' }),
   placeOfBirth: z.string().min(1, 'Place of birth is required'),
   nationality: z.string().min(1, 'Nationality is required'),
   region: z.string().min(1, 'Region is required'),
   homeTown: z.string().min(1, 'Home town is required'),
   placeOfResidence: z.string().min(1, 'Place of residence is required'),
   homeAddress: z.string().min(1, 'Home address is required'),
-  maritalStatus: maritalStatusEnum,
-  spouseName: z.string().optional(),
-  numberOfChildren: z.coerce.number().default(0),
-  namesOfChildren: z.string().optional(),
+  email: z
+    .string()
+    .email({ message: 'Invalid email address' })
+    .optional()
+    .or(z.literal('')),
+  phone: z
+    .string()
+    .min(1, 'Phone number is required')
+    .refine(
+      (val) => {
+        return isValidPhoneNumber(val)
+      },
+      {
+        message: 'Invalid phone number',
+      },
+    ),
   academicQualification: z.string().optional(),
-  employmentStatus: employmentStatusEnum,
   occupation: z.string().optional(),
-  placeOfWork: z.string().optional(),
-  activeMembership: z.boolean(),
-  baptismStatus: z.boolean(),
-  communicantStatus: z.boolean(),
-  confirmationStatus: z.boolean(),
-  societiesStatus: z.boolean(),
-  societies: z.array(z.boolean()).optional(),
-  membershipNumber: z
-    .string()
-    .min(1, 'Membership number is required')
-    .optional(),
-  baptismDate: z.date().optional(),
-  placeOfBaptism: z.string().min(1, 'Place of baptism is required').optional(),
-  dateOfConfirmation: z.date().optional(),
-  placeOfConfirmation: z
-    .string()
-    .min(1, 'Place of confirmation is required')
-    .optional(),
-  dateOfCommunion: z.date().optional(),
-  placeOfCommunion: z
-    .string()
-    .min(1, 'Place of communion is required')
-    .optional(),
+  isActive: z.boolean().default(false),
+  membershipNumber: z.string().optional(),
+  belongsToSociety: z.boolean().default(false),
+  societyName: z.array(z.coerce.number()).optional(),
 })
+
+// Baptism discriminated union
+const baptismSchema = z.discriminatedUnion('isBaptized', [
+  z.object({
+    isBaptized: z.literal(false),
+  }),
+  z.object({
+    isBaptized: z.literal(true),
+    baptismDate: z.date({ required_error: 'Baptism date is required' }),
+    placeOfBaptism: z.string().min(1, 'Place of baptism is required'),
+    baptismNumber: z.string().optional(),
+  }),
+])
+
+// First Communion discriminated union
+const firstCommunionSchema = z.discriminatedUnion('isFirstCommunion', [
+  z.object({
+    isFirstCommunion: z.literal(false),
+  }),
+  z.object({
+    isFirstCommunion: z.literal(true),
+    dateOfFirstCommunion: z.date({
+      required_error: 'Date of first communion is required',
+    }),
+    placeOfFirstCommunion: z
+      .string()
+      .min(1, 'Place of first communion is required'),
+    firstCommunionNumber: z.string().optional(),
+  }),
+])
+
+// Confirmation discriminated union
+const confirmationSchema = z.discriminatedUnion('isConfirmed', [
+  z.object({
+    isConfirmed: z.literal(false),
+  }),
+  z.object({
+    isConfirmed: z.literal(true),
+    dateOfConfirmation: z.date({
+      required_error: 'Date of confirmation is required',
+    }),
+    placeOfConfirmation: z.string().min(1, 'Place of confirmation is required'),
+    confirmationNumber: z.string().optional(),
+  }),
+])
+
+// Employment status discriminated union
+const employmentSchema = z.discriminatedUnion('employmentStatus', [
+  z.object({
+    employmentStatus: z.enum(['unemployed', 'student', 'retired'], {
+      invalid_type_error: 'Invalid employment status',
+      required_error: 'Employment status is required',
+    }),
+  }),
+  z.object({
+    employmentStatus: z.enum(['employed', 'self-employed'], {
+      invalid_type_error: 'Invalid employment status',
+      required_error: 'Employment status is required',
+    }),
+    placeOfWork: z.string().min(1, 'Place of work is required'),
+    occupation: z.string().min(1, 'Occupation is required'),
+  }),
+])
+
+// Marital status discriminated union
+const maritalStatusSchema = z.discriminatedUnion('maritalStatus', [
+  z.object({
+    maritalStatus: z.enum(['single', 'divorced', 'widowed'], {
+      invalid_type_error: 'Invalid marital status',
+      required_error: 'Marital status is required',
+    }),
+  }),
+  z.object({
+    maritalStatus: z.literal('married'),
+    spouseName: z.string().min(1, 'Spouse name is required'),
+    numberOfChildren: z.coerce
+      .number()
+      .int()
+      .nonnegative()
+      .min(0, 'Number of children must be 0 or greater')
+      .default(0),
+    namesOfChildren: z.string().optional(),
+  }),
+])
+
+// Combine all schemas using intersection
+export const createMemberSchema = baseMemberSchema
+  .and(baptismSchema)
+  .and(firstCommunionSchema)
+  .and(confirmationSchema)
+  .and(employmentSchema)
+  .and(maritalStatusSchema)
 
 export type CreateMember = z.infer<typeof createMemberSchema>
 export type Gender = z.infer<typeof genderEnum>
-export type MaritalStatus = z.infer<typeof maritalStatusEnum>
-export type EmploymentStatus = z.infer<typeof employmentStatusEnum>
+export type EmploymentStatus = z.infer<typeof employmentSchema>
+export type MaritalStatus = z.infer<typeof maritalStatusSchema>

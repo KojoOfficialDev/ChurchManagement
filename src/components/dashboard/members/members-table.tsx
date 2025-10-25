@@ -1,6 +1,4 @@
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
   DownloadIcon,
   MoreVerticalIcon,
   SearchIcon,
@@ -30,7 +28,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { memo, useCallback, useMemo, useState } from 'react'
+import { memo, Suspense, useCallback, useMemo, useState } from 'react'
 import { useSidebar } from '@/lib/contexts/sidebar.context'
 import {
   InputGroup,
@@ -38,109 +36,19 @@ import {
   InputGroupInput,
 } from '@/components/ui/input-group'
 import AddmemberDialog from '@/components/dashboard/members/addmember-dialog'
-
-const memberData = [
-  {
-    id: 1,
-    fullName: 'Bervelyn Amoako',
-    email: 'bervelyn.amoako@email.com',
-    phone: '+233 24 234 5678',
-    gender: 'Male',
-    dayBorn: 'Monday',
-    status: 'Active',
-  },
-  {
-    id: 2,
-    fullName: 'Kweku Atomo',
-    email: 'kweku.atomo@email.com',
-    phone: '+233 20 345 6789',
-    gender: 'Female',
-    dayBorn: 'Tuesday',
-    status: 'Inactive',
-  },
-  {
-    id: 3,
-    fullName: 'Ansel Anana',
-    email: 'ansel.anana@email.com',
-    phone: '+233 54 456 7890',
-    gender: 'Male',
-    dayBorn: 'Wednesday',
-    status: 'Inactive',
-  },
-  {
-    id: 4,
-    fullName: 'Prince Osei',
-    email: 'prince.osei@email.com',
-    phone: '+233 55 567 8901',
-    gender: 'Female',
-    dayBorn: 'Thursday',
-    status: 'Active',
-  },
-  {
-    id: 5,
-    fullName: 'Bervelyn Amoako',
-    email: 'bervelyn.amoako@email.com',
-    phone: '+233 27 678 9012',
-    gender: 'Male',
-    dayBorn: 'Friday',
-    status: 'Inactive',
-  },
-  {
-    id: 6,
-    fullName: 'Bervelyn Amoako',
-    email: 'bervelyn.amoako@email.com',
-    phone: '+233 26 789 0123',
-    gender: 'Female',
-    dayBorn: 'Saturday',
-    status: 'Active',
-  },
-  {
-    id: 7,
-    fullName: 'Bervelyn Amoako',
-    email: 'bervelyn.amoako@email.com',
-    phone: '+233 23 890 1234',
-    gender: 'Male',
-    dayBorn: 'Sunday',
-    status: 'Active',
-  },
-  {
-    id: 8,
-    fullName: 'Bervelyn Amoako',
-    email: 'bervelyn.amoako@email.com',
-    phone: '+233 57 901 2345',
-    gender: 'Female',
-    dayBorn: 'Monday',
-    status: 'Inactive',
-  },
-  {
-    id: 9,
-    fullName: 'Bervelyn Amoako',
-    email: 'bervelyn.amoako@email.com',
-    phone: '+233 28 012 3456',
-    gender: 'Male',
-    dayBorn: 'Tuesday',
-    status: 'Active',
-  },
-  {
-    id: 10,
-    fullName: 'Bervelyn Amoako',
-    email: 'bervelyn.amoako@email.com',
-    phone: '+233 59 123 4567',
-    gender: 'Female',
-    dayBorn: 'Wednesday',
-    status: 'Active',
-  },
-]
-
-const pageNumbers = [
-  { number: 1, active: true },
-  { number: 2, active: false },
-  { number: 3, active: false },
-  { number: 4, active: false },
-  { number: 5, active: false },
-]
+import { ErrorBoundary } from '@/components/error-boundary'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { getAllMembersOptions } from '@/services/members/queries'
+import { EmptyComponent } from '@/components/empty-component'
+import { Pagination } from '@/components/ui/pagination'
 
 const MembersTable = memo(() => {
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(15)
+  const { data: memberResponse } = useSuspenseQuery(
+    getAllMembersOptions({ page, pageSize }),
+  )
+  const memberData = memberResponse.data
   const { isOpen } = useSidebar()
   const [selectedMembers, setSelectedMembers] = useState<string[]>([])
 
@@ -159,15 +67,15 @@ const MembersTable = memo(() => {
 
   const handleSelectAll = useCallback(() => {
     setSelectedMembers(memberData.map((member) => member.id.toString()))
-  }, [])
+  }, [memberData])
 
   const handleDeselectAll = useCallback(() => {
     setSelectedMembers([])
-  }, [])
+  }, [memberData])
 
   const isAllSelected = useMemo(
     () => selectedMembers.length === memberData.length,
-    [selectedMembers],
+    [selectedMembers, memberData],
   )
   const toggleSelectAll = useCallback(() => {
     if (isAllSelected) {
@@ -175,16 +83,37 @@ const MembersTable = memo(() => {
     } else {
       handleSelectAll()
     }
-  }, [selectedMembers])
+  }, [selectedMembers, memberData])
+
+  if (memberData.length === 0) {
+    return (
+      <EmptyComponent
+        title="No members found"
+        description="No members found"
+        buttonText="Add Member"
+        buttonOnClick={<AddmemberDialog />}
+        media={
+          <img
+            src="/image-3.svg"
+            alt="No members found"
+            className="w-full h-full"
+          />
+        }
+      />
+    )
+  }
 
   return (
     <section className="flex flex-col w-full items-start gap-6">
-      <header className="flex items-center justify-between w-full">
+      <header className="flex items-center justify-between w-full gap-10">
         <h1 className="text-gray-800 font-text-xl-bold font-[number:var(--text-xl-bold-font-weight)] text-[length:var(--text-xl-bold-font-size)] tracking-[var(--text-xl-bold-letter-spacing)] leading-[var(--text-xl-bold-line-height)] [font-style:var(--text-xl-bold-font-style)]">
           Members
         </h1>
-
-        <AddmemberDialog />
+        <ErrorBoundary level="component">
+          <Suspense fallback={<div>Loading...</div>}>
+            <AddmemberDialog />
+          </Suspense>
+        </ErrorBoundary>
       </header>
 
       <div className="flex flex-col items-start gap-2 w-full">
@@ -281,11 +210,7 @@ const MembersTable = memo(() => {
                       Gender
                     </span>
                   </TableHead>
-                  <TableHead className="px-6 py-3">
-                    <span className="font-medium text-gray-800 text-xs">
-                      Day Born
-                    </span>
-                  </TableHead>
+
                   <TableHead className="px-6 py-3">
                     <span className="font-medium text-[#667084] text-xs">
                       Status
@@ -311,7 +236,7 @@ const MembersTable = memo(() => {
                     </TableCell>
                     <TableCell className="px-6 py-3">
                       <span className="font-normal text-gray-800 text-xs">
-                        {member.fullName}
+                        {member.firstName} {member.lastName}
                       </span>
                     </TableCell>
                     <TableCell className="px-6 py-3">
@@ -329,13 +254,9 @@ const MembersTable = memo(() => {
                         {member.gender}
                       </span>
                     </TableCell>
-                    <TableCell className="px-6 py-3">
-                      <span className="font-normal text-gray-800 text-xs">
-                        {member.dayBorn}
-                      </span>
-                    </TableCell>
+
                     <TableCell className="px-6 py-[11px]">
-                      {member.status === 'Active' ? (
+                      {member.isActive ? (
                         <Badge className="bg-[#ebfdf2] hover:bg-[#ebfdf2] text-[#037847] border-0 rounded-2xl px-2 py-0.5 h-auto">
                           <div className="w-2 h-2 mr-1.5">
                             <div className="w-1.5 h-1.5 bg-[#14b96c] rounded-[3px]" />
@@ -385,64 +306,18 @@ const MembersTable = memo(() => {
               </TableBody>
             </Table>
           </div>
-
-          <div className="flex flex-col items-start justify-center gap-2.5 px-3 py-2 w-full border-b border-solid border-[#eaecf0]">
-            <div className="w-[327px] h-1.5 bg-[#eaecf0] rounded-xl" />
-          </div>
         </div>
 
-        <div className="w-full bg-[#ffffff] rounded-lg shadow-[0px_1px_11.7px_1px_#b9b9b914] px-4 py-3">
-          <div className="flex items-center justify-between w-full">
-            <span className="font-normal text-gray-800 text-xs">
-              1-15 of 100 items
-            </span>
-
-            <div className="flex items-center gap-6">
-              <Button variant="ghost" className="h-auto w-auto p-0">
-                <ChevronLeftIcon className="w-5 h-5 text-gray-600" />
-              </Button>
-
-              <div className="flex items-start gap-3">
-                {pageNumbers.map((page) => (
-                  <button
-                    key={page.number}
-                    className={`w-[30px] h-7 flex items-center justify-center ${
-                      page.active
-                        ? 'font-bold text-gray-800 text-xs'
-                        : 'font-normal text-gray-800 text-xs'
-                    }`}
-                  >
-                    {page.number}
-                  </button>
-                ))}
-              </div>
-
-              <Button variant="ghost" className="h-auto w-auto p-0">
-                <ChevronRightIcon className="w-5 h-5 text-gray-600" />
-              </Button>
-            </div>
-
-            <div className="flex items-center gap-1.5">
-              <Select defaultValue="15">
-                <SelectTrigger className="w-[51px] h-7 border-0 bg-transparent">
-                  <SelectValue>
-                    <span className="font-medium text-gray-800 text-xs">
-                      15
-                    </span>
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="15">15</SelectItem>
-                  <SelectItem value="25">25</SelectItem>
-                  <SelectItem value="50">50</SelectItem>
-                </SelectContent>
-              </Select>
-              <span className="font-normal text-[#1d2838] text-xs">
-                Items per page
-              </span>
-            </div>
-          </div>
-        </div>
+        <Pagination
+          currentPage={memberResponse.page}
+          pageSize={memberResponse.pageSize}
+          totalCount={memberResponse.totalCount}
+          totalPages={memberResponse.totalPages}
+          hasPrevious={memberResponse.hasPrevious}
+          hasNext={memberResponse.hasNext}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+        />
       </div>
     </section>
   )

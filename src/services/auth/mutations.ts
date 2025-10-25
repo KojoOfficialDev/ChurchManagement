@@ -9,7 +9,7 @@ import { sessionOptions } from './queries'
 
 export class AuthMutations {
   static login = async (data: LoginSchema) => {
-    const response = await api.post<SessionResponse>('/login', data)
+    const response = await api.post<SessionResponse>(`/connect/login`, data)
     return response.data
   }
 }
@@ -19,17 +19,11 @@ export const useAuthMutations = () => {
     mutationKey: ['login'],
     mutationFn: AuthMutations.login,
     onSuccess: (data) => {
-      // set the refresh token in the local storage
-      console.log("data", data)
-      localStorage.setItem('refreshToken', data.refreshToken)
-
-      // set the access token in the query client
       const queryClient = getContext().queryClient
-      queryClient.setQueryData(sessionOptions.queryKey, data)
+      queryClient.setQueryData(sessionOptions.queryKey, data.token)
 
       // redirect to the dashboard
       toast.success('Login successful')
-
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -42,5 +36,6 @@ export const useAuthMutations = () => {
       return
     },
   })
+
   return { login }
 }

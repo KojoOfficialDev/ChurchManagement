@@ -1,3 +1,4 @@
+
 export const GHANA_REGIONS = [
   { label: 'Northern', value: 'northern' },
   { label: 'Upper West', value: 'upper west' },
@@ -32,4 +33,11 @@ export const EMPLOYMENT_STATUS = [
   { label: 'Unemployed', value: 'unemployed' },
   { label: 'Retired', value: 'retired' },
   { label: 'Student', value: 'student' },
+]
+
+export const ACADMIC_QUALIFICATION = [
+  { label: 'None', value: 'none' },
+  { label: 'Primary', value: 'primary' },
+  { label: 'Secondary', value: 'secondary' },
+  { label: 'Tertiary', value: 'tertiary' },
 ]

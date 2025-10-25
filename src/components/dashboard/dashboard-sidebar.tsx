@@ -6,8 +6,12 @@ import NavItem from '@/components/nav-item'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { useSidebar } from '@/lib/contexts/sidebar.context'
+import { useLoaderData } from '@tanstack/react-router'
 
 export const DashboardSidebar = () => {
+  const session = useLoaderData({
+    from: '/dashboard',
+  })
   const { isOpen, collapse } = useSidebar()
   return (
     <nav
@@ -37,7 +41,7 @@ export const DashboardSidebar = () => {
                 <img
                   className="w-[120px] h-[103px] mt-[-34.00px] mb-[-51.00px] object-cover"
                   alt="Logo"
-                  src="/image-2.png"
+                  src={session.churchLogoUrl}
                 />
               </div>
             </div>

@@ -17,6 +17,7 @@ type CheckboxInputProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>
   error?: string
   labelClassName?: string
+  onChange?: (checked: boolean) => void
 }
 const CheckboxInputComponent = <TFieldValues extends FieldValues>({
   label,
@@ -24,6 +25,7 @@ const CheckboxInputComponent = <TFieldValues extends FieldValues>({
   name,
   control,
   error,
+  onChange,
 }: CheckboxInputProps<TFieldValues>) => {
   return (
     <Controller
@@ -37,7 +39,12 @@ const CheckboxInputComponent = <TFieldValues extends FieldValues>({
                 aria-invalid={!!error}
                 id={name}
                 checked={field.value}
-                onCheckedChange={field.onChange}
+                onCheckedChange={(checked) => {
+                  field.onChange(checked)
+                  if (onChange) {
+                    onChange(checked as boolean)
+                  }
+                }}
               />
               <Label htmlFor={name} className={cn('px-1', labelClassName)}>
                 {label}

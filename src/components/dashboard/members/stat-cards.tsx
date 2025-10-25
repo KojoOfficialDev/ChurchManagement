@@ -29,7 +29,7 @@ const MembersStatsCards = memo(() => {
       {membershipData.map((item, index) => (
         <Card
           key={index}
-          className={`${item.bgColor} rounded-xl border ${
+          className={`${item.bgColor} rounded-xl p-0 border ${
             item.bgColor === 'bg-white' ? 'border-[#cfd4dc]' : 'border-none'
           } w-[264px]`}
         >
@@ -37,7 +37,7 @@ const MembersStatsCards = memo(() => {
             <div className="flex items-center gap-5">
               <div className="flex flex-col gap-4 w-[120px]">
                 <div
-                  className={`${item.titleOpacity} font-text-sm-medium font-[number:var(--text-sm-medium-font-weight)] ${item.textColor} text-[length:var(--text-sm-medium-font-size)] tracking-[var(--text-sm-medium-letter-spacing)] leading-[var(--text-sm-medium-line-height)] [font-style:var(--text-sm-medium-font-style)]`}
+                  className={`${item.titleOpacity} font-text-sm-medium font-[number:var(--text-sm-medium-font-weight)] ${item.textColor} text-[length:var(--text-sm-medium-font-size)] tracking-[var(--text-sm-medium-letter-spacing)] leading-[var(--text-sm-medium-line-height)] [font-style:var(--text-sm-medium-font-style)] whitespace-nowrap`}
                 >
                   {item.title}
                 </div>

@@ -34,7 +34,7 @@ function LoginRoute() {
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
+      username: '',
       password: '',
     },
   })
@@ -44,7 +44,9 @@ function LoginRoute() {
     await mutateAsync(data, {
       onSuccess: () => {
         navigate({
-          to: search.redirect ?? '/dashboard',
+          to: '/dashboard',
+          search: search.redirect ? { redirect: search.redirect } : undefined,
+          replace: true,
         })
       },
     })
@@ -55,19 +57,13 @@ function LoginRoute() {
       <Card className="w-full max-w-md shadow-none border-0">
         {/* Logo */}
         <CardHeader>
-          <img
-            src="/image-2.png"
-            alt="FaithBase Logo"
-            className="h-20 mb-8 mx-auto"
-          />
-
           {/* Welcome Text */}
           <div>
             <h1 className="text-[#1d2939] text-3xl font-bold mb-3">
               Welcome back
             </h1>
             <p className="text-[#909090] text-sm leading-relaxed">
-              Please enter your email and password to access your account
+              Please enter your username and password to access your account
             </p>
           </div>
         </CardHeader>
@@ -79,11 +75,11 @@ function LoginRoute() {
             <div className="space-y-2">
               <TextInput
                 control={form.control}
-                name="email"
+                name="username"
                 label="Email"
-                error={form.formState.errors.email?.message}
+                error={form.formState.errors.username?.message}
                 type="text"
-                placeholder="Enter username"
+                placeholder="Enter email"
               />
             </div>
 

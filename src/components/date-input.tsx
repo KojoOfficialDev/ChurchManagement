@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ChevronDownIcon } from 'lucide-react'
+import { CalendarIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -17,6 +17,8 @@ import {
 } from 'react-hook-form'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
+import { enUS } from 'date-fns/locale'
+
 type DateInputProps<TFieldValues extends FieldValues> = {
   label: string
   name: Path<TFieldValues>
@@ -25,6 +27,7 @@ type DateInputProps<TFieldValues extends FieldValues> = {
   placeholder?: string
   labelClassName?: string
   triggerClassName?: string
+  disabled?: boolean | ((value?: string | Date) => boolean)
 }
 const DateInputComponent = <TFieldValues extends FieldValues>({
   label,
@@ -34,6 +37,7 @@ const DateInputComponent = <TFieldValues extends FieldValues>({
   control,
   error,
   placeholder,
+  disabled,
 }: DateInputProps<TFieldValues>) => {
   const [open, setOpen] = React.useState(false)
 
@@ -42,7 +46,6 @@ const DateInputComponent = <TFieldValues extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => {
-        console.log('dob', field.value)
         return (
           <div className="flex flex-col gap-3">
             <>
@@ -62,15 +65,13 @@ const DateInputComponent = <TFieldValues extends FieldValues>({
                     )}
                   >
                     {field.value
-                      ? format(field.value, 'dd/MM/yyyy')
+                      ? format(field.value, 'do MMMM, yyyy', { locale: enUS })
                       : placeholder || 'Select date'}
-                    <ChevronDownIcon />
+                    <CalendarIcon />
                   </Button>
                 </PopoverTrigger>
                 {error && (
-                  <p className="text-sm text-destructive px-2 -mt-2">
-                    {error}
-                  </p>
+                  <p className="text-sm text-destructive px-2 -mt-2">{error}</p>
                 )}
                 <PopoverContent
                   className="w-auto overflow-hidden p-0"
@@ -81,6 +82,7 @@ const DateInputComponent = <TFieldValues extends FieldValues>({
                     selected={field.value}
                     captionLayout="dropdown"
                     onSelect={field.onChange}
+                    disabled={disabled}
                   />
                 </PopoverContent>
               </Popover>
