@@ -1,15 +1,16 @@
 import * as React from 'react'
 
+import {
+  
+  Controller
+  
+  
+} from 'react-hook-form'
+import { Checkbox } from './ui/checkbox'
+import type {Control, FieldValues, Path} from 'react-hook-form';
 import { Label } from '@/components/ui/label'
 
-import {
-  Controller,
-  type Control,
-  type FieldValues,
-  type Path,
-} from 'react-hook-form'
 import { cn } from '@/lib/utils'
-import { Checkbox } from './ui/checkbox'
 
 type CheckboxInputProps<TFieldValues extends FieldValues> = {
   label: string

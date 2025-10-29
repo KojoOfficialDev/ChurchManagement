@@ -1,19 +1,20 @@
-import { createFileRoute, useSearch } from '@tanstack/react-router'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { createFileRoute, useNavigate, useSearch  } from '@tanstack/react-router'
 
 import { memo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import type {LoginSchema} from '@/services/auth/auth.dto';
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import {
   LoginPageSearch,
-  loginSchema,
-  type LoginSchema,
+  
+  loginSchema
 } from '@/services/auth/auth.dto'
 import { TextInput } from '@/components/text-input'
 import { useAuthMutations } from '@/services/auth/mutations'
 import { Spinner } from '@/components/ui/spinner'
-import { useNavigate } from '@tanstack/react-router'
+
 
 export const Route = createFileRoute('/__auth/login')({
   validateSearch: (search) => LoginPageSearch.parse(search),
@@ -44,8 +45,7 @@ function LoginRoute() {
     await mutateAsync(data, {
       onSuccess: () => {
         navigate({
-          to: '/dashboard',
-          search: search.redirect ? { redirect: search.redirect } : undefined,
+          to: search.redirect ?? '/dashboard',
           replace: true,
         })
       },

@@ -14,7 +14,7 @@ const baseMemberSchema = z.object({
   lastName: z.string().min(1, 'Last name is required'),
   middleName: z.string().optional(),
   gender: genderEnum,
-  dob: z.date({ required_error: 'Date of birth is required' }),
+  dateOfBirth: z.date({ required_error: 'Date of birth is required' }),
   placeOfBirth: z.string().min(1, 'Place of birth is required'),
   nationality: z.string().min(1, 'Nationality is required'),
   region: z.string().min(1, 'Region is required'),
@@ -26,7 +26,7 @@ const baseMemberSchema = z.object({
     .email({ message: 'Invalid email address' })
     .optional()
     .or(z.literal('')),
-  phone: z
+  phoneNumber: z
     .string()
     .min(1, 'Phone number is required')
     .refine(

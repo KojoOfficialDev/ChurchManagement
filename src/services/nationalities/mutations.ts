@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
-import { NationalitiesService } from './nationalities.service'
 import { AxiosError } from 'axios'
 import { toast } from 'sonner'
+import { NationalitiesService } from './nationalities.service'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { getNationalitiesOptions } from '@/services/nationalities/queries'
 

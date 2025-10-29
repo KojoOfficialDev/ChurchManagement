@@ -1,11 +1,11 @@
 import React, { memo, useState } from 'react'
-import type { InputHTMLAttributes } from 'react'
 import { CheckIcon, CopyIcon, Eye, EyeOff } from 'lucide-react'
 import { Controller } from 'react-hook-form'
-import type { Control, FieldValues, Path } from 'react-hook-form'
-import { cn } from '@/lib/utils'
 import { Input } from './ui/input'
 import { TooltipBuilder } from './tooltip-builder'
+import type { Control, FieldValues, Path } from 'react-hook-form'
+import type { InputHTMLAttributes } from 'react'
+import { cn } from '@/lib/utils'
 
 type TextInputProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>

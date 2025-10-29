@@ -1,13 +1,14 @@
+import { ImageInput } from '../image-input'
+import type { FormField, FormFieldType } from '@/lib/types'
+import type { Control, FieldValues, Path, UseFormReturn } from 'react-hook-form'
 import { CheckboxInput } from '@/components/checkbox-input'
 import { DateInput } from '@/components/date-input'
 import { PhoneInput } from '@/components/phone-input'
 import { SelectInput } from '@/components/select-component'
 import { TextAreaInput } from '@/components/text-area-Input'
 import { TextInput } from '@/components/text-input'
-import type { FormField, FormFieldType } from '@/lib/types'
-import type { Control, FieldValues, Path, UseFormReturn } from 'react-hook-form'
-import { ImageInput } from '../image-input'
 import { MultiSelectInput } from '@/components/multiselect-input'
+import { MemberSearchInput } from '@/components/member-search-input'
 
 type FieldTypeToRenderProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>
@@ -167,6 +168,29 @@ export const FieldTypeToRender = <TFieldValues extends FieldValues>({
             form.formState.errors[field.name as Path<TFieldValues>]
               ?.message as string
           }
+        />
+      )
+    case 'member-search':
+      return (
+        <MemberSearchInput
+          control={control}
+          name={field.name as Path<TFieldValues>}
+          label={field.label}
+          placeholder={field.placeholder || 'Search for a member...'}
+          disabled={
+            typeof field.disabled === 'function'
+              ? field.disabled(
+                  form.getValues(field.name as Path<TFieldValues>) as
+                    | string
+                    | Date,
+                )
+              : field.disabled
+          }
+          error={
+            form.formState.errors[field.name as Path<TFieldValues>]
+              ?.message as string
+          }
+          onMemberSelect={field.onMemberSelect}
         />
       )
     default:

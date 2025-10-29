@@ -1,13 +1,14 @@
 import {
-  Controller,
-  type Control,
-  type FieldValues,
-  type Path,
+  
+  Controller
+  
+  
 } from 'react-hook-form'
+import { MultiSelect } from './multi-select'
+import type {Control, FieldValues, Path} from 'react-hook-form';
+import type { SelectCreatableConfig } from '@/lib/types'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
-import { MultiSelect } from './multi-select'
-import type { SelectCreatableConfig } from '@/lib/types'
 
 type MultiSelectInputProps<TFieldValues extends FieldValues> = {
   label: string

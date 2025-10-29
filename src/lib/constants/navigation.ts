@@ -1,15 +1,15 @@
 import {
   AlertCircle,
-  LayoutDashboard,
-  Users,
-  UserStar,
-  PawPrint,
-  Martini,
-  Crown,
-  ListChecks,
   Banknote,
-  Wallet,
+  Crown,
+  LayoutDashboard,
+  ListChecks,
+  Martini,
+  PawPrint,
   Settings,
+  UserStar,
+  Users,
+  Wallet,
 } from 'lucide-react'
 
 const MENU_ITEMS = [

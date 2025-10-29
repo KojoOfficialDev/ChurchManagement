@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
-import { AssetsService } from '@/services/assets/assets.service'
 import { toast } from "sonner"
+import { AssetsService } from '@/services/assets/assets.service'
 
 export const useAssetsMutations = () => {
   const uploadImage = useMutation({

@@ -1,8 +1,8 @@
-import { protectedApi } from '@/server/protected-api'
-import type { CreateMarriage } from './marriage.dto'
-import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { sessionOptions } from '../auth/queries'
-import type { Marriage } from './types'
+import type { CreateMarriage } from './marriage.dto'
+import type { MarriageResponse } from './types'
+import { protectedApi } from '@/server/protected-api'
+import { getContext } from '@/integrations/tanstack-query/root-provider'
 
 export class MarriageService {
   private static getChurchId = async () => {
@@ -26,13 +26,29 @@ export class MarriageService {
     return response.data
   }
 
-  static getMarriages = async () => {
+  static getMarriages = async ({
+    pageSize = 15,
+    page = 1,
+    search,
+  }: {
+    pageSize: number
+    page: number
+    search?: string
+  }) => {
     const churchId = await this.getChurchId()
     const searchParams = new URLSearchParams()
+    searchParams.append('page', page.toString())
+    searchParams.append('pageSize', pageSize.toString())
     searchParams.append('id', churchId)
-    const response = await protectedApi.get<Marriage[]>('/marriage/getAll', {
-      params: searchParams,
-    })
+    if (search) {
+      searchParams.append('search', search)
+    }
+    const response = await protectedApi.get<MarriageResponse>(
+      '/marriage/getAllMarriages',
+      {
+        params: searchParams,
+      },
+    )
     return response.data
   }
 }

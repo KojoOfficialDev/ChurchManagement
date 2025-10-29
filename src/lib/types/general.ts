@@ -55,33 +55,44 @@ export type FormFieldType =
   | 'checkbox'
   | 'file'
   | 'multi-select'
+  | 'member-search'
 export type FormField = {
   name: string
   label: string
   type: FormFieldType
   placeholder?: string
   rows?: number
-  options?: { label: string; value: string }[]
+  options?: Array<{ label: string; value: string }>
   disabled?: boolean | ((value?: string | Date) => boolean)
   dependsOn?: FormField['name']
   dependsOnValue?: Array<string | boolean | number | Date>
-  autoFills?: string[] // Field names to auto-check when this field is checked
-  autoClearsFrom?: string[] // Field names that should auto-uncheck when this is unchecked
+  autoFills?: Array<string> // Field names to auto-check when this field is checked
+  autoClearsFrom?: Array<string> // Field names that should auto-uncheck when this is unchecked
   allowCreate?: boolean
   createConfig?: SelectCreatableConfig
   onUpload?: (file: File) => string | Promise<string>
   onUploadComplete?: (url: string) => void
+  onMemberSelect?: (member: any) => void // Callback when a member is selected
 }
 export type FormSection = {
   title: string
-  fields: FormField[]
-  subSections?: FormSection[]
+  fields: Array<FormField>
+  subSections?: Array<FormSection>
   dependsOn?: FormField['name']
   dependsOnValue?: Array<string | boolean | number | Date>
-  childSections?: FormSection[]
+  childSections?: Array<FormSection>
 }
 
 export type SelectType = {
   value: string
   label: string
+}
+
+export type Pagination = {
+  page: number
+  pageSize: number
+  totalCount: number
+  totalPages: number
+  hasPrevious: boolean
+  hasNext: boolean
 }

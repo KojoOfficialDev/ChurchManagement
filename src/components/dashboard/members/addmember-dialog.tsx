@@ -1,42 +1,35 @@
+import { ArrowLeft, PlusCircle } from 'lucide-react'
+import { useCallback, useMemo, useState } from 'react'
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { useSuspenseQueries } from '@tanstack/react-query'
+import type { CreateMember } from '@/services/members/members.dto'
+import type { FieldPath } from 'react-hook-form'
+import type { FormSteps } from '@/components/dashboard/members/add-member-form'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogContent,
-  DialogFooter,
-  DialogDescription,
 } from '@/components/ui/dialog'
-import { ArrowLeft, PlusCircle } from 'lucide-react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-  createMemberSchema,
-  type CreateMember,
-} from '@/services/members/members.dto'
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
-import { useForm, type FieldPath } from 'react-hook-form'
-import {
-  AddMemberForm,
-  type FormSteps,
-} from '@/components/dashboard/members/add-member-form'
+import { createMemberSchema } from '@/services/members/members.dto'
+import { AddMemberForm } from '@/components/dashboard/members/add-member-form'
 import { useMemberForm } from '@/services/members/members.form'
 import { Progress } from '@/components/ui/progress'
-import { toast } from 'sonner'
-import { useSuspenseQueries } from '@tanstack/react-query'
 import { getNationalitiesOptions } from '@/services/nationalities/queries'
-import { generateMemberIdOptions } from '@/services/members/queries'
 import { useMembersMutations } from '@/services/members/mutations'
 import { getSocietiesOptions } from '@/services/societies/queries'
 
 const AddmemberDialog = () => {
-  const [nationsRes, societiesRes, memberIdRes] = useSuspenseQueries({
-    queries: [
-      getNationalitiesOptions,
-      getSocietiesOptions,
-      generateMemberIdOptions,
-    ],
+  const [nationsRes, societiesRes] = useSuspenseQueries({
+    queries: [getNationalitiesOptions, getSocietiesOptions],
   })
+  const [isOpen, setIsOpen] = useState(false)
   const { createMember } = useMembersMutations()
 
   const nationalities = useMemo(
@@ -63,14 +56,19 @@ const AddmemberDialog = () => {
   const { MEMBER_FORM_SECTIONS } = useMemberForm({ nationalities, societies })
   const [attempedNext, setAttempedNext] = useState(false)
   const POSSIBLE_FORM_STEPS = useMemo(
-    () => MEMBER_FORM_SECTIONS.map((section) => section.title) as FormSteps[],
+    () =>
+      MEMBER_FORM_SECTIONS.map((section) => section.title) as Array<FormSteps>,
     [MEMBER_FORM_SECTIONS],
   )
-  const [formStep, setFormStep] = useState<FormSteps>(
-    POSSIBLE_FORM_STEPS[0] as FormSteps,
-  )
+  const [formStep, setFormStep] = useState<FormSteps>(POSSIBLE_FORM_STEPS[0])
   const handleSave = (data: CreateMember) => {
-    createMember.mutateAsync(data)
+    createMember.mutateAsync(data, {
+      onSuccess() {
+        form.reset()
+        setIsOpen(false)
+        setFormStep(POSSIBLE_FORM_STEPS[0])
+      },
+    })
   }
 
   const formStepNumber = useMemo(() => {
@@ -91,14 +89,13 @@ const AddmemberDialog = () => {
     mode: attempedNext ? 'onChange' : undefined,
     resolver: standardSchemaResolver(createMemberSchema),
     defaultValues: {
-      membershipNumber: memberIdRes.data ?? '',
       firstName: '',
       lastName: '',
       middleName: '',
       email: '',
-      phone: '',
+      phoneNumber: '',
       gender: undefined,
-      dob: undefined,
+      dateOfBirth: undefined,
       placeOfBirth: '',
       nationality: '',
       region: '',
@@ -119,22 +116,13 @@ const AddmemberDialog = () => {
     },
   })
 
-  // Update membership number when it becomes available from the query
-  useEffect(() => {
-    if (memberIdRes.data) {
-      form.setValue('membershipNumber', memberIdRes.data)
-    }
-  }, [memberIdRes.data, form])
-
   const nextFormStep = useCallback(async () => {
-    const section = MEMBER_FORM_SECTIONS.find(
-      (section) => section.title === formStep,
-    )
+    const section = MEMBER_FORM_SECTIONS.find((s) => s.title === formStep)
 
     // Get all field names from the current form step
-    const fieldNames: FieldPath<CreateMember>[] = [
+    const fieldNames: Array<FieldPath<CreateMember>> = [
       ...(section?.fields.map((field) => field.name) ?? []),
-    ] as FieldPath<CreateMember>[]
+    ] as Array<FieldPath<CreateMember>>
 
     // Add fields from childSections if they should be visible
     section?.childSections?.forEach((childSection) => {
@@ -184,24 +172,16 @@ const AddmemberDialog = () => {
     }
     setAttempedNext(false)
     // If valid, set the next form step
-    setFormStep(
-      POSSIBLE_FORM_STEPS[
-        POSSIBLE_FORM_STEPS.indexOf(formStep) + 1
-      ] as FormSteps,
-    )
+    setFormStep(POSSIBLE_FORM_STEPS[POSSIBLE_FORM_STEPS.indexOf(formStep) + 1])
   }, [formStep, POSSIBLE_FORM_STEPS, form])
 
   const prevFormStep = useCallback(() => {
     if (POSSIBLE_FORM_STEPS.indexOf(formStep) === 0) return
-    setFormStep(
-      POSSIBLE_FORM_STEPS[
-        POSSIBLE_FORM_STEPS.indexOf(formStep) - 1
-      ] as FormSteps,
-    )
+    setFormStep(POSSIBLE_FORM_STEPS[POSSIBLE_FORM_STEPS.indexOf(formStep) - 1])
   }, [formStep, POSSIBLE_FORM_STEPS])
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button size={'lg'} className="flex items-center gap-2">
           Add New Member <PlusCircle className="size-4" />

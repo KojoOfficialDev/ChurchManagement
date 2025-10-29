@@ -1,15 +1,15 @@
 import { useCallback, useMemo } from 'react'
-import { type FieldPath, type UseFormReturn } from 'react-hook-form'
-import { type CreateMarriage } from '@/services/marriages/marriage.dto'
-import { MARRIAGE_FORM_SECTIONS } from '@/lib/constants'
-import type { FormSection } from '@/lib/types'
+import { DialogClose } from '@radix-ui/react-dialog'
+import { toast } from 'sonner'
 import FieldTypeToRender from '../field-type-to-render'
+import type { FieldPath, UseFormReturn } from 'react-hook-form'
+import type { CreateMarriage } from '@/services/marriages/marriage.dto'
+import type { FormSection } from '@/lib/types'
+import { MARRIAGE_FORM_SECTIONS } from '@/lib/constants'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { DialogFooter } from '@/components/ui/dialog'
 import { useMarriagesMutations } from '@/services/marriages/mutations'
-import { DialogClose } from '@radix-ui/react-dialog'
-import { toast } from 'sonner'
 
 type AddMarriageFormProps = {
   form: UseFormReturn<CreateMarriage>
@@ -48,7 +48,7 @@ export const AddMarriageForm = ({ form }: AddMarriageFormProps) => {
       <ScrollArea>
         <form className="space-y-6  h-fit max-h-[calc(100vh_-_260px)] p-4">
           <div className="grid grid-cols-2 gap-4">
-            {section?.fields.map((field) => (
+            {section.fields.map((field) => (
               <FieldTypeToRender
                 key={field.name}
                 control={form.control}
@@ -58,7 +58,7 @@ export const AddMarriageForm = ({ form }: AddMarriageFormProps) => {
               />
             ))}
           </div>
-          {section?.subSections?.map((subSection) => (
+          {section.subSections?.map((subSection) => (
             <div key={subSection.title} className="space-y-4">
               <h3 className="text-lg font-medium">{subSection.title}</h3>
               <div className="grid grid-cols-2 gap-4">
@@ -74,7 +74,7 @@ export const AddMarriageForm = ({ form }: AddMarriageFormProps) => {
               </div>
             </div>
           ))}
-          {section?.childSections?.map((childSection) => {
+          {section.childSections?.map((childSection) => {
             if (!shouldShowChildSection(childSection)) return null
             return (
               <div key={childSection.title} className="space-y-4">

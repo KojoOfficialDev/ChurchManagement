@@ -1,13 +1,14 @@
 import * as React from 'react'
-import { cva, type VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
 import {
   CheckIcon,
-  XCircle,
   ChevronDown,
-  XIcon,
-  WandSparkles,
   PlusCircle,
+  WandSparkles,
+  XCircle,
+  XIcon,
 } from 'lucide-react'
+import type { VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
@@ -103,7 +104,7 @@ interface MultiSelectGroup {
   /** Group heading */
   heading: string
   /** Options in this group */
-  options: MultiSelectOption[]
+  options: Array<MultiSelectOption>
 }
 
 /**
@@ -118,15 +119,15 @@ interface MultiSelectProps
   /**
    * An array of option objects or groups to be displayed in the multi-select component.
    */
-  options: MultiSelectOption[] | MultiSelectGroup[]
+  options: Array<MultiSelectOption> | Array<MultiSelectGroup>
   /**
    * Callback function triggered when the selected values change.
    * Receives an array of the new selected values.
    */
-  onValueChange: (value: string[]) => void
+  onValueChange: (value: Array<string>) => void
 
   /** The default selected values when the component mounts. */
-  defaultValue?: string[]
+  defaultValue?: Array<string>
 
   /**
    * Placeholder text to be displayed when no values are selected.
@@ -306,11 +307,11 @@ export interface MultiSelectRef {
   /**
    * Get current selected values
    */
-  getSelectedValues: () => string[]
+  getSelectedValues: () => Array<string>
   /**
    * Set selected values programmatically
    */
-  setSelectedValues: (values: string[]) => void
+  setSelectedValues: (values: Array<string>) => void
   /**
    * Clear all selected values
    */
@@ -355,12 +356,12 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
     ref,
   ) => {
     const [selectedValues, setSelectedValues] =
-      React.useState<string[]>(defaultValue)
+      React.useState<Array<string>>(defaultValue)
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
     const [isAnimating, setIsAnimating] = React.useState(false)
     const [searchValue, setSearchValue] = React.useState('')
     const [createdOptions, setCreatedOptions] = React.useState<
-      MultiSelectOption[]
+      Array<MultiSelectOption>
     >([])
 
     const [politeMessage, setPoliteMessage] = React.useState('')
@@ -387,19 +388,19 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
     const triggerDescriptionId = `${multiSelectId}-description`
     const selectedCountId = `${multiSelectId}-count`
 
-    const prevDefaultValueRef = React.useRef<string[]>(defaultValue)
+    const prevDefaultValueRef = React.useRef<Array<string>>(defaultValue)
 
     const isGroupedOptions = React.useCallback(
       (
-        opts: MultiSelectOption[] | MultiSelectGroup[],
-      ): opts is MultiSelectGroup[] => {
+        opts: Array<MultiSelectOption> | Array<MultiSelectGroup>,
+      ): opts is Array<MultiSelectGroup> => {
         return opts.length > 0 && 'heading' in opts[0]
       },
       [],
     )
 
     const arraysEqual = React.useCallback(
-      (a: string[], b: string[]): boolean => {
+      (a: Array<string>, b: Array<string>): boolean => {
         if (a.length !== b.length) return false
         const sortedA = [...a].sort()
         const sortedB = [...b].sort()
@@ -422,7 +423,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
       () => ({
         reset: resetToDefault,
         getSelectedValues: () => selectedValues,
-        setSelectedValues: (values: string[]) => {
+        setSelectedValues: (values: Array<string>) => {
           setSelectedValues(values)
           onValueChange(values)
         },
@@ -490,9 +491,9 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
         }
         const currentSettings = defaultResponsive[screenSize]
         return {
-          maxCount: currentSettings?.maxCount ?? maxCount,
-          hideIcons: currentSettings?.hideIcons ?? false,
-          compactMode: currentSettings?.compactMode ?? false,
+          maxCount: currentSettings.maxCount,
+          hideIcons: currentSettings.hideIcons,
+          compactMode: currentSettings.compactMode,
         }
       }
       const currentSettings = responsive[screenSize]
@@ -549,9 +550,9 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
       return ''
     }
 
-    const getAllOptions = React.useCallback((): MultiSelectOption[] => {
+    const getAllOptions = React.useCallback((): Array<MultiSelectOption> => {
       if (options.length === 0 && createdOptions.length === 0) return []
-      let allOptions: MultiSelectOption[]
+      let allOptions: Array<MultiSelectOption>
       if (isGroupedOptions(options)) {
         allOptions = options.flatMap((group) => group.options)
       } else {
@@ -561,8 +562,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
       allOptions = [...createdOptions, ...allOptions]
 
       const valueSet = new Set<string>()
-      const duplicates: string[] = []
-      const uniqueOptions: MultiSelectOption[] = []
+      const duplicates: Array<string> = []
+      const uniqueOptions: Array<MultiSelectOption> = []
       allOptions.forEach((option) => {
         if (valueSet.has(option.value)) {
           duplicates.push(option.value)
@@ -592,7 +593,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
 
     const getOptionByValue = React.useCallback(
       (value: string): MultiSelectOption | undefined => {
-        const option = getAllOptions().find((option) => option.value === value)
+        const option = getAllOptions().find((opt) => opt.value === value)
         if (!option && process.env.NODE_ENV === 'development') {
           console.warn(
             `MultiSelect: Option with value "${value}" not found in options list`,
@@ -828,10 +829,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
         prevIsOpen.current = isPopoverOpen
       }
 
-      if (
-        searchValue !== prevSearchValue.current &&
-        searchValue !== undefined
-      ) {
+      if (searchValue !== prevSearchValue.current) {
         if (searchValue && isPopoverOpen) {
           const filteredCount = allOptions.filter(
             (opt) =>

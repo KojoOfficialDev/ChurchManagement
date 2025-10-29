@@ -1,15 +1,15 @@
 import React, { memo, useCallback, useRef, useState } from 'react'
-import { Camera, Upload, RefreshCw } from 'lucide-react'
+import { Camera, RefreshCw, Upload } from 'lucide-react'
+import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from '@/components/ui/dialog'
-import { toast } from 'sonner'
 
 type ImageUploadProps = {
   onUpload?: (file: File) => string | Promise<string>
@@ -174,7 +174,7 @@ const ImageUpload = ({
   )
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 mt-2 mb-4">
       <div
         onClick={openDialog}
         className={cn(

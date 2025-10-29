@@ -1,7 +1,7 @@
 import { Controller } from 'react-hook-form'
+import { Textarea } from './ui/textarea'
 import type { Control, FieldValues, Path } from 'react-hook-form'
 import { cn } from '@/lib/utils'
-import { Textarea } from './ui/textarea'
 
 type TextAreaInputProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>

@@ -1,8 +1,8 @@
+import { createFileRoute } from '@tanstack/react-router'
+import { Suspense } from 'react'
 import MarriageTable from '@/components/dashboard/marriage/marriage-table'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { TableSkeleton } from '@/components/skeletons/table.skeleton'
-import { createFileRoute } from '@tanstack/react-router'
-import { Suspense } from 'react'
 
 export const Route = createFileRoute('/dashboard/marriage/')({
   component: RouteComponent,

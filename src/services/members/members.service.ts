@@ -1,8 +1,8 @@
+import type { CreateMember } from '@/services/members/members.dto'
+import type { GetAllMembersResponse } from '@/services/members/types'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { protectedApi } from '@/server/protected-api'
 import { sessionOptions } from '@/services/auth/queries'
-import type { CreateMember } from '@/services/members/members.dto'
-import type { GetAllMembersResponse } from '@/services/members/types'
 
 export class MembersService {
   private static getChurchId = async () => {
@@ -25,12 +25,23 @@ export class MembersService {
     return response.data
   }
 
-  static getAllMembers = async ({ page = 1, pageSize = 10 }) => {
+  static getAllMembers = async ({
+    page = 1,
+    pageSize = 15,
+    search,
+  }: {
+    page: number
+    pageSize: number
+    search?: string
+  }) => {
     const churchId = await this.getChurchId()
     const searchParams = new URLSearchParams()
     searchParams.append('page', page.toString())
     searchParams.append('pageSize', pageSize.toString())
-    searchParams.append('churchId', churchId)
+    if (search) {
+      searchParams.append('search', search)
+    }
+    searchParams.append('id', churchId)
     const response = await protectedApi.get<GetAllMembersResponse>(
       '/Member/getAllMembers',
       {
@@ -40,11 +51,18 @@ export class MembersService {
     return response.data
   }
 
+  static removeMember = async (memberId: string) => {
+    const response = await protectedApi.delete(`/Member/delete?id=${memberId}`)
+    return response.data
+  }
+
   static createMember = async (member: CreateMember) => {
     const churchId = await this.getChurchId()
+    const membershipNumber = await this.generateMemberId()
     const payload = {
       ...member,
       churchId: churchId,
+      membershipNumber: membershipNumber,
     }
     const response = await protectedApi.post('/Member/Save', {
       ...payload,

@@ -1,4 +1,5 @@
 import { ChevronLeftIcon, PowerOff, Zap } from 'lucide-react'
+import { useLoaderData } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { FINANCE_ITEMS, MENU_ITEMS, SYSTEM_ITEMS } from '@/lib/constants'
@@ -6,7 +7,6 @@ import NavItem from '@/components/nav-item'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { useSidebar } from '@/lib/contexts/sidebar.context'
-import { useLoaderData } from '@tanstack/react-router'
 
 export const DashboardSidebar = () => {
   const session = useLoaderData({

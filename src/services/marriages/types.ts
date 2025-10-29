@@ -1,3 +1,5 @@
+import type { Pagination } from '@/lib/types'
+
 export type Marriage = {
   id: number
   marriageNumber: string
@@ -20,4 +22,8 @@ export type Marriage = {
   modifiedDate: Date
   modifiedBy: string
   isActive: boolean
+}
+
+export type MarriageResponse = Pagination & {
+  data: Array<Marriage>
 }

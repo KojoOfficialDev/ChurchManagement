@@ -1,11 +1,11 @@
-import { getContext } from '@/integrations/tanstack-query/root-provider'
-import { api } from '@/server/api'
-import type { LoginSchema } from '@/services/auth/auth.dto'
-import type { SessionResponse } from '@/services/auth/types'
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { toast } from 'sonner'
 import { sessionOptions } from './queries'
+import type { SessionResponse } from '@/services/auth/types'
+import type { LoginSchema } from '@/services/auth/auth.dto'
+import { api } from '@/server/api'
+import { getContext } from '@/integrations/tanstack-query/root-provider'
 
 export class AuthMutations {
   static login = async (data: LoginSchema) => {

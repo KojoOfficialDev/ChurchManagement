@@ -1,6 +1,6 @@
 import { CalendarIcon, UsersIcon } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
 import { memo } from 'react'
+import { Card, CardContent } from '@/components/ui/card'
 
 const eventsData = [
   {

@@ -1,13 +1,12 @@
 import type { FormSection } from '@/lib/types'
 
-export const MARRIAGE_FORM_SECTIONS: Omit<FormSection, 'title'>[] = [
+export const MARRIAGE_FORM_SECTIONS: Array<Omit<FormSection, 'title'>> = [
   {
     fields: [
       {
         name: 'marriageNumber',
         label: 'Marriage Number',
         type: 'text',
-        disabled: true,
         placeholder: 'Enter marriage number',
       },
       {

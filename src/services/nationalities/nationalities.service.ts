@@ -1,7 +1,7 @@
+import { sessionOptions } from '../auth/queries'
+import type { Nationalities } from '@/services/nationalities/types'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { protectedApi } from '@/server/protected-api'
-import type { Nationalities } from '@/services/nationalities/types'
-import { sessionOptions } from '../auth/queries'
 
 export class NationalitiesService {
   private static getChurchId = async () => {
@@ -20,7 +20,7 @@ export class NationalitiesService {
     const id = await this.getChurchId()
     const searchParams = new URLSearchParams()
     searchParams.append('id', id)
-    const response = await protectedApi.get<Nationalities[]>(
+    const response = await protectedApi.get<Array<Nationalities>>(
       `/nationalities/getAll?${searchParams.toString()}`,
     )
     return response.data

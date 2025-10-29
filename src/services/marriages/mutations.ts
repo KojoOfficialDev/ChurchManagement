@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
-import { MarriageService } from './marriage.service'
 import { toast } from 'sonner'
+import { MarriageService } from './marriage.service'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 
 export const useMarriagesMutations = () => {

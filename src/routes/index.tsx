@@ -1,6 +1,6 @@
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import Loader from '@/components/loader'
 import { sessionOptions } from '@/services/auth/queries'
-import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
   pendingComponent: () => {

@@ -1,3 +1,4 @@
+import type { FormSection, SelectType } from '@/lib/types'
 import {
   ACADMIC_QUALIFICATION,
   EMPLOYMENT_STATUS,
@@ -5,7 +6,6 @@ import {
   GHANA_REGIONS,
   MARITAL_STATUS,
 } from '@/lib/constants/general'
-import type { FormSection, SelectType } from '@/lib/types'
 import { useNationalitiesMutations } from '@/services/nationalities/mutations'
 import { useAssetsMutations } from '@/services/assets/mutations'
 import { useSocietiesMutations } from '@/services/societies/mutations'
@@ -27,7 +27,7 @@ export const useMemberForm = ({
   const {
     createSociety: { mutateAsync: createSociety },
   } = useSocietiesMutations()
-  const MEMBER_FORM_SECTIONS: FormSection[] = [
+  const MEMBER_FORM_SECTIONS: Array<FormSection> = [
     {
       title: 'Basic Information',
       fields: [
@@ -105,9 +105,9 @@ export const useMemberForm = ({
             },
             {
               name: 'baptismNumber',
-              label: 'Baptism Number',
+              label: 'NLB Number',
               type: 'text',
-              placeholder: 'Enter baptism number',
+              placeholder: 'Enter NLB number',
             },
           ],
         },
@@ -130,9 +130,9 @@ export const useMemberForm = ({
             },
             {
               name: 'firstCommunionNumber',
-              label: 'First Communion Number',
+              label: 'NLC Number',
               type: 'text',
-              placeholder: 'Enter first communion number',
+              placeholder: 'Enter NLC number',
             },
           ],
         },
@@ -155,16 +155,16 @@ export const useMemberForm = ({
             },
             {
               name: 'confirmationNumber',
-              label: 'Confirmation Number',
+              label: 'Enter NL Conf. Number',
               type: 'text',
-              placeholder: 'Enter confirmation number',
+              placeholder: 'Enter NL Conf. number',
             },
           ],
         },
       ],
       fields: [
         {
-          name: 'dob',
+          name: 'dateOfBirth',
           label: 'Date of Birth',
           type: 'date',
           placeholder: 'Select date of birth',
@@ -275,7 +275,7 @@ export const useMemberForm = ({
           placeholder: 'Enter email',
         },
         {
-          name: 'phone',
+          name: 'phoneNumber',
           label: 'Phone Number',
           type: 'tel',
           placeholder: 'Enter phone number',
@@ -323,13 +323,6 @@ export const useMemberForm = ({
             const result = await uploadImage(file)
             return result
           },
-        },
-        {
-          name: 'membershipNumber',
-          label: 'Membership Number',
-          type: 'text',
-          placeholder: 'Enter membership number',
-          disabled: true,
         },
         {
           name: 'belongsToSociety',

@@ -2,4 +2,15 @@
 
 import { tanstackConfig } from '@tanstack/eslint-config'
 
-export default [...tanstackConfig]
+export default [
+  ...tanstackConfig,
+  {
+    ignores: [
+      'src/components/ui/**/*',
+      'eslint.config.js',
+      'prettier.config.js',
+      'vite.config.ts',
+      'tsconfig.json',
+    ],
+  },
+]

@@ -1,4 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
+import { useCallback, useMemo, useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Select,
@@ -7,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useMemo } from 'react'
 
 export interface PaginationProps {
   currentPage: number
@@ -18,7 +18,7 @@ export interface PaginationProps {
   hasNext: boolean
   onPageChange: (page: number) => void
   onPageSizeChange: (pageSize: number) => void
-  pageSizeOptions?: number[]
+  pageSizeOptions?: Array<number>
   maxPageButtons?: number
 }
 
@@ -34,6 +34,7 @@ export const Pagination = ({
   pageSizeOptions = [15, 25, 50],
   maxPageButtons = 5,
 }: PaginationProps) => {
+  const [_isPending, startTransition] = useTransition()
   // Calculate the range of items being displayed
   const startItem = totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1
   const endItem = Math.min(currentPage * pageSize, totalCount)
@@ -116,6 +117,24 @@ export const Pagination = ({
     return pages
   }, [currentPage, totalPages, maxPageButtons])
 
+  const handlePageChange = useCallback(
+    (page: number) => {
+      startTransition(() => {
+        onPageChange(page)
+      })
+    },
+    [onPageChange],
+  )
+
+  const handlePageSizeChange = useCallback(
+    (pageSize: number) => {
+      startTransition(() => {
+        onPageSizeChange(pageSize)
+      })
+    },
+    [onPageSizeChange],
+  )
+
   return (
     <div className="w-full bg-[#ffffff] rounded-lg shadow-[0px_1px_11.7px_1px_#b9b9b914] px-4 py-3">
       <div className="flex items-center justify-between w-full">
@@ -125,9 +144,9 @@ export const Pagination = ({
 
         <div className="flex items-center gap-6">
           <Button
-            variant="ghost"
-            className="h-auto w-auto p-0"
-            onClick={() => onPageChange(currentPage - 1)}
+            size="icon"
+            variant="outline"
+            onClick={() => handlePageChange(currentPage - 1)}
             disabled={!hasPrevious}
           >
             <ChevronLeftIcon
@@ -147,25 +166,22 @@ export const Pagination = ({
                   ...
                 </span>
               ) : (
-                <button
+                <Button
                   key={page.number}
-                  onClick={() => onPageChange(page.number)}
-                  className={`w-[30px] h-7 flex items-center justify-center ${
-                    page.active
-                      ? 'font-bold text-gray-800 text-xs'
-                      : 'font-normal text-gray-800 text-xs'
-                  }`}
+                  size="icon"
+                  variant={page.active ? 'default' : 'outline'}
+                  onClick={() => handlePageChange(page.number)}
                 >
                   {page.number}
-                </button>
+                </Button>
               ),
             )}
           </div>
 
           <Button
-            variant="ghost"
-            className="h-auto w-auto p-0"
-            onClick={() => onPageChange(currentPage + 1)}
+            size="icon"
+            variant="outline"
+            onClick={() => handlePageChange(currentPage + 1)}
             disabled={!hasNext}
           >
             <ChevronRightIcon
@@ -179,9 +195,9 @@ export const Pagination = ({
         <div className="flex items-center gap-1.5">
           <Select
             value={pageSize.toString()}
-            onValueChange={(value) => onPageSizeChange(Number(value))}
+            onValueChange={(value) => handlePageSizeChange(Number(value))}
           >
-            <SelectTrigger className="w-[51px] h-7 border-0 bg-transparent">
+            <SelectTrigger className=" h-7 border-0">
               <SelectValue>
                 <span className="font-medium text-gray-800 text-xs">
                   {pageSize}

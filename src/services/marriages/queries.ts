@@ -1,8 +1,18 @@
-import { queryOptions } from '@tanstack/react-query'
+import { keepPreviousData, queryOptions } from '@tanstack/react-query'
 import { MarriageService } from '@/services/marriages/marriage.service'
 
-export const getMarriagesOptions = queryOptions({
-  queryKey: ['marriages'],
-  queryFn: MarriageService.getMarriages,
-  staleTime: 30 * 60 * 1000, // 30 minutes
-})
+export const getMarriagesOptions = ({
+  page,
+  pageSize,
+  search,
+}: {
+  page: number
+  pageSize: number
+  search?: string
+}) =>
+  queryOptions({
+    queryKey: ['marriages', page, pageSize, search],
+    queryFn: () => MarriageService.getMarriages({ page, pageSize, search }),
+    staleTime: 30 * 60 * 1000, // 30 minutes
+    placeholderData: keepPreviousData,
+  })

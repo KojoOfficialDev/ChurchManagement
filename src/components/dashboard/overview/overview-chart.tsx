@@ -1,5 +1,6 @@
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
+import type {ChartConfig} from '@/components/ui/chart';
 import {
   Card,
   CardContent,
@@ -8,10 +9,10 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import {
-  type ChartConfig,
+  
   ChartContainer,
   ChartTooltip,
-  ChartTooltipContent,
+  ChartTooltipContent
 } from '@/components/ui/chart'
 
 export const description = 'A bar chart'

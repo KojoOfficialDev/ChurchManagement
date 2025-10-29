@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from 'react'
-import { type FieldPath, type UseFormReturn } from 'react-hook-form'
-import { type CreateMember } from '@/services/members/members.dto'
-import type { FormField, FormSection } from '@/lib/types'
 import FieldTypeToRender from '../field-type-to-render'
+import type { FieldPath, UseFormReturn } from 'react-hook-form'
+import type { CreateMember } from '@/services/members/members.dto'
+import type { FormField, FormSection } from '@/lib/types'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 export type FormSteps =
@@ -23,7 +23,7 @@ export const AddMemberForm = ({
   MEMBER_FORM_SECTIONS,
 }: AddMemberFormProps) => {
   const section = useMemo(
-    () => MEMBER_FORM_SECTIONS.find((section) => section.title === formStep),
+    () => MEMBER_FORM_SECTIONS.find((s) => s.title === formStep),
     [formStep],
   )
 

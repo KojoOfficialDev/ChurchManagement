@@ -1,8 +1,8 @@
 import { memo } from 'react'
 import { ChevronRightIcon, UserIcon } from 'lucide-react'
+import { useLoaderData } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { useSidebar } from '@/lib/contexts/sidebar.context'
-import { useLoaderData } from '@tanstack/react-router'
 
 const DashboardHeader = memo(() => {
   const { isOpen, expand } = useSidebar()

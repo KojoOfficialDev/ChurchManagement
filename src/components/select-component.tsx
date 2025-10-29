@@ -1,23 +1,25 @@
 import {
-  type Control,
-  Controller,
-  type Path,
-  type FieldValues,
+  
+  Controller
+  
+  
 } from 'react-hook-form'
+import { useCallback, useMemo, useState } from 'react'
+import type {Control, FieldValues, Path} from 'react-hook-form';
 
+import type { SelectType } from '@/lib/types'
+import type {SelectCreatableConfig} from '@/components/ui/select';
 import { cn } from '@/lib/utils'
 import {
   Select,
   SelectContent,
   SelectCreatable,
+  
   SelectItem,
   SelectTrigger,
-  SelectValue,
-  type SelectCreatableConfig,
+  SelectValue
 } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
-import { useCallback, useMemo, useState } from 'react'
-import type { SelectType } from '@/lib/types'
 
 type SelectInputProps<TFieldValues extends FieldValues> = {
   items: Array<{ value: string; label: string }>
@@ -49,7 +51,7 @@ const SelectInputComponent = <TFieldValues extends FieldValues>({
   createConfig,
 }: SelectInputProps<TFieldValues>) => {
   const [createdItems, setCreatedItems] = useState<
-    { value: string; label: string }[]
+    Array<{ value: string; label: string }>
   >([])
 
   const itemsList = useMemo(() => {

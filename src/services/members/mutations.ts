@@ -1,12 +1,15 @@
 import { useMutation } from '@tanstack/react-query'
-import { MembersService } from './members.service'
 import { toast } from 'sonner'
+import { MembersService } from './members.service'
+import { getContext } from '@/integrations/tanstack-query/root-provider'
 
 export const useMembersMutations = () => {
   const createMember = useMutation({
     mutationKey: ['createMember'],
     mutationFn: MembersService.createMember,
-    onSuccess: () => {
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['members'] })
       toast.success('Member created successfully')
     },
     onError: () => {
@@ -14,7 +17,21 @@ export const useMembersMutations = () => {
     },
   })
 
+  const removeMember = useMutation({
+    mutationKey: ['removeMember'],
+    mutationFn: MembersService.removeMember,
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['members'] })
+      toast.success('Member removed successfully')
+    },
+    onError: () => {
+      toast.error('Failed to remove member')
+    },
+  })
+
   return {
     createMember,
+    removeMember,
   }
 }

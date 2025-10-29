@@ -1,6 +1,6 @@
-import { Card, CardContent } from '@/components/ui/card'
 import { TrendingUp } from 'lucide-react'
 import { memo } from 'react'
+import { Card, CardContent } from '@/components/ui/card'
 
 const statsData = [
   {

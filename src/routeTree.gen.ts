@@ -16,6 +16,10 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as _authLoginRouteImport } from './routes/__auth/login'
 import { Route as DashboardMembersIndexRouteImport } from './routes/dashboard/members/index'
 import { Route as DashboardMarriageIndexRouteImport } from './routes/dashboard/marriage/index'
+import { Route as DashboardContributionIndexRouteImport } from './routes/dashboard/contribution/index'
+import { Route as DashboardConfirmationIndexRouteImport } from './routes/dashboard/confirmation/index'
+import { Route as DashboardCommunionIndexRouteImport } from './routes/dashboard/communion/index'
+import { Route as DashboardBaptismIndexRouteImport } from './routes/dashboard/baptism/index'
 
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: '/dashboard',
@@ -51,12 +55,38 @@ const DashboardMarriageIndexRoute = DashboardMarriageIndexRouteImport.update({
   path: '/marriage/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardContributionIndexRoute =
+  DashboardContributionIndexRouteImport.update({
+    id: '/contribution/',
+    path: '/contribution/',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
+const DashboardConfirmationIndexRoute =
+  DashboardConfirmationIndexRouteImport.update({
+    id: '/confirmation/',
+    path: '/confirmation/',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
+const DashboardCommunionIndexRoute = DashboardCommunionIndexRouteImport.update({
+  id: '/communion/',
+  path: '/communion/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardBaptismIndexRoute = DashboardBaptismIndexRouteImport.update({
+  id: '/baptism/',
+  path: '/baptism/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/login': typeof _authLoginRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/baptism': typeof DashboardBaptismIndexRoute
+  '/dashboard/communion': typeof DashboardCommunionIndexRoute
+  '/dashboard/confirmation': typeof DashboardConfirmationIndexRoute
+  '/dashboard/contribution': typeof DashboardContributionIndexRoute
   '/dashboard/marriage': typeof DashboardMarriageIndexRoute
   '/dashboard/members': typeof DashboardMembersIndexRoute
 }
@@ -64,6 +94,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof _authLoginRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/baptism': typeof DashboardBaptismIndexRoute
+  '/dashboard/communion': typeof DashboardCommunionIndexRoute
+  '/dashboard/confirmation': typeof DashboardConfirmationIndexRoute
+  '/dashboard/contribution': typeof DashboardContributionIndexRoute
   '/dashboard/marriage': typeof DashboardMarriageIndexRoute
   '/dashboard/members': typeof DashboardMembersIndexRoute
 }
@@ -74,6 +108,10 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/__auth/login': typeof _authLoginRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/baptism/': typeof DashboardBaptismIndexRoute
+  '/dashboard/communion/': typeof DashboardCommunionIndexRoute
+  '/dashboard/confirmation/': typeof DashboardConfirmationIndexRoute
+  '/dashboard/contribution/': typeof DashboardContributionIndexRoute
   '/dashboard/marriage/': typeof DashboardMarriageIndexRoute
   '/dashboard/members/': typeof DashboardMembersIndexRoute
 }
@@ -84,6 +122,10 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/dashboard/'
+    | '/dashboard/baptism'
+    | '/dashboard/communion'
+    | '/dashboard/confirmation'
+    | '/dashboard/contribution'
     | '/dashboard/marriage'
     | '/dashboard/members'
   fileRoutesByTo: FileRoutesByTo
@@ -91,6 +133,10 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/dashboard'
+    | '/dashboard/baptism'
+    | '/dashboard/communion'
+    | '/dashboard/confirmation'
+    | '/dashboard/contribution'
     | '/dashboard/marriage'
     | '/dashboard/members'
   id:
@@ -100,6 +146,10 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/__auth/login'
     | '/dashboard/'
+    | '/dashboard/baptism/'
+    | '/dashboard/communion/'
+    | '/dashboard/confirmation/'
+    | '/dashboard/contribution/'
     | '/dashboard/marriage/'
     | '/dashboard/members/'
   fileRoutesById: FileRoutesById
@@ -161,6 +211,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardMarriageIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/contribution/': {
+      id: '/dashboard/contribution/'
+      path: '/contribution'
+      fullPath: '/dashboard/contribution'
+      preLoaderRoute: typeof DashboardContributionIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/confirmation/': {
+      id: '/dashboard/confirmation/'
+      path: '/confirmation'
+      fullPath: '/dashboard/confirmation'
+      preLoaderRoute: typeof DashboardConfirmationIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/communion/': {
+      id: '/dashboard/communion/'
+      path: '/communion'
+      fullPath: '/dashboard/communion'
+      preLoaderRoute: typeof DashboardCommunionIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/baptism/': {
+      id: '/dashboard/baptism/'
+      path: '/baptism'
+      fullPath: '/dashboard/baptism'
+      preLoaderRoute: typeof DashboardBaptismIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
   }
 }
 
@@ -178,12 +256,20 @@ const _authRouteRouteWithChildren = _authRouteRoute._addFileChildren(
 
 interface DashboardRouteRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardBaptismIndexRoute: typeof DashboardBaptismIndexRoute
+  DashboardCommunionIndexRoute: typeof DashboardCommunionIndexRoute
+  DashboardConfirmationIndexRoute: typeof DashboardConfirmationIndexRoute
+  DashboardContributionIndexRoute: typeof DashboardContributionIndexRoute
   DashboardMarriageIndexRoute: typeof DashboardMarriageIndexRoute
   DashboardMembersIndexRoute: typeof DashboardMembersIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardBaptismIndexRoute: DashboardBaptismIndexRoute,
+  DashboardCommunionIndexRoute: DashboardCommunionIndexRoute,
+  DashboardConfirmationIndexRoute: DashboardConfirmationIndexRoute,
+  DashboardContributionIndexRoute: DashboardContributionIndexRoute,
   DashboardMarriageIndexRoute: DashboardMarriageIndexRoute,
   DashboardMembersIndexRoute: DashboardMembersIndexRoute,
 }

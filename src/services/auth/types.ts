@@ -10,8 +10,8 @@ export type Token = {
   accessToken: string
   expiresIn: number
   refreshToken: string
-  claims: any[]
-  roles: string[]
+  claims: Array<any>
+  roles: Array<string>
 }
 export type SessionResponse = {
   token: Token

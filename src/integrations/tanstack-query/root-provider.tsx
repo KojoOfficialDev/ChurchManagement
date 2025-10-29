@@ -4,7 +4,9 @@ export function getContext() {
   // Ensure a single QueryClient instance across the app
   // This avoids creating new clients on each import/call which would lose cache
   // and force refetches even when data should be served from cache.
-  const globalObj = (globalThis || window) as unknown as {
+  const globalObj = (typeof globalThis !== 'undefined'
+    ? globalThis
+    : window) as unknown as {
     __TANSTACK_QUERY_CLIENT__?: QueryClient
   }
 

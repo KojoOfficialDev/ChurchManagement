@@ -1,5 +1,5 @@
-import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { sessionOptions } from '../auth/queries'
+import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { protectedApi } from '@/server/protected-api'
 
 type CreateSocietyPayload = {
@@ -13,7 +13,7 @@ export class SocietiesService {
     const churchId = await this.getChurchId()
     const searchParams = new URLSearchParams()
     searchParams.append('id', churchId)
-    const response = await protectedApi.get<CreateSocietyPayload[]>(
+    const response = await protectedApi.get<Array<CreateSocietyPayload>>(
       `/Societies/GetAll?${searchParams.toString()}`,
     )
     return response.data

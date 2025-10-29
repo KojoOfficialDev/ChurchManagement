@@ -1,8 +1,9 @@
-import React, { Component, type ReactNode } from 'react'
+import React, { Component } from 'react'
 import { AlertCircle, RefreshCw } from 'lucide-react'
 import { Button } from './ui/button'
 import { Alert, AlertDescription, AlertTitle } from './ui/alert'
 import { Card } from './ui/card'
+import type { ReactNode } from 'react'
 
 interface ErrorBoundaryProps {
   children: ReactNode
@@ -240,17 +241,17 @@ export class ErrorBoundary extends Component<
  * Hook-based alternative for functional components (requires React 18+)
  * Note: This is a wrapper around the class-based ErrorBoundary
  */
-export const withErrorBoundary = <P extends object>(
-  Component: React.ComponentType<P>,
+export const withErrorBoundary = <TProps extends object>(
+  WrappedComponent: React.ComponentType<TProps>,
   errorBoundaryProps?: Omit<ErrorBoundaryProps, 'children'>,
 ) => {
-  const WrappedComponent = (props: P) => (
+  const ErrorBoundaryWrapper = (props: TProps) => (
     <ErrorBoundary {...errorBoundaryProps}>
-      <Component {...props} />
+      <WrappedComponent {...props} />
     </ErrorBoundary>
   )
 
-  WrappedComponent.displayName = `withErrorBoundary(${Component.displayName || Component.name || 'Component'})`
+  ErrorBoundaryWrapper.displayName = `withErrorBoundary(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`
 
-  return WrappedComponent
+  return ErrorBoundaryWrapper
 }

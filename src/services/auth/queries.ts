@@ -1,6 +1,6 @@
-import { api } from '@/server/api'
-import type { Token } from '@/services/auth/types'
 import { queryOptions } from '@tanstack/react-query'
+import type { Token } from '@/services/auth/types'
+import { api } from '@/server/api'
 
 export class AuthQueries {
   static refreshToken = async () => {

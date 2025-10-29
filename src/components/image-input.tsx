@@ -1,12 +1,13 @@
-import { cn } from '@/lib/utils'
 import {
-  Controller,
-  type Control,
-  type FieldValues,
-  type Path,
+  
+  Controller
+  
+  
 } from 'react-hook-form'
-import ImageUpload from './image-upload'
 import { useCallback } from 'react'
+import ImageUpload from './image-upload'
+import type {Control, FieldValues, Path} from 'react-hook-form';
+import { cn } from '@/lib/utils'
 
 type ImageInputProps<TFieldValues extends FieldValues> = {
   label: string
@@ -37,9 +38,12 @@ const ImageInputComponent = <TFieldValues extends FieldValues>({
       name={name}
       render={({ field: { onChange, value } }) => (
         <div className="col-span-2">
-          <div className="space-y-2">
+          <div className="space-y-3">
             {label && (
-              <label htmlFor={name} className={cn(labelClassName)}>
+              <label
+                htmlFor={name}
+                className={cn('font-medium', labelClassName)}
+              >
                 {label}
               </label>
             )}

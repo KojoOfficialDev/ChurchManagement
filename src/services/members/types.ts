@@ -1,10 +1,12 @@
+import type { Pagination } from '@/lib/types'
+
 export type Member = {
   id: string
   firstName: string
   lastName: string
   middleName: string
   gender: string
-  dob: string
+  dateOfBirth: string
   placeOfBirth: string
   nationality: string
   region: string
@@ -12,21 +14,15 @@ export type Member = {
   placeOfResidence: string
   homeAddress: string
   email: string
-  phone: string
+  phoneNumber: string
   academicQualification: string
   occupation: string
   isActive: boolean
   membershipNumber: string
   belongsToSociety: boolean
-  societyName: string[]
+  societyName: Array<string>
 }
 
-export type GetAllMembersResponse = {
-  data: Member[]
-  page: number
-  pageSize: number
-  totalCount: number
-  totalPages: number
-  hasPrevious: boolean
-  hasNext: boolean
+export type GetAllMembersResponse = Pagination & {
+  data: Array<Member>
 }

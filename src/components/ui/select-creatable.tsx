@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { PlusCircle } from 'lucide-react'
 
+import type { SelectCreatableConfig, SelectType } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import {
   Dialog,
@@ -13,7 +14,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import type { SelectCreatableConfig, SelectType } from '@/lib/types'
 
 /**
  * Props for SelectCreatable component

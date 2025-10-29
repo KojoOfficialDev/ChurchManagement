@@ -82,7 +82,7 @@ type CountryEntry = { label: string; value: RPNInput.Country | undefined }
 type CountrySelectProps = {
   disabled?: boolean
   value: RPNInput.Country
-  options: CountryEntry[]
+  options: Array<CountryEntry>
   onChange: (country: RPNInput.Country) => void
 }
 
