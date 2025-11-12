@@ -1,6 +1,6 @@
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
 import type { Member } from '@/services/members/types'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
 
 type MemberProfileSidebarProps = {
   member: Member
@@ -13,6 +13,7 @@ export const MemberProfileSidebar = ({ member }: MemberProfileSidebarProps) => {
   return (
     <aside className="flex flex-col items-center gap-[22px] w-[266px] bg-[#b9b9ba1f] rounded-3xl pt-[37px] pb-8">
       <Avatar className="w-[147px] h-[147px]">
+        <AvatarImage src={member.imageUrl} />
         <AvatarFallback className="bg-[#d9d9d9] text-2xl font-semibold text-gray-700">
           {initials}
         </AvatarFallback>

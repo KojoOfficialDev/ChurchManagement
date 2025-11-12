@@ -1,11 +1,6 @@
-import {
-  
-  Controller
-  
-  
-} from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import { MultiSelect } from './multi-select'
-import type {Control, FieldValues, Path} from 'react-hook-form';
+import type { Control, FieldValues, Path } from 'react-hook-form'
 import type { SelectCreatableConfig } from '@/lib/types'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
@@ -52,7 +47,7 @@ const MultiSelectInputComponent = <TFieldValues extends FieldValues>({
               placeholder={placeholder}
               allowCreate={allowCreate}
               onCreate={createConfig?.onCreate}
-              className='h-12'
+              className="h-12"
             />
           </div>
           {error && (

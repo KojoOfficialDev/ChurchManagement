@@ -1,4 +1,4 @@
-import { Outlet, createFileRoute, redirect  } from '@tanstack/react-router'
+import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { DashboardSidebar } from '@/components/dashboard/dashboard-sidebar'
 // import DashboardHeader from '@/components/dashboard-header'
@@ -6,13 +6,21 @@ import Loader from '@/components/loader'
 import { sessionOptions } from '@/services/auth/queries'
 import DashboardHeader from '@/components/dashboard/dashboard-header'
 import { SidebarProvider } from '@/lib/contexts/sidebar.context'
+import { HeadContent } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard')({
-  component: DashboardLayout,
+  component: () => (
+    <>
+      <HeadContent />
+      <DashboardLayout />
+    </>
+  ),
   beforeLoad: async ({ context: { queryClient }, location }) => {
     const session = await queryClient
       .ensureQueryData(sessionOptions)
       .catch(() => null)
+
+    console.log('session', session)
 
     /**
      ** if the user user is coming from the login page, the session is not refetched since it is already in the query client and is returned from cache
@@ -25,7 +33,6 @@ export const Route = createFileRoute('/dashboard')({
       throw redirect({
         to: '/login',
         search: { redirect: location.pathname },
-        state: location.state,
         replace: true,
       })
     }
@@ -39,6 +46,15 @@ export const Route = createFileRoute('/dashboard')({
         <Loader />
       </div>
     )
+  },
+  head: ({ loaderData }) => {
+    return {
+      meta: [
+        {
+          title: `${loaderData?.churchName}`,
+        },
+      ],
+    }
   },
 })
 

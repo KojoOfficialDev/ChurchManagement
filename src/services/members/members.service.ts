@@ -1,4 +1,4 @@
-import type { CreateMember } from '@/services/members/members.dto'
+import type { CreateMember, UpdateMember } from '@/services/members/members.dto'
 import type { GetAllMembersResponse } from '@/services/members/types'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { protectedApi } from '@/server/protected-api'
@@ -65,6 +65,18 @@ export class MembersService {
       membershipNumber: membershipNumber,
     }
     const response = await protectedApi.post('/Member/Save', {
+      ...payload,
+    })
+    return response.data
+  }
+
+  static updateMember = async (member: UpdateMember) => {
+    const churchId = await this.getChurchId()
+    const payload = {
+      ...member,
+      churchId: churchId,
+    }
+    const response = await protectedApi.put('/Member/update', {
       ...payload,
     })
     return response.data

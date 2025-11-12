@@ -17,4 +17,3 @@ export const contributionsQueryOptions = ({
     staleTime: 30 * 60 * 1000,
     placeholderData: keepPreviousData,
   })
-

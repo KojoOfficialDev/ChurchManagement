@@ -36,7 +36,6 @@ export function SelectCreatable({
   const [isCreating, setIsCreating] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
 
-
   // Destructure config with defaults
   const {
     buttonText = 'Create new...',

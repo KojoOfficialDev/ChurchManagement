@@ -18,9 +18,9 @@ const baseMemberSchema = z.object({
   placeOfBirth: z.string().min(1, 'Place of birth is required'),
   nationality: z.string().min(1, 'Nationality is required'),
   region: z.string().min(1, 'Region is required'),
-  homeTown: z.string().min(1, 'Home town is required'),
-  placeOfResidence: z.string().min(1, 'Place of residence is required'),
-  homeAddress: z.string().min(1, 'Home address is required'),
+  homeDistrict: z.string().min(1, 'Home district is required'),
+  placeOfStay: z.string().min(1, 'Place of residence is required'),
+  houseNumber: z.string().min(1, 'Home address is required'),
   email: z
     .string()
     .email({ message: 'Invalid email address' })
@@ -37,7 +37,7 @@ const baseMemberSchema = z.object({
         message: 'Invalid phone number',
       },
     ),
-  academicQualification: z.string().optional(),
+  educationalLevel: z.string().optional(),
   occupation: z.string().optional(),
   isActive: z.boolean().default(false),
   membershipNumber: z.string().optional(),
@@ -138,6 +138,15 @@ export const createMemberSchema = baseMemberSchema
   .and(maritalStatusSchema)
 
 export type CreateMember = z.infer<typeof createMemberSchema>
+
+// Update member schema - same as create but with id
+export const updateMemberSchema = createMemberSchema.and(
+  z.object({
+    id: z.string().min(1, 'Member ID is required'),
+  }),
+)
+
+export type UpdateMember = z.infer<typeof updateMemberSchema>
 export type Gender = z.infer<typeof genderEnum>
 export type EmploymentStatus = z.infer<typeof employmentSchema>
 export type MaritalStatus = z.infer<typeof maritalStatusSchema>

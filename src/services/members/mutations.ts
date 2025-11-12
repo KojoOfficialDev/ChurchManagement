@@ -30,8 +30,22 @@ export const useMembersMutations = () => {
     },
   })
 
+  const updateMember = useMutation({
+    mutationKey: ['updateMember'],
+    mutationFn: MembersService.updateMember,
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['members'] })
+      toast.success('Member updated successfully')
+    },
+    onError: () => {
+      toast.error('Failed to update member')
+    },
+  })
+
   return {
     createMember,
     removeMember,
+    updateMember,
   }
 }

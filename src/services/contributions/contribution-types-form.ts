@@ -17,10 +17,9 @@ export const CONTRIBUTION_TYPE_FORM_SECTIONS: Array<FormSection> = [
         placeholder: 'Enter payment type',
       },
       {
-        name: 'active',
-        label: 'Active',
+        name: 'isActive',
+        label: 'Is this contribution type currently active?',
         type: 'checkbox',
-        placeholder: 'Is this contribution type active?',
       },
       {
         name: 'isCampaign',
@@ -37,9 +36,9 @@ export const CONTRIBUTION_TYPE_FORM_SECTIONS: Array<FormSection> = [
         fields: [
           {
             name: 'fundRaisingGoal',
-            label: 'Fundraising Goal',
-            type: 'number',
-            placeholder: 'Enter fundraising goal',
+            label: 'Fundraising Theme',
+            type: 'text',
+            placeholder: 'Enter fundraising theme',
           },
           {
             name: 'initialAmount',
@@ -64,4 +63,3 @@ export const CONTRIBUTION_TYPE_FORM_SECTIONS: Array<FormSection> = [
     ],
   },
 ]
-

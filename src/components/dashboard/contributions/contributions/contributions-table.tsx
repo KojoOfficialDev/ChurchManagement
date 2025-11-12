@@ -7,6 +7,9 @@ import {
 import { Suspense, memo, useCallback, useMemo, useState } from 'react'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
+import AddContributionDialog from './add-contribution-dialog'
+import EditContributionDialog from './edit-contribution-dialog'
+import ContributionDetails from './contribution-details'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -34,11 +37,16 @@ import { Pagination } from '@/components/ui/pagination'
 import { EmptyComponent } from '@/components/empty-component'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { ButtonSkeleton } from '@/components/skeletons/button-skeleton'
-import AddContributionDialog from './add-contribution-dialog'
 import { useDebounce } from '@/lib/hooks/use-debounce'
 import { Badge } from '@/components/ui/badge'
+import { formatCurrency } from '@/lib/utils'
+import { contributionsMutations } from '@/services/contributions/contributions-mutations'
+import { AlertDialogComponent } from '@/components/alert-dialog'
 
 const ContributionsTable = memo(() => {
+  const {
+    deleteContribution: { mutateAsync, isPending },
+  } = contributionsMutations()
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 400)
   const [page, setPage] = useState(1)
@@ -50,6 +58,8 @@ const ContributionsTable = memo(() => {
   const [selectedContributions, setSelectedContributions] = useState<
     Array<string>
   >([])
+  const [editingContribution, setEditingContribution] = useState<any>(null)
+  const [viewingContribution, setViewingContribution] = useState<any>(null)
 
   const contributions = useMemo(
     () => contributionsData.data,
@@ -91,6 +101,14 @@ const ContributionsTable = memo(() => {
       handleSelectAll()
     }
   }, [isAllSelected, handleDeselectAll, handleSelectAll])
+
+  const handleDelete = useCallback(async (id: string) => {
+    await mutateAsync(id, {
+      onSuccess: () => {
+        setSelectedContributions([])
+      },
+    })
+  }, [])
 
   if (contributions.length === 0 && !debouncedSearch) {
     return (
@@ -230,7 +248,7 @@ const ContributionsTable = memo(() => {
                       </TableCell>
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
-                          ${contribution.amount.toLocaleString()}
+                          {formatCurrency(contribution.amount)}
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-3">
@@ -266,20 +284,45 @@ const ContributionsTable = memo(() => {
                             align="end"
                             className="w-[149px] bg-[#ffffff] rounded-xl border border-solid border-[#ececec] shadow-[0px_24px_48px_-12px_#0f172814] p-3"
                           >
-                            <DropdownMenuItem className="h-10 px-2 py-2 bg-gray-100 rounded-lg cursor-pointer">
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 rounded-lg cursor-pointer"
+                              onClick={() =>
+                                setViewingContribution(contribution)
+                              }
+                            >
                               <span className="font-body-text-s-regular">
                                 View Details
                               </span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="h-10 px-2 py-2 rounded-lg cursor-pointer">
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 rounded-lg cursor-pointer"
+                              onClick={() =>
+                                setEditingContribution(contribution)
+                              }
+                            >
                               <span className="font-body-text-s-regular">
                                 Edit
                               </span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="h-10 px-2 py-2 cursor-pointer">
-                              <span className="font-body-text-s-regular text-red-700">
-                                Remove
-                              </span>
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 cursor-pointer"
+                              onSelect={(e) => e.preventDefault()}
+                            >
+                              <AlertDialogComponent
+                                title="Delete Contribution"
+                                description="Are you sure you want to delete this contribution?"
+                                onConfirm={() =>
+                                  handleDelete(contribution.id.toString())
+                                }
+                                disabled={isPending}
+                                variant="destructive"
+                                confirmText="Delete"
+                                cancelText="Cancel"
+                              >
+                                <span className="font-body-text-s-regular text-red-700">
+                                  Delete
+                                </span>
+                              </AlertDialogComponent>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -308,10 +351,25 @@ const ContributionsTable = memo(() => {
           onPageSizeChange={setPageSize}
         />
       </div>
+
+      {editingContribution && (
+        <EditContributionDialog
+          contribution={editingContribution}
+          open={!!editingContribution}
+          onOpenChange={(open) => !open && setEditingContribution(null)}
+        />
+      )}
+
+      {viewingContribution && (
+        <ContributionDetails
+          contribution={viewingContribution}
+          open={!!viewingContribution}
+          onOpenChange={(open) => !open && setViewingContribution(null)}
+        />
+      )}
     </section>
   )
 })
 
 ContributionsTable.displayName = 'ContributionsTable'
 export default ContributionsTable
-

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { toast } from "sonner"
+import { toast } from 'sonner'
 import { AssetsService } from '@/services/assets/assets.service'
 
 export const useAssetsMutations = () => {

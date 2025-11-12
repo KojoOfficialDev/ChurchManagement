@@ -1,7 +1,7 @@
 import { PlusCircle } from 'lucide-react'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useForm } from 'react-hook-form'
-import type {CreateMarriage} from '@/services/marriages/marriage.dto';
+import type { CreateMarriage } from '@/services/marriages/marriage.dto'
 import {
   Dialog,
   DialogContent,
@@ -10,14 +10,10 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import {
-  
-  createMarriageSchema
-} from '@/services/marriages/marriage.dto'
+import { createMarriageSchema } from '@/services/marriages/marriage.dto'
 import AddMarriageForm from '@/components/dashboard/marriage/add-marriage-form'
 
 const AddMarriageDialog = () => {
-
   const form = useForm<CreateMarriage>({
     resolver: standardSchemaResolver(createMarriageSchema),
     defaultValues: {
@@ -37,8 +33,7 @@ const AddMarriageDialog = () => {
       revMinister: '',
     },
   })
-console.log(form.formState.errors)
-
+  console.log(form.formState.errors)
 
   return (
     <Dialog>
@@ -51,7 +46,7 @@ console.log(form.formState.errors)
         <DialogHeader>
           <DialogTitle>Add New Marriage</DialogTitle>
         </DialogHeader>
-          <AddMarriageForm form={form} />
+        <AddMarriageForm form={form} />
       </DialogContent>
     </Dialog>
   )

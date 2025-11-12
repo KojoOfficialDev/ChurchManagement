@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
-import { CommunionService } from './communion.service'
 import { toast } from 'sonner'
+import { CommunionService } from './communion.service'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 
 export const communionMutations = () => {

@@ -10,12 +10,12 @@ export type Member = {
   placeOfBirth: string
   nationality: string
   region: string
-  homeTown: string
-  placeOfResidence: string
-  homeAddress: string
+  homeDistrict: string
+  placeOfStay: string
+  houseNumber: string
   email: string
   phoneNumber: string
-  academicQualification: string
+  educationalLevel: string
   occupation: string
   isActive: boolean
   membershipNumber: string

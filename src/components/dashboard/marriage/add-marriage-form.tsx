@@ -5,11 +5,11 @@ import FieldTypeToRender from '../field-type-to-render'
 import type { FieldPath, UseFormReturn } from 'react-hook-form'
 import type { CreateMarriage } from '@/services/marriages/marriage.dto'
 import type { FormSection } from '@/lib/types'
-import { MARRIAGE_FORM_SECTIONS } from '@/lib/constants'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { DialogFooter } from '@/components/ui/dialog'
 import { useMarriagesMutations } from '@/services/marriages/mutations'
+import { MARRIAGE_FORM_SECTIONS } from '@/services/marriages/marriage.form'
 
 type AddMarriageFormProps = {
   form: UseFormReturn<CreateMarriage>

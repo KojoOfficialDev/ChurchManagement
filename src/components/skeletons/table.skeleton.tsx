@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton'
 
-export const TableSkeleton = () => {
+export const TableSkeleton = ({ length = 10 }: { length?: number }) => {
   return (
     <section className="flex flex-col w-full items-start gap-6">
       {/* Header skeleton */}
@@ -54,7 +54,7 @@ export const TableSkeleton = () => {
               </div>
 
               {/* Table body rows */}
-              {Array.from({ length: 10 }).map((_, index) => (
+              {Array.from({ length }).map((_, index) => (
                 <div key={index} className="border-b border-[#eaecf0] flex">
                   <div className="w-[75px] px-6 py-3">
                     <Skeleton className="h-4 w-4" />

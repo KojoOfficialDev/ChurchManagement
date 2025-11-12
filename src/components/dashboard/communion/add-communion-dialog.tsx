@@ -50,5 +50,3 @@ const AddCommunionDialog = () => {
 }
 
 export default AddCommunionDialog
-
-

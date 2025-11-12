@@ -1,6 +1,7 @@
 import { PlusCircle } from 'lucide-react'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useForm } from 'react-hook-form'
+import AddConfirmationForm from './add-confirmation-form'
 import type { Confirmation } from '@/services/confirmation/confirmation.dto'
 import {
   Dialog,
@@ -12,7 +13,6 @@ import {
 import { Button } from '@/components/ui/button'
 
 import { confirmationSchema } from '@/services/confirmation/confirmation.dto'
-import AddConfirmationForm from './add-confirmation-form'
 
 const AddConfirmationDialog = () => {
   const form = useForm<Confirmation>({

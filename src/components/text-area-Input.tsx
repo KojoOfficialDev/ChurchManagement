@@ -46,7 +46,7 @@ const TextAreaInputComponent = <TFieldValues extends FieldValues>({
             )}
 
             <Textarea
-                      aria-invalid={!!error}
+              aria-invalid={!!error}
               rows={rows}
               onBlur={onBlur}
               onChange={onChange}

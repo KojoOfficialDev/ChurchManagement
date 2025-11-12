@@ -82,5 +82,3 @@ export const COMMUNION_FORM_SECTIONS: Array<FormSection> = [
     ],
   },
 ]
-
-

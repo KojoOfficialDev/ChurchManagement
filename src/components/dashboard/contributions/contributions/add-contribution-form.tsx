@@ -53,7 +53,7 @@ export const AddContributionForm = ({ form }: AddContributionFormProps) => {
       const dependsOnValue = form.watch(
         field.dependsOn as FieldPath<Contribution>,
       )
-      return field.dependsOnValue?.includes(dependsOnValue!)
+      return field.dependsOnValue?.includes(dependsOnValue)
     },
     [form],
   )

@@ -11,12 +11,6 @@ export const CONTRIBUTION_FORM_SECTIONS: Array<FormSection> = [
         placeholder: 'Enter contributor name',
       },
       {
-        name: 'description',
-        label: 'Description',
-        type: 'textarea',
-        placeholder: 'Enter description',
-      },
-      {
         name: 'contributionTypeId',
         label: 'Contribution Type',
         type: 'select',
@@ -59,12 +53,11 @@ export const CONTRIBUTION_FORM_SECTIONS: Array<FormSection> = [
         placeholder: 'Is this tax deductible?',
       },
       {
-        name: 'isActive',
-        label: 'Active',
-        type: 'checkbox',
-        placeholder: 'Is this contribution active?',
+        name: 'description',
+        label: 'Description',
+        type: 'textarea',
+        placeholder: 'Enter description',
       },
     ],
   },
 ]
-

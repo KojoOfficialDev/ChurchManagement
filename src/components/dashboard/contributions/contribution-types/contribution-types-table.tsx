@@ -6,6 +6,9 @@ import {
 } from 'lucide-react'
 import { Suspense, memo, useCallback, useMemo, useState } from 'react'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import AddContributionTypeDialog from './add-contribution-type-dialog'
+import EditContributionTypeDialog from './edit-contribution-type-dialog'
+import ContributionTypeDetails from './contribution-type-details'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -32,7 +35,6 @@ import { contributionTypesQueryOptions } from '@/services/contributions/contribu
 import { EmptyComponent } from '@/components/empty-component'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { ButtonSkeleton } from '@/components/skeletons/button-skeleton'
-import AddContributionTypeDialog from './add-contribution-type-dialog'
 import { Badge } from '@/components/ui/badge'
 
 const ContributionTypesTable = memo(() => {
@@ -42,6 +44,8 @@ const ContributionTypesTable = memo(() => {
   )
   const { isOpen } = useSidebar()
   const [selectedTypes, setSelectedTypes] = useState<Array<string>>([])
+  const [editingType, setEditingType] = useState<any>(null)
+  const [viewingType, setViewingType] = useState<any>(null)
 
   const contributionTypes = useMemo(() => {
     if (!search) return contributionTypesData
@@ -88,25 +92,20 @@ const ContributionTypesTable = memo(() => {
 
   if (contributionTypes.length === 0 && !search) {
     return (
-      <EmptyComponent
-        title="No contribution types found"
-        description="Create a contribution type to get started"
-        buttonText="Add Contribution Type"
-        buttonOnClick={
-          <ErrorBoundary level="component">
-            <Suspense fallback={<ButtonSkeleton />}>
-              <AddContributionTypeDialog />
-            </Suspense>
-          </ErrorBoundary>
-        }
-        media={
-          <img
-            src="/image-3.svg"
-            alt="No contribution types found"
-            className="w-full h-full"
-          />
-        }
-      />
+      <div className="border-t">
+        <EmptyComponent
+          title="No contribution types found"
+          description="Create a contribution type to get started"
+          buttonText="Add Contribution Type"
+          buttonOnClick={
+            <ErrorBoundary level="component">
+              <Suspense fallback={<ButtonSkeleton />}>
+                <AddContributionTypeDialog />
+              </Suspense>
+            </ErrorBoundary>
+          }
+        />
+      </div>
     )
   }
 
@@ -221,8 +220,10 @@ const ContributionTypesTable = memo(() => {
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-3">
-                        <Badge variant={type.active ? 'default' : 'secondary'}>
-                          {type.active ? 'Active' : 'Inactive'}
+                        <Badge
+                          variant={type.isActive ? 'default' : 'secondary'}
+                        >
+                          {type.isActive ? 'Active' : 'Inactive'}
                         </Badge>
                       </TableCell>
                       <TableCell className="px-6 py-3">
@@ -246,12 +247,18 @@ const ContributionTypesTable = memo(() => {
                             align="end"
                             className="w-[149px] bg-[#ffffff] rounded-xl border border-solid border-[#ececec] shadow-[0px_24px_48px_-12px_#0f172814] p-3"
                           >
-                            <DropdownMenuItem className="h-10 px-2 py-2 bg-gray-100 rounded-lg cursor-pointer">
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 bg-gray-100 rounded-lg cursor-pointer"
+                              onClick={() => setViewingType(type)}
+                            >
                               <span className="font-body-text-s-regular">
                                 View Details
                               </span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="h-10 px-2 py-2 rounded-lg cursor-pointer">
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 rounded-lg cursor-pointer"
+                              onClick={() => setEditingType(type)}
+                            >
                               <span className="font-body-text-s-regular">
                                 Edit
                               </span>
@@ -278,6 +285,22 @@ const ContributionTypesTable = memo(() => {
           </div>
         </div>
       </div>
+
+      {editingType && (
+        <EditContributionTypeDialog
+          contributionType={editingType}
+          open={!!editingType}
+          onOpenChange={(open) => !open && setEditingType(null)}
+        />
+      )}
+
+      {viewingType && (
+        <ContributionTypeDetails
+          contributionType={viewingType}
+          open={!!viewingType}
+          onOpenChange={(open) => !open && setViewingType(null)}
+        />
+      )}
     </section>
   )
 })

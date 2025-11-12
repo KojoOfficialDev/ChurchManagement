@@ -34,7 +34,10 @@ export class NationalitiesService {
       id: 0,
     }
 
-    const response = await protectedApi.post<Nationalities>('/nationalities/save', payload)
+    const response = await protectedApi.post<Nationalities>(
+      '/nationalities/save',
+      payload,
+    )
     return { value: response.data.id, label: response.data.name }
   }
 }

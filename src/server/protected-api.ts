@@ -4,7 +4,6 @@ import { RefreshToken } from '@/services/auth/refresh'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { API_URL } from '@/server/api'
 
-
 export const protectedApi = axios.create({
   baseURL: API_URL,
   headers: {
@@ -40,7 +39,9 @@ const queryClient = getContext().queryClient
 protectedApi.interceptors.request.use(
   async (config) => {
     // Get access token from session query
-    const sessionData = await queryClient.ensureQueryData(sessionOptions).catch(() => null)
+    const sessionData = await queryClient
+      .ensureQueryData(sessionOptions)
+      .catch(() => null)
     if (sessionData && sessionData.accessToken) {
       config.headers.Authorization = `Bearer ${sessionData.accessToken}`
     }

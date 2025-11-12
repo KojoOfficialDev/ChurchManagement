@@ -30,7 +30,7 @@ export const AddContributionTypeForm = ({
       const dependsOnValue = form.watch(
         field.dependsOn as FieldPath<ContributionType>,
       )
-      return field.dependsOnValue?.includes(dependsOnValue!)
+      return field.dependsOnValue?.includes(dependsOnValue)
     },
     [form],
   )
@@ -41,7 +41,7 @@ export const AddContributionTypeForm = ({
       const dependsOnValue = form.watch(
         childSection.dependsOn as FieldPath<ContributionType>,
       )
-      return childSection.dependsOnValue?.includes(dependsOnValue!)
+      return childSection.dependsOnValue?.includes(dependsOnValue)
     },
     [form],
   )
@@ -121,4 +121,3 @@ export const AddContributionTypeForm = ({
 }
 
 export default AddContributionTypeForm
-

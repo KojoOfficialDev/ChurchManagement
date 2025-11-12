@@ -1,6 +1,7 @@
 import { PlusCircle } from 'lucide-react'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useForm } from 'react-hook-form'
+import AddContributionForm from './add-contribution-form'
 import type { Contribution } from '@/services/contributions/contributions.dto'
 import {
   Dialog,
@@ -11,7 +12,6 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { contributionSchema } from '@/services/contributions/contributions.dto'
-import AddContributionForm from './add-contribution-form'
 
 const AddContributionDialog = () => {
   const form = useForm<Contribution>({
@@ -27,6 +27,7 @@ const AddContributionDialog = () => {
       paymentDate: undefined,
       taxDeductable: true,
       isActive: true,
+      active: true,
     },
   })
 
@@ -48,4 +49,3 @@ const AddContributionDialog = () => {
 }
 
 export default AddContributionDialog
-

@@ -1,8 +1,8 @@
-import { protectedApi } from '@/server/protected-api'
 import { sessionOptions } from '../auth/queries'
-import { getContext } from '@/integrations/tanstack-query/root-provider'
 import type { ContributionResponse } from './types'
 import type { Contribution } from './contributions.dto'
+import { getContext } from '@/integrations/tanstack-query/root-provider'
+import { protectedApi } from '@/server/protected-api'
 
 export class ContributionService {
   private static getChurchId = async () => {
@@ -51,6 +51,27 @@ export class ContributionService {
         ...contribution,
         churchId,
       },
+    )
+    return response.data
+  }
+
+  static updateContribution = async (
+    contribution: Contribution & { id: string },
+  ) => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.put<Contribution>(
+      '/contributions/update',
+      {
+        ...contribution,
+        churchId,
+      },
+    )
+    return response.data
+  }
+
+  static deleteContribution = async (id: string) => {
+    const response = await protectedApi.delete<Contribution>(
+      `/contributions/${id}`,
     )
     return response.data
   }

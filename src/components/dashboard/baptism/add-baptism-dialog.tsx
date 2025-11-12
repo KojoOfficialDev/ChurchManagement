@@ -1,7 +1,7 @@
 import { PlusCircle } from 'lucide-react'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useForm } from 'react-hook-form'
-import type {Baptism} from '@/services/baptism/baptism.dto';
+import type { Baptism } from '@/services/baptism/baptism.dto'
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button'
 
 import { AddBaptismForm } from '@/components/dashboard/baptism/add-baptism-form'
-import {  baptismSchema } from '@/services/baptism/baptism.dto'
+import { baptismSchema } from '@/services/baptism/baptism.dto'
 
 const AddBaptismDialog = () => {
   const form = useForm<Baptism>({

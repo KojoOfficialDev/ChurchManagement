@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { toast } from 'sonner'
 import FieldTypeToRender from '../field-type-to-render'
-import type {FieldPath, UseFormReturn} from 'react-hook-form';
+import type { FieldPath, UseFormReturn } from 'react-hook-form'
 import type { FormField, FormSection } from '@/lib/types'
 import type { Baptism } from '@/services/baptism/baptism.dto'
 import type { Member } from '@/services/members/types'
@@ -35,7 +35,7 @@ export const AddBaptismForm = ({ form }: AddBaptismFormProps) => {
           : (undefined as unknown as Date),
       )
       form.setValue('placeOfBirth', member?.placeOfBirth ?? '')
-      form.setValue('homeDistrict', member?.homeTown ?? '')
+      form.setValue('homeDistrict', member?.homeDistrict ?? '')
 
       toast.success('Member information loaded successfully')
     },

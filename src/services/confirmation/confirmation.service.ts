@@ -1,8 +1,8 @@
-import { protectedApi } from '@/server/protected-api'
 import { sessionOptions } from '../auth/queries'
-import { getContext } from '@/integrations/tanstack-query/root-provider'
 import type { ConfirmationResponse } from './types'
 import type { Confirmation } from './confirmation.dto'
+import { getContext } from '@/integrations/tanstack-query/root-provider'
+import { protectedApi } from '@/server/protected-api'
 
 export class ConfirmationService {
   private static getChurchId = async () => {
@@ -55,5 +55,3 @@ export class ConfirmationService {
     return response.data
   }
 }
-
-

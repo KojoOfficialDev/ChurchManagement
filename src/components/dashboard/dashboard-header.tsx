@@ -1,11 +1,8 @@
 import { memo } from 'react'
-import { ChevronRightIcon, UserIcon } from 'lucide-react'
+import { UserIcon } from 'lucide-react'
 import { useLoaderData } from '@tanstack/react-router'
-import { Button } from '@/components/ui/button'
-import { useSidebar } from '@/lib/contexts/sidebar.context'
 
 const DashboardHeader = memo(() => {
-  const { isOpen, expand } = useSidebar()
   const session = useLoaderData({
     from: '/dashboard',
   })
@@ -13,16 +10,6 @@ const DashboardHeader = memo(() => {
   return (
     <header className="py-4 bg-white border-b flex items-center justify-between px-6 sticky top-0 z-30">
       <div className="md:flex hidden items-center gap-2">
-        {!isOpen && (
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={expand}
-            className="rounded-full"
-          >
-            <ChevronRightIcon className="w-6 h-6" />
-          </Button>
-        )}
         <h1 className="text-2xl font-bold">{session.churchName}</h1>
       </div>
       <div className="items-center gap-4 lg:flex hidden">

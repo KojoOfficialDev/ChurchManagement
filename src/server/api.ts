@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const API_URL =
   process.env.NODE_ENV === 'production'
-    ? 'https://prodapi.com'
+    ? 'http://testapi.catholicportal.net/api/v1.1'
     : 'http://testapi.catholicportal.net/api/v1.1'
 
 export const api = axios.create({

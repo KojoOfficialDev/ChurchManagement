@@ -225,7 +225,7 @@ const ConfirmationTable = memo(() => {
                       </TableCell>
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
-                          {confirmation.sponsor}
+                          {confirmation.GodParent}
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-3">
@@ -309,5 +309,3 @@ const ConfirmationTable = memo(() => {
 
 ConfirmationTable.displayName = 'ConfirmationTable'
 export default ConfirmationTable
-
-

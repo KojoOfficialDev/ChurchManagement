@@ -1,8 +1,8 @@
-import { protectedApi } from '@/server/protected-api'
 import { sessionOptions } from '../auth/queries'
-import { getContext } from '@/integrations/tanstack-query/root-provider'
 import type { CommunionResponse } from './types'
 import type { Communion } from './communion.dto'
+import { getContext } from '@/integrations/tanstack-query/root-provider'
+import { protectedApi } from '@/server/protected-api'
 
 export class CommunionService {
   private static getChurchId = async () => {

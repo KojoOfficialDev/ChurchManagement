@@ -8,8 +8,18 @@
 body {
   @apply m-0;
   font-family:
-    Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -19,15 +29,14 @@ code {
     source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-
 :root {
-  --12-regular-font-family: "Inter", Helvetica;
+  --12-regular-font-family: 'Inter', Helvetica;
   --12-regular-font-size: 12px;
   --12-regular-font-style: normal;
   --12-regular-font-weight: 400;
   --12-regular-letter-spacing: 0px;
   --12-regular-line-height: 16px;
-  --14-regular-font-family: "Inter", Helvetica;
+  --14-regular-font-family: 'Inter', Helvetica;
   --14-regular-font-size: 14px;
   --14-regular-font-style: normal;
   --14-regular-font-weight: 400;
@@ -39,7 +48,7 @@ code {
   --charcoal: rgba(64, 64, 64, 1);
   --darkcharcoal: rgba(64, 64, 64, 1);
   --darkmetal: rgba(96, 96, 96, 1);
-  --display-xs-bold-font-family: "Inter", Helvetica;
+  --display-xs-bold-font-family: 'Inter', Helvetica;
   --display-xs-bold-font-size: 24px;
   --display-xs-bold-font-style: normal;
   --display-xs-bold-font-weight: 700;
@@ -65,28 +74,30 @@ code {
   --raven: rgba(32, 32, 32, 1);
   --red-700: rgba(240, 49, 43, 1);
   --ros-500: rgba(246, 61, 104, 1);
-  --shadow-sm: 0px 1px 2px 0px rgba(16, 24, 40, 0.06), 0px 1px 3px 0px rgba(16, 24, 40, 0.1);
+  --shadow-sm:
+    0px 1px 2px 0px rgba(16, 24, 40, 0.06),
+    0px 1px 3px 0px rgba(16, 24, 40, 0.1);
   --stroke: rgba(225, 225, 225, 1);
   --success-500: rgba(18, 183, 106, 1);
-  --text-md-semibold-font-family: "Inter", Helvetica;
+  --text-md-semibold-font-family: 'Inter', Helvetica;
   --text-md-semibold-font-size: 16px;
   --text-md-semibold-font-style: normal;
   --text-md-semibold-font-weight: 600;
   --text-md-semibold-letter-spacing: 0px;
   --text-md-semibold-line-height: 24px;
-  --text-sm-medium-font-family: "Inter", Helvetica;
+  --text-sm-medium-font-family: 'Inter', Helvetica;
   --text-sm-medium-font-size: 14px;
   --text-sm-medium-font-style: normal;
   --text-sm-medium-font-weight: 500;
   --text-sm-medium-letter-spacing: 0px;
   --text-sm-medium-line-height: 20px;
-  --text-xl-bold-font-family: "Inter", Helvetica;
+  --text-xl-bold-font-family: 'Inter', Helvetica;
   --text-xl-bold-font-size: 20px;
   --text-xl-bold-font-style: normal;
   --text-xl-bold-font-weight: 700;
   --text-xl-bold-letter-spacing: 0px;
   --text-xl-bold-line-height: 30px;
-  --text-xs-regular-font-family: "Inter", Helvetica;
+  --text-xs-regular-font-family: 'Inter', Helvetica;
   --text-xs-regular-font-size: 12px;
   --text-xs-regular-font-style: normal;
   --text-xs-regular-font-weight: 400;
@@ -171,11 +182,9 @@ code {
 }
 
 @theme inline {
-
   /* custom */
   --color-gray-800: var(--gray-800);
   --color-purple-800: var(--purple-800);
-
 
   /* shadcn */
   --color-background: var(--background);

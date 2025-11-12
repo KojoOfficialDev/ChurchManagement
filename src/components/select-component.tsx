@@ -1,23 +1,17 @@
-import {
-  
-  Controller
-  
-  
-} from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import { useCallback, useMemo, useState } from 'react'
-import type {Control, FieldValues, Path} from 'react-hook-form';
+import type { Control, FieldValues, Path } from 'react-hook-form'
 
 import type { SelectType } from '@/lib/types'
-import type {SelectCreatableConfig} from '@/components/ui/select';
+import type { SelectCreatableConfig } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import {
   Select,
   SelectContent,
   SelectCreatable,
-  
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 
@@ -61,7 +55,7 @@ const SelectInputComponent = <TFieldValues extends FieldValues>({
   const handleValueCreated = useCallback(
     (newValue: SelectType, onChange: (value: string) => void) => {
       onChange(newValue.value)
-      console.log("field.value", onChange)
+      console.log('field.value', onChange)
       console.log('newValue', newValue)
       setCreatedItems((prev) => [...prev, newValue])
     },

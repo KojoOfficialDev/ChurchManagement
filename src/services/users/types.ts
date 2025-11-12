@@ -29,3 +29,34 @@ export type User = {
   password: string
   accessRole: string
 }
+
+export type UserRole = 'Admin' | 'Finance' | 'Auditor'
+
+export type UserStatus = 'Active' | 'Inactive'
+
+export type UserTableData = {
+  id: string
+  fullName: string
+  email: string
+  role: UserRole
+  addedOn: string
+  status: UserStatus
+}
+
+export type UsersQueryParams = {
+  page: number
+  pageSize: number
+  search?: string
+  role?: UserRole | 'All Category'
+  status?: UserStatus | 'All Status'
+}
+
+export type PaginatedUsersResponse = {
+  data: Array<UserTableData>
+  page: number
+  pageSize: number
+  totalCount: number
+  totalPages: number
+  hasPrevious: boolean
+  hasNext: boolean
+}

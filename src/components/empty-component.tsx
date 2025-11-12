@@ -13,7 +13,7 @@ type EmptyComponentProps = {
   description: string
   buttonText: string
   buttonOnClick: (() => void) | React.ReactElement
-  media: React.ReactNode
+  media?: React.ReactNode
 }
 export function EmptyComponent({
   title,
@@ -25,7 +25,7 @@ export function EmptyComponent({
   return (
     <Empty>
       <EmptyHeader>
-        <EmptyMedia variant="default">{media}</EmptyMedia>
+        {media && <EmptyMedia variant="default">{media}</EmptyMedia>}
         <EmptyTitle>{title}</EmptyTitle>
         <EmptyDescription>{description}</EmptyDescription>
       </EmptyHeader>

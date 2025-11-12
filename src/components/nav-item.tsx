@@ -1,6 +1,7 @@
 import { Link, useLocation } from '@tanstack/react-router'
 import { memo, useMemo } from 'react'
 import { cn } from '@/lib/utils'
+import { TooltipBuilder } from './tooltip-builder'
 
 type NavItemProps = {
   item: {
@@ -9,42 +10,65 @@ type NavItemProps = {
     link: string
   }
   exact?: boolean
+  isCollapsed?: boolean
 }
-const NavItem = memo<NavItemProps>(({ item, exact = false }) => {
-  const { pathname } = useLocation()
+const NavItem = memo<NavItemProps>(
+  ({ item, exact = false, isCollapsed = false }) => {
+    const { pathname } = useLocation()
 
-  const active = useMemo(() => {
-    return exact
-      ? pathname === item.link
-      : pathname === item.link || pathname.startsWith(item.link + '/')
-  }, [pathname, item.link])
+    const active = useMemo(() => {
+      return exact
+        ? pathname === item.link
+        : pathname === item.link || pathname.startsWith(item.link + '/')
+    }, [pathname, item.link])
 
-  const Icon = item.icon
-  return (
-    <Link
-      to={item.link}
-      className={`w-full flex h-[38px] items-center gap-3 px-8 py-2.5 ${
-        active
-          ? 'bg-[#4a1fb71f] border-l-4 border-solid border-[#4a1fb7]'
-          : 'rounded-[10px]'
-      }`}
-    >
-      <Icon
+    const Icon = item.icon
+    return isCollapsed ? (
+      <TooltipBuilder content={item.label}>
+        <Link
+          to={item.link}
+          className={cn(
+            'w-full flex h-[38px] items-center py-2.5 justify-center px-2',
+            active
+              ? 'bg-[#4a1fb71f] border-l-4 border-solid border-[#4a1fb7]'
+              : 'rounded-[10px] hover:bg-[#4a1fb71f]',
+          )}
+        >
+          <Icon
+            className={cn(
+              'w-5 h-5 text-muted-foreground',
+              active && 'text-purple-800',
+            )}
+          />
+        </Link>
+      </TooltipBuilder>
+    ) : (
+      <Link
+        to={item.link}
         className={cn(
-          'w-5 h-5 text-muted-foreground',
-          active && 'text-purple-800',
-        )}
-      />
-      <div
-        className={cn(
-          "w-fit [font-family:'Inter',Helvetica] font-normal text-sm tracking-[0.14px] leading-[22px] whitespace-nowrap text-gray-600",
-          active && 'text-purple-800',
+          'w-full flex h-[38px] items-center py-2.5 gap-3 px-8',
+          active
+            ? 'bg-[#4a1fb71f] border-l-4 border-solid border-[#4a1fb7]'
+            : 'rounded-[10px]',
         )}
       >
-        {item.label}
-      </div>
-    </Link>
-  )
-})
+        <Icon
+          className={cn(
+            'w-5 h-5 text-muted-foreground',
+            active && 'text-purple-800',
+          )}
+        />
+        <div
+          className={cn(
+            "w-fit [font-family:'Inter',Helvetica] font-normal text-sm tracking-[0.14px] leading-[22px] whitespace-nowrap text-gray-600",
+            active && 'text-purple-800',
+          )}
+        >
+          {item.label}
+        </div>
+      </Link>
+    )
+  },
+)
 
 export default NavItem

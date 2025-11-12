@@ -15,5 +15,3 @@ export const confirmationSchema = z.object({
 })
 
 export type Confirmation = z.infer<typeof confirmationSchema>
-
-

@@ -28,7 +28,7 @@ export const AddCommunionForm = ({ form }: AddCommunionFormProps) => {
       form.setValue('firstName', member?.firstName ?? '')
       form.setValue('lastName', member?.lastName ?? '')
       form.setValue('middleName', member?.middleName ?? '')
-      form.setValue('homeDistrict', member?.homeTown ?? '')
+      form.setValue('homeDistrict', member?.homeDistrict ?? '')
 
       toast.success('Member information loaded successfully')
     },
@@ -166,5 +166,3 @@ export const AddCommunionForm = ({ form }: AddCommunionFormProps) => {
 }
 
 export default AddCommunionForm
-
-

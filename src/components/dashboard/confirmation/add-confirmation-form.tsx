@@ -28,7 +28,7 @@ export const AddConfirmationForm = ({ form }: AddConfirmationFormProps) => {
       form.setValue('firstName', member?.firstName ?? '')
       form.setValue('lastName', member?.lastName ?? '')
       form.setValue('middleName', member?.middleName ?? '')
-      form.setValue('homeDistrict', member?.homeTown ?? '')
+      form.setValue('homeDistrict', member?.homeDistrict ?? '')
 
       toast.success('Member information loaded successfully')
     },
@@ -168,5 +168,3 @@ export const AddConfirmationForm = ({ form }: AddConfirmationFormProps) => {
 }
 
 export default AddConfirmationForm
-
-

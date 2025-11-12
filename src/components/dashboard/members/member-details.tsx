@@ -1,16 +1,16 @@
 import React from 'react'
+import { MemberProfileSidebar } from './member-profile-sidebar'
+import { MemberInfoSection } from './member-info-section'
+import type { Member } from '@/services/members/types'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
-  DialogHeader,
-  DialogTrigger,
   DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog'
-import type { Member } from '@/services/members/types'
-import { MemberProfileSidebar } from './member-profile-sidebar'
-import { MemberInfoSection } from './member-info-section'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 const tabItems = [
@@ -39,14 +39,14 @@ export const MemberDetails = ({ children, member }: MemberDetailsProps) => {
     { label: 'Email', value: member.email },
     { label: 'Phone Number', value: member.phoneNumber },
     { label: 'Region', value: member.region },
-    { label: 'Home Town', value: member.homeTown },
-    { label: 'Place of Residence', value: member.placeOfResidence },
-    { label: 'Home Address', value: member.homeAddress },
+    { label: 'Home District', value: member.homeDistrict },
+    { label: 'Place of Residence', value: member.placeOfStay },
+    { label: 'Home Address or GPS address', value: member.houseNumber },
   ]
 
   const workEducationData = [
     { label: 'Occupation', value: member.occupation },
-    { label: 'Academic Qualification', value: member.academicQualification },
+    { label: 'Educational Level', value: member.educationalLevel },
   ]
 
   const societyMembershipData = [
@@ -63,10 +63,10 @@ export const MemberDetails = ({ children, member }: MemberDetailsProps) => {
         <DialogContent className="min-w-5xl max-h-[96vh] flex flex-col">
           <DialogHeader className="p-0">
             <DialogTitle>Membership Profile</DialogTitle>
-            {/* <DialogDescription className="sr-only">
+            <DialogDescription className="sr-only">
               View detailed information about {member.firstName}{' '}
               {member.lastName}
-            </DialogDescription> */}
+            </DialogDescription>
           </DialogHeader>
 
           <Tabs defaultValue="personal-info" className="w-full ">

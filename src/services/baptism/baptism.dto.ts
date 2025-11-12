@@ -16,7 +16,6 @@ export const baptismSchema = z.object({
   placeOfBirth: z.string().min(1, 'Place of birth is required'),
   homeDistrict: z.string().min(1, 'Home district is required'),
   dateOfBirth: z.date({ required_error: 'Date of birth is required' }),
-  
 })
 
 export type Baptism = z.infer<typeof baptismSchema>

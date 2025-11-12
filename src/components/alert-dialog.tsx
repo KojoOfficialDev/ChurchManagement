@@ -61,4 +61,4 @@ function AlertDialogComponent({
   )
 }
 
-export default memo(AlertDialogComponent)
+export { AlertDialogComponent }

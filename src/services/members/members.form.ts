@@ -1,6 +1,6 @@
 import type { FormSection, SelectType } from '@/lib/types'
 import {
-  ACADMIC_QUALIFICATION,
+  EDUCATIONAL_LEVEL,
   EMPLOYMENT_STATUS,
   GENDER,
   GHANA_REGIONS,
@@ -205,19 +205,19 @@ export const useMemberForm = ({
           placeholder: 'Select region',
         },
         {
-          name: 'homeTown',
-          label: 'Home Town',
+          name: 'homeDistrict',
+          label: 'Home District',
           type: 'text',
-          placeholder: 'Enter home town',
+          placeholder: 'Enter home district',
         },
         {
-          name: 'placeOfResidence',
+          name: 'placeOfStay',
           label: 'Place of Residence',
           type: 'text',
           placeholder: 'Enter place of residence',
         },
         {
-          name: 'homeAddress',
+          name: 'houseNumber',
           label: 'Home Address or GPS address',
           type: 'text',
           placeholder: 'Enter home address or GPS address',
@@ -281,11 +281,11 @@ export const useMemberForm = ({
           placeholder: 'Enter phone number',
         },
         {
-          name: 'academicQualification',
-          label: 'Academic Qualification (Highest)',
+          name: 'educationalLevel',
+          label: 'Educational Level (Highest)',
           type: 'select',
-          options: ACADMIC_QUALIFICATION,
-          placeholder: 'Select academic qualification (highest)',
+          options: EDUCATIONAL_LEVEL,
+          placeholder: 'Select educational level (highest)',
         },
         {
           name: 'employmentStatus',

@@ -82,5 +82,3 @@ export const CONFIRMATION_FORM_SECTIONS: Array<FormSection> = [
     ],
   },
 ]
-
-

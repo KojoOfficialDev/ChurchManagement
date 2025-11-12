@@ -1,6 +1,7 @@
 import { PlusCircle } from 'lucide-react'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useForm } from 'react-hook-form'
+import AddContributionTypeForm from './add-contribution-type-form'
 import type { ContributionType } from '@/services/contributions/contributions.dto'
 import {
   Dialog,
@@ -11,7 +12,6 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { contributionTypeSchema } from '@/services/contributions/contributions.dto'
-import AddContributionTypeForm from './add-contribution-type-form'
 
 const AddContributionTypeDialog = () => {
   const form = useForm<ContributionType>({
@@ -19,8 +19,9 @@ const AddContributionTypeDialog = () => {
     defaultValues: {
       name: '',
       paymentType: '',
-      active: true,
+      isActive: true,
       isCampaign: false,
+      active: true,
     },
   })
 
@@ -42,4 +43,3 @@ const AddContributionTypeDialog = () => {
 }
 
 export default AddContributionTypeDialog
-

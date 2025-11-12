@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
-import { ConfirmationService } from './confirmation.service'
 import { toast } from 'sonner'
+import { ConfirmationService } from './confirmation.service'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 
 export const confirmationMutations = () => {
@@ -21,5 +21,3 @@ export const confirmationMutations = () => {
     createConfirmation,
   }
 }
-
-

@@ -12,6 +12,10 @@ export class AuthMutations {
     const response = await api.post<SessionResponse>(`/connect/login`, data)
     return response.data
   }
+  static logout = async () => {
+    const response = await api.post(`/connect/logout`)
+    return response.data
+  }
 }
 
 export const useAuthMutations = () => {
@@ -37,5 +41,18 @@ export const useAuthMutations = () => {
     },
   })
 
-  return { login }
+  const logout = useMutation({
+    mutationKey: ['logout'],
+    mutationFn: AuthMutations.logout,
+    onSuccess: () => {
+      const queryClient = getContext().queryClient
+      queryClient.removeQueries()
+      toast.success('Logout successful')
+    },
+    onError: () => {
+      toast.error('Failed to logout')
+    },
+  })
+
+  return { login, logout }
 }

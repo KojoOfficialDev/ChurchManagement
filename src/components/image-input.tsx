@@ -1,12 +1,7 @@
-import {
-  
-  Controller
-  
-  
-} from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import { useCallback } from 'react'
 import ImageUpload from './image-upload'
-import type {Control, FieldValues, Path} from 'react-hook-form';
+import type { Control, FieldValues, Path } from 'react-hook-form'
 import { cn } from '@/lib/utils'
 
 type ImageInputProps<TFieldValues extends FieldValues> = {

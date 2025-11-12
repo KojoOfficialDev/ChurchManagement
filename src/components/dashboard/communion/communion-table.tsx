@@ -306,5 +306,3 @@ const CommunionTable = memo(() => {
 
 CommunionTable.displayName = 'CommunionTable'
 export default CommunionTable
-
-

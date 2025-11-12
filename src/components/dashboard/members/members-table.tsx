@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { Suspense, memo, useCallback, useMemo, useState } from 'react'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { MemberDetails } from './member-details'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -36,9 +37,10 @@ import { EmptyComponent } from '@/components/empty-component'
 import { Pagination } from '@/components/ui/pagination'
 import { ButtonSkeleton } from '@/components/skeletons/button-skeleton'
 import { useDebounce } from '@/lib/hooks/use-debounce'
-import AlertDialogComponent from '@/components/alert-dialog'
 import { useMembersMutations } from '@/services/members/mutations'
-import { MemberDetails } from './member-details'
+import EditMemberDialog from '@/components/dashboard/members/edit-member-dialog'
+import { Skeleton } from '@/components/ui/skeleton'
+import { AlertDialogComponent } from '@/components/alert-dialog'
 
 const MembersTable = memo(() => {
   const [page, setPage] = useState(1)
@@ -275,10 +277,7 @@ const MembersTable = memo(() => {
                       <TableCell className="px-6 py-3">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              className="h-auto w-auto p-0"
-                            >
+                            <Button variant="ghost" size={'icon-lg'}>
                               <MoreVerticalIcon className="w-5 h-5 text-gray-600" />
                             </Button>
                           </DropdownMenuTrigger>
@@ -296,14 +295,23 @@ const MembersTable = memo(() => {
                                 </span>
                               </MemberDetails>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="h-10 px-2 py-2 rounded-lg cursor-pointer">
-                              <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-dark-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
-                                Edit
-                              </span>
-                            </DropdownMenuItem>
+                            <Suspense
+                              fallback={<Skeleton className="w-full h-10" />}
+                            >
+                              <EditMemberDialog member={member}>
+                                <DropdownMenuItem
+                                  className="h-10 px-2 py-2 rounded-lg cursor-pointer"
+                                  onSelect={(e) => e.preventDefault()}
+                                >
+                                  <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-dark-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
+                                    Edit
+                                  </span>
+                                </DropdownMenuItem>
+                              </EditMemberDialog>
+                            </Suspense>
                             <DropdownMenuItem
                               className="h-10 px-2 py-2 cursor-pointer"
-                              asChild
+                              onSelect={(e) => e.preventDefault()}
                             >
                               <AlertDialogComponent
                                 title="Remove Member"
@@ -316,7 +324,7 @@ const MembersTable = memo(() => {
                                 confirmText="Remove"
                                 cancelText="Cancel"
                               >
-                                <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-red-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
+                                <span className="font-normal text-sm">
                                   Remove
                                 </span>
                               </AlertDialogComponent>
