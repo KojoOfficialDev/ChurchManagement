@@ -124,6 +124,3 @@ export const EditContributionTypeForm = ({
 }
 
 export default EditContributionTypeForm
-
-
-

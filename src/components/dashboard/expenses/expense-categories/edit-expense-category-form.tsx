@@ -91,6 +91,3 @@ export const EditExpenseCategoryForm = ({
 }
 
 export default EditExpenseCategoryForm
-
-
-

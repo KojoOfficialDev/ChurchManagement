@@ -61,8 +61,8 @@ const AddmemberDialog = () => {
     [MEMBER_FORM_SECTIONS],
   )
   const [formStep, setFormStep] = useState<FormSteps>(POSSIBLE_FORM_STEPS[0])
-  const handleSave = (data: CreateMember) => {
-    createMember.mutateAsync(data, {
+  const handleSave = async (data: CreateMember) => {
+    await createMember.mutateAsync(data, {
       onSuccess() {
         form.reset()
         setIsOpen(false)

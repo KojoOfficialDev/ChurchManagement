@@ -37,8 +37,17 @@ import { ErrorBoundary } from '@/components/error-boundary'
 import { ButtonSkeleton } from '@/components/skeletons/button-skeleton'
 import AddCommunionDialog from '@/components/dashboard/communion/add-communion-dialog'
 import { useDebounce } from '@/lib/hooks/use-debounce'
+import { communionMutations } from '@/services/communion/mutation'
+import { AlertDialogComponent } from '@/components/alert-dialog'
+import { useExcelExport } from '@/lib/hooks/use-excel-export'
+import { CommunionService } from '@/services/communion/communion.service'
+import EditCommunionDialog from '@/components/dashboard/communion/edit-communion-dialog'
+import CommunionDetails from '@/components/dashboard/communion/communion-details'
 
 const CommunionTable = memo(() => {
+  const {
+    removeCommunion: { mutateAsync, isPending },
+  } = communionMutations()
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 400)
   const [page, setPage] = useState(1)
@@ -50,8 +59,57 @@ const CommunionTable = memo(() => {
   const [selectedCommunions, setSelectedCommunions] = useState<Array<string>>(
     [],
   )
+  const [editingCommunion, setEditingCommunion] = useState<any>(null)
+  const [viewingCommunion, setViewingCommunion] = useState<any>(null)
 
   const communions = useMemo(() => communionData.data, [communionData])
+
+  const { exportToExcel, isExporting } = useExcelExport({
+    fetchData: CommunionService.getAllCommunions,
+    columns: [
+      { header: 'ID', accessor: (item: any) => item.id },
+      {
+        header: 'First Communion Number',
+        accessor: (item: any) => item.firstCommunionNumber || '-',
+      },
+      {
+        header: 'Is Member',
+        accessor: (item: any) => (item.isMember ? 'Yes' : 'No'),
+      },
+      { header: 'Member ID', accessor: (item: any) => item.memberId || '-' },
+      { header: 'First Name', accessor: (item: any) => item.firstName || '-' },
+      {
+        header: 'Middle Name',
+        accessor: (item: any) => item.middleName || '-',
+      },
+      { header: 'Last Name', accessor: (item: any) => item.lastName || '-' },
+      {
+        header: 'Full Name',
+        accessor: (item: any) =>
+          `${item.firstName || ''} ${item.middleName ? item.middleName + ' ' : ''}${item.lastName || ''}`.trim(),
+      },
+      {
+        header: 'Home District',
+        accessor: (item: any) => item.homeDistrict || '-',
+      },
+      {
+        header: 'Rev. Minister',
+        accessor: (item: any) => item.revMinister || '-',
+      },
+      {
+        header: 'Place of First Communion',
+        accessor: (item: any) => item.placeOfFirstCommunion || '-',
+      },
+      {
+        header: 'First Communion Date',
+        accessor: (item: any) =>
+          item.firstCommunionDate
+            ? format(new Date(item.firstCommunionDate), 'MMM dd, yyyy')
+            : '-',
+      },
+    ],
+    filename: 'first-communions',
+  })
 
   const toggleSelect = useCallback(
     (id: string) => {
@@ -155,9 +213,18 @@ const CommunionTable = memo(() => {
                 )}
               </div>
 
-              <Button variant="outline" size={isOpen ? 'icon' : 'default'}>
+              <Button
+                variant="outline"
+                size={isOpen ? 'icon' : 'default'}
+                onClick={exportToExcel}
+                disabled={isExporting}
+              >
                 <DownloadIcon className="w-5 h-5" />
-                {!isOpen && <span className="font-medium text-sm">Export</span>}
+                {!isOpen && (
+                  <span className="font-medium text-sm">
+                    {isExporting ? 'Exporting...' : 'Export'}
+                  </span>
+                )}
               </Button>
             </div>
           </div>
@@ -176,12 +243,12 @@ const CommunionTable = memo(() => {
                     </TableHead>
                     <TableHead className="px-6 py-3">
                       <span className="font-medium text-gray-800 text-xs">
-                        Name
+                        NLC Number
                       </span>
                     </TableHead>
                     <TableHead className="px-6 py-3">
                       <span className="font-medium text-gray-800 text-xs">
-                        God Parent
+                        Name
                       </span>
                     </TableHead>
                     <TableHead className="px-6 py-3">
@@ -219,13 +286,13 @@ const CommunionTable = memo(() => {
                       </TableCell>
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
-                          {communion.firstName} {communion.middleName}{' '}
-                          {communion.lastName}
+                          {communion.firstCommunionNumber}
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
-                          {communion.godParent}
+                          {communion.firstName} {communion.middleName}{' '}
+                          {communion.lastName}
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-3">
@@ -258,20 +325,41 @@ const CommunionTable = memo(() => {
                             align="end"
                             className="w-[149px] bg-[#ffffff] rounded-xl border border-solid border-[#ececec] shadow-[0px_24px_48px_-12px_#0f172814] p-3"
                           >
-                            <DropdownMenuItem className="h-10 px-2 py-2 bg-gray-100 rounded-lg cursor-pointer">
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 rounded-lg cursor-pointer"
+                              onClick={() => setViewingCommunion(communion)}
+                            >
                               <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-dark-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
                                 View Details
                               </span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="h-10 px-2 py-2 rounded-lg cursor-pointer">
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 rounded-lg cursor-pointer"
+                              onClick={() => setEditingCommunion(communion)}
+                            >
                               <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-dark-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
                                 Edit
                               </span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="h-10 px-2 py-2 cursor-pointer">
-                              <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-red-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
-                                Remove
-                              </span>
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 cursor-pointer"
+                              onSelect={(e) => e.preventDefault()}
+                            >
+                              <AlertDialogComponent
+                                title="Remove Communion Record"
+                                description="Are you sure you want to remove this communion record?"
+                                onConfirm={() => {
+                                  mutateAsync(communion.id.toString())
+                                }}
+                                disabled={isPending}
+                                variant="destructive"
+                                confirmText="Remove"
+                                cancelText="Cancel"
+                              >
+                                <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-red-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
+                                  Remove
+                                </span>
+                              </AlertDialogComponent>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -300,6 +388,22 @@ const CommunionTable = memo(() => {
           onPageSizeChange={setPageSize}
         />
       </div>
+
+      {editingCommunion && (
+        <EditCommunionDialog
+          communion={editingCommunion}
+          open={!!editingCommunion}
+          onOpenChange={(open) => !open && setEditingCommunion(null)}
+        />
+      )}
+
+      {viewingCommunion && (
+        <CommunionDetails
+          communion={viewingCommunion}
+          open={!!viewingCommunion}
+          onOpenChange={(open) => !open && setViewingCommunion(null)}
+        />
+      )}
     </section>
   )
 })

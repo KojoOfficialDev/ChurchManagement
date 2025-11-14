@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
-import { SetupService } from './setup.service'
 import { toast } from 'sonner'
+import { SetupService } from './setup.service'
 
 export const useSetupMutations = () => {
   const updateChurchProfile = useMutation({

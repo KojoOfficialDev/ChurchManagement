@@ -1,5 +1,5 @@
 import { sessionOptions } from '../auth/queries'
-import type { CreateMarriage } from './marriage.dto'
+import type { CreateMarriage, UpdateMarriage } from './marriage.dto'
 import type { MarriageResponse } from './types'
 import { protectedApi } from '@/server/protected-api'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
@@ -22,6 +22,15 @@ export class MarriageService {
     const response = await protectedApi.post('/marriage/save', {
       ...marriage,
       churchId: churchId,
+    })
+    return response.data
+  }
+
+  static updateMarriage = async (marriage: UpdateMarriage) => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.post('/marriage/update', {
+      ...marriage,
+      churchId,
     })
     return response.data
   }
@@ -49,6 +58,23 @@ export class MarriageService {
         params: searchParams,
       },
     )
+    return response.data
+  }
+
+  static removeMarriage = async (marriageId: string) => {
+    const response = await protectedApi.delete(
+      `/marriage/delete?id=${marriageId}`,
+    )
+    return response.data
+  }
+
+  static getAllMarriages = async () => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.get('/marriage/getAll', {
+      params: {
+        id: churchId,
+      },
+    })
     return response.data
   }
 }

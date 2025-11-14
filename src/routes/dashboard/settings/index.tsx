@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import z from 'zod/v3'
 import Settings from '@/components/dashboard/settings/settings'
-import { sessionOptions } from '@/services/auth/queries'
 import { churchProfileQuery } from '@/services/setup/queries'
 
 const settingsSearchSchema = z.object({

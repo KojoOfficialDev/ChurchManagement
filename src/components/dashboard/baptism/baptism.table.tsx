@@ -36,9 +36,18 @@ import { EmptyComponent } from '@/components/empty-component'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { ButtonSkeleton } from '@/components/skeletons/button-skeleton'
 import AddBaptismDialog from '@/components/dashboard/baptism/add-baptism-dialog'
+import EditBaptismDialog from '@/components/dashboard/baptism/edit-baptism-dialog'
+import BaptismDetails from '@/components/dashboard/baptism/baptism-details'
 import { useDebounce } from '@/lib/hooks/use-debounce'
+import { useBaptismsMutations } from '@/services/baptism/mutations'
+import { AlertDialogComponent } from '@/components/alert-dialog'
+import { useExcelExport } from '@/lib/hooks/use-excel-export'
+import { BaptismService } from '@/services/baptism/baptism.service'
 
 const BaptismTable = memo(() => {
+  const {
+    removeBaptism: { mutateAsync, isPending },
+  } = useBaptismsMutations()
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 400)
   const [page, setPage] = useState(1)
@@ -48,8 +57,77 @@ const BaptismTable = memo(() => {
   )
   const { isOpen } = useSidebar()
   const [selectedBaptisms, setSelectedBaptisms] = useState<Array<string>>([])
+  const [editingBaptism, setEditingBaptism] = useState<any>(null)
+  const [viewingBaptism, setViewingBaptism] = useState<any>(null)
 
   const baptisms = useMemo(() => baptismsData.data, [baptismsData])
+
+  const { exportToExcel, isExporting } = useExcelExport({
+    fetchData: BaptismService.getAllBaptisms,
+    columns: [
+      { header: 'ID', accessor: (item: any) => item.id },
+      {
+        header: 'Baptism Number',
+        accessor: (item: any) => item.baptismNumber || '-',
+      },
+      {
+        header: 'Is Member',
+        accessor: (item: any) => (item.isMember ? 'Yes' : 'No'),
+      },
+      { header: 'Member ID', accessor: (item: any) => item.memberId || '-' },
+      { header: 'First Name', accessor: (item: any) => item.firstName || '-' },
+      {
+        header: 'Middle Name',
+        accessor: (item: any) => item.middleName || '-',
+      },
+      { header: 'Last Name', accessor: (item: any) => item.lastName || '-' },
+      {
+        header: 'Full Name',
+        accessor: (item: any) =>
+          `${item.firstName || ''} ${item.middleName ? item.middleName + ' ' : ''}${item.lastName || ''}`.trim(),
+      },
+      {
+        header: 'Date of Birth',
+        accessor: (item: any) =>
+          item.dateOfBirth
+            ? format(new Date(item.dateOfBirth), 'MMM dd, yyyy')
+            : '-',
+      },
+      {
+        header: 'Place of Birth',
+        accessor: (item: any) => item.placeOfBirth || '-',
+      },
+      {
+        header: 'Home District',
+        accessor: (item: any) => item.homeDistrict || '-',
+      },
+      { header: 'God Parent', accessor: (item: any) => item.godParent || '-' },
+      {
+        header: 'Rev. Minister',
+        accessor: (item: any) => item.revMinister || '-',
+      },
+      {
+        header: 'Fathers Name',
+        accessor: (item: any) => item.fathersName || '-',
+      },
+      {
+        header: 'Mothers Name',
+        accessor: (item: any) => item.mothersName || '-',
+      },
+      {
+        header: 'Place of Baptism',
+        accessor: (item: any) => item.placeOfBaptism || '-',
+      },
+      {
+        header: 'Baptism Date',
+        accessor: (item: any) =>
+          item.baptismDate
+            ? format(new Date(item.baptismDate), 'MMM dd, yyyy')
+            : '-',
+      },
+    ],
+    filename: 'baptisms',
+  })
 
   const toggleSelect = useCallback(
     (id: string) => {
@@ -149,9 +227,18 @@ const BaptismTable = memo(() => {
                 )}
               </div>
 
-              <Button variant="outline" size={isOpen ? 'icon' : 'default'}>
+              <Button
+                variant="outline"
+                size={isOpen ? 'icon' : 'default'}
+                onClick={exportToExcel}
+                disabled={isExporting}
+              >
                 <DownloadIcon className="w-5 h-5" />
-                {!isOpen && <span className="font-medium text-sm">Export</span>}
+                {!isOpen && (
+                  <span className="font-medium text-sm">
+                    {isExporting ? 'Exporting...' : 'Export'}
+                  </span>
+                )}
               </Button>
             </div>
           </div>
@@ -170,12 +257,12 @@ const BaptismTable = memo(() => {
                     </TableHead>
                     <TableHead className="px-6 py-3">
                       <span className="font-medium text-gray-800 text-xs">
-                        God Parent
+                        Name
                       </span>
                     </TableHead>
                     <TableHead className="px-6 py-3">
                       <span className="font-medium text-gray-800 text-xs">
-                        Name
+                        God Parent
                       </span>
                     </TableHead>
                     <TableHead className="px-6 py-3">
@@ -214,7 +301,7 @@ const BaptismTable = memo(() => {
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
                           {baptism.lastName} {baptism.middleName}{' '}
-                          {baptism.lastName}
+                          {baptism.firstName}
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-3">
@@ -229,7 +316,7 @@ const BaptismTable = memo(() => {
                       </TableCell>
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
-                          {format(baptism.baptismDate, 'ddd MM, yyyy')}
+                          {format(baptism.baptismDate, 'do MMMM, yyyy')}
                         </span>
                       </TableCell>
 
@@ -252,20 +339,41 @@ const BaptismTable = memo(() => {
                             align="end"
                             className="w-[149px] bg-[#ffffff] rounded-xl border border-solid border-[#ececec] shadow-[0px_24px_48px_-12px_#0f172814] p-3"
                           >
-                            <DropdownMenuItem className="h-10 px-2 py-2 bg-gray-100 rounded-lg cursor-pointer">
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 rounded-lg cursor-pointer"
+                              onClick={() => setViewingBaptism(baptism)}
+                            >
                               <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-dark-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
                                 View Details
                               </span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="h-10 px-2 py-2 rounded-lg cursor-pointer">
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 rounded-lg cursor-pointer"
+                              onClick={() => setEditingBaptism(baptism)}
+                            >
                               <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-dark-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
                                 Edit
                               </span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="h-10 px-2 py-2 cursor-pointer">
-                              <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-red-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
-                                Remove
-                              </span>
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 cursor-pointer"
+                              onSelect={(e) => e.preventDefault()}
+                            >
+                              <AlertDialogComponent
+                                title="Remove Baptism Record"
+                                description="Are you sure you want to remove this baptism record?"
+                                onConfirm={() => {
+                                  mutateAsync(baptism.id.toString())
+                                }}
+                                disabled={isPending}
+                                variant="destructive"
+                                confirmText="Remove"
+                                cancelText="Cancel"
+                              >
+                                <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-red-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
+                                  Remove
+                                </span>
+                              </AlertDialogComponent>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -294,6 +402,22 @@ const BaptismTable = memo(() => {
           onPageSizeChange={setPageSize}
         />
       </div>
+
+      {editingBaptism && (
+        <EditBaptismDialog
+          baptism={editingBaptism}
+          open={!!editingBaptism}
+          onOpenChange={(open) => !open && setEditingBaptism(null)}
+        />
+      )}
+
+      {viewingBaptism && (
+        <BaptismDetails
+          baptism={viewingBaptism}
+          open={!!viewingBaptism}
+          onOpenChange={(open) => !open && setViewingBaptism(null)}
+        />
+      )}
     </section>
   )
 })

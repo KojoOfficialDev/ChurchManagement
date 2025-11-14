@@ -52,22 +52,10 @@ export const MARRIAGE_FORM_SECTIONS: Array<Omit<FormSection, 'title'>> = [
         placeholder: 'Select marriage date',
       },
       {
-        name: 'placeOfBirth',
-        label: 'Place of Birth',
-        type: 'text',
-        placeholder: 'Enter place of birth',
-      },
-      {
         name: 'placeOfStay',
-        label: 'Place of Stay',
+        label: 'Place of Residence',
         type: 'text',
-        placeholder: 'Enter place of stay',
-      },
-      {
-        name: 'homeDistrict',
-        label: 'Home District',
-        type: 'text',
-        placeholder: 'Enter home district',
+        placeholder: 'Enter place of residence',
       },
       {
         name: 'groomParentName',

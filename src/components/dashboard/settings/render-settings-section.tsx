@@ -1,10 +1,10 @@
+import { Suspense } from 'react'
 import Subscriptions from './subscriptions'
 import { ChurchProfileForm } from './church-profile-form'
 import type { SettingsTabValue } from '@/lib/types/settings'
 import UsersTable from '@/components/dashboard/users/users-table'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { TableSkeleton } from '@/components/skeletons/table.skeleton'
-import { Suspense } from 'react'
 
 type RenderSettingsSectionProps = {
   tab: SettingsTabValue

@@ -16,6 +16,3 @@ export const expensesQueryOptions = ({
     staleTime: 30 * 60 * 1000,
     placeholderData: keepPreviousData,
   })
-
-
-

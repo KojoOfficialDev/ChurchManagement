@@ -54,9 +54,19 @@ export class ExpenseService {
 
   static updateExpense = async (expense: Expense & { id: string }) => {
     const churchId = await this.getChurchId()
-    const response = await protectedApi.put<Expense>('/Expenses/update', {
+    const response = await protectedApi.post<Expense>('/Expenses/update', {
       ...expense,
       churchId,
+    })
+    return response.data
+  }
+
+  static getAllExpenses = async () => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.get('/Expenses/getAll', {
+      params: {
+        id: churchId,
+      },
     })
     return response.data
   }

@@ -17,4 +17,3 @@ export const churchProfileSchema = z.object({
 })
 
 export type ChurchProfile = z.infer<typeof churchProfileSchema>
-

@@ -39,8 +39,13 @@ function LoginRoute() {
   const onSubmit = async (data: LoginSchema) => {
     await mutateAsync(data, {
       onSuccess: () => {
+        // Decode the redirect URL if it exists, otherwise default to /dashboard
+        const redirectPath = search.redirect
+          ? decodeURIComponent(search.redirect)
+          : '/dashboard'
+
         navigate({
-          to: search.redirect ?? '/dashboard',
+          to: redirectPath.startsWith('/') ? redirectPath : `/${redirectPath}`,
           replace: true,
         })
       },

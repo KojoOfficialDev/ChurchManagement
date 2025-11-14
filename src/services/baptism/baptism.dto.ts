@@ -19,3 +19,11 @@ export const baptismSchema = z.object({
 })
 
 export type Baptism = z.infer<typeof baptismSchema>
+
+export const updateBaptismSchema = baptismSchema.and(
+  z.object({
+    id: z.string().min(1, 'ID is required'),
+  }),
+)
+
+export type UpdateBaptism = z.infer<typeof updateBaptismSchema>

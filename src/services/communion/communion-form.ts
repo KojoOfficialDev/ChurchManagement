@@ -66,12 +66,6 @@ export const COMMUNION_FORM_SECTIONS: Array<FormSection> = [
             placeholder: 'Enter place of first communion',
           },
           {
-            name: 'godParent',
-            label: 'God Parent',
-            type: 'text',
-            placeholder: 'Enter god parent',
-          },
-          {
             name: 'revMinister',
             label: 'Name of Minister',
             type: 'text',

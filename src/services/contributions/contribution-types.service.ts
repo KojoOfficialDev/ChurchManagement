@@ -44,7 +44,7 @@ export class ContributionTypeService {
     contributionType: ContributionType & { id: string },
   ) => {
     const churchId = await this.getChurchId()
-    const response = await protectedApi.put<ContributionType>(
+    const response = await protectedApi.post<ContributionType>(
       '/contributionTypes/update',
       {
         ...contributionType,
@@ -58,6 +58,16 @@ export class ContributionTypeService {
     const response = await protectedApi.delete<ContributionType>(
       `/contributionTypes/${id}`,
     )
+    return response.data
+  }
+
+  static getAllContributionTypes = async () => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.get<
+      Array<ContributionType & { id: string }>
+    >('/ContributionTypes/getAll', {
+      params: { id: churchId },
+    })
     return response.data
   }
 }

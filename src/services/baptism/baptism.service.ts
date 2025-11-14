@@ -1,6 +1,6 @@
 import { sessionOptions } from '../auth/queries'
 import type { BaptismResponse } from './types'
-import type { Baptism } from './baptism.dto'
+import type { Baptism, UpdateBaptism } from './baptism.dto'
 import { protectedApi } from '@/server/protected-api'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 
@@ -53,6 +53,30 @@ export class BaptismService {
       '/baptism/save',
       payload,
     )
+    return response.data
+  }
+
+  static updateBaptism = async (baptism: UpdateBaptism) => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.post('/baptism/update', {
+      ...baptism,
+      churchId,
+    })
+    return response.data
+  }
+
+  static removeBaptism = async (memberId: string) => {
+    const response = await protectedApi.delete(`/Baptism/delete?id=${memberId}`)
+    return response.data
+  }
+
+  static getAllBaptisms = async () => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.get('/baptism/getAll', {
+      params: {
+        id: churchId,
+      },
+    })
     return response.data
   }
 }

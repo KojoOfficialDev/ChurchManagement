@@ -1,6 +1,6 @@
 import { sessionOptions } from '../auth/queries'
 import type { ConfirmationResponse } from './types'
-import type { Confirmation } from './confirmation.dto'
+import type { Confirmation, UpdateConfirmation } from './confirmation.dto'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { protectedApi } from '@/server/protected-api'
 
@@ -52,6 +52,32 @@ export class ConfirmationService {
         churchId,
       },
     )
+    return response.data
+  }
+
+  static updateConfirmation = async (confirmation: UpdateConfirmation) => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.post('/Confirmation/Update', {
+      ...confirmation,
+      churchId,
+    })
+    return response.data
+  }
+
+  static removeConfirmation = async (confirmationId: string) => {
+    const response = await protectedApi.delete(
+      `/Confirmation/delete?id=${confirmationId}`,
+    )
+    return response.data
+  }
+
+  static getAllConfirmations = async () => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.get('/Confirmation/getAll', {
+      params: {
+        id: churchId,
+      },
+    })
     return response.data
   }
 }

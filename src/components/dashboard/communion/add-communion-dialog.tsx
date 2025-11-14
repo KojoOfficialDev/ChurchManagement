@@ -26,7 +26,6 @@ const AddCommunionDialog = () => {
       homeDistrict: '',
       firstCommunionDate: undefined,
       placeOfFirstCommunion: '',
-      godParent: '',
       revMinister: '',
       isMember: false,
     },

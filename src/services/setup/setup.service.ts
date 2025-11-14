@@ -1,9 +1,9 @@
+import { churchProfileQuery } from './queries'
 import type { ChurchProfile } from './setup.dto'
+import type { Church } from './types'
 import { protectedApi } from '@/server/protected-api'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { sessionOptions } from '@/services/auth/queries'
-import type { Church } from './types'
-import { churchProfileQuery } from './queries'
 
 export class SetupService {
   private static queryClient = getContext().queryClient

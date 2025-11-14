@@ -1,7 +1,7 @@
-import { protectedApi } from '@/server/protected-api'
 import { sessionOptions } from '../auth/queries'
+import type { ChartData, DashboardStatCounts } from './types'
+import { protectedApi } from '@/server/protected-api'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
-import type { DashboardStatCounts, ChartData } from './types'
 
 export class AnalyticsService {
   private static getChurchId = async () => {
@@ -32,11 +32,11 @@ export class AnalyticsService {
     year,
   }: {
     year: number
-  }): Promise<ChartData[]> => {
+  }): Promise<Array<ChartData>> => {
     const churchId = await this.getChurchId()
 
     const response = await protectedApi.get<{
-      data: ChartData[]
+      data: Array<ChartData>
     }>('/dashboard/monthlyContributions', {
       params: { id: churchId, year },
     })

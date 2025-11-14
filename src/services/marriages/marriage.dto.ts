@@ -9,12 +9,18 @@ export const createMarriageSchema = z.object({
   groomWitness: z.string().min(1, 'Groom witness is required'),
   brideId: z.string().min(1, 'Bride ID is required'),
   brideWitness: z.string().min(1, 'Bride witness is required'),
-  placeOfBirth: z.string().min(1, 'Place of birth is required'),
-  placeOfStay: z.string().min(1, 'Place of stay is required'),
-  homeDistrict: z.string().min(1, 'Home district is required'),
-  groomParentName: z.string().min(1, 'Groom parent name is required'),
-  brideParentName: z.string().min(1, 'Bride parent name is required'),
+  placeOfStay: z.string().min(1, 'Place of residence is required'),
+  groomParentName: z.string().optional(),
+  brideParentName: z.string().optional(),
   revMinister: z.string().min(1, 'Rev minister is required'),
 })
 
 export type CreateMarriage = z.infer<typeof createMarriageSchema>
+
+export const updateMarriageSchema = createMarriageSchema.and(
+  z.object({
+    id: z.string().min(1, 'ID is required'),
+  }),
+)
+
+export type UpdateMarriage = z.infer<typeof updateMarriageSchema>

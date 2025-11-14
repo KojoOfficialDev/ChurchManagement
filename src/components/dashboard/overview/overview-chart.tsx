@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 import { ChevronDownIcon } from 'lucide-react'
 
+import { useSuspenseQuery } from '@tanstack/react-query'
 import type { ChartConfig } from '@/components/ui/chart'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,10 +14,10 @@ import {
 } from '@/components/ui/card'
 import {
   ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
 } from '@/components/ui/chart'
 import {
   DropdownMenu,
@@ -24,9 +25,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useSuspenseQuery } from '@tanstack/react-query'
 import { monthlyContributionsDataQuery } from '@/services/analytics/queries'
-
 
 const chartConfig = {
   contribution: {
@@ -52,7 +51,6 @@ export function OverviewChart() {
     monthlyContributionsDataQuery({ year: selectedYear }),
   )
 
-  console.log(chartData)
   return (
     <Card className="shadow-none">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

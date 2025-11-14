@@ -5,7 +5,6 @@ export type User = {
   email: string
   normalizedEmail: string
   emailConfirmed: true
-  passwordHash: string
   securityStamp: string
   concurrencyStamp: string
   phoneNumber: string

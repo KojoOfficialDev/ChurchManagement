@@ -76,8 +76,18 @@ export class MembersService {
       ...member,
       churchId: churchId,
     }
-    const response = await protectedApi.put('/Member/update', {
+    const response = await protectedApi.post('/Member/Update', {
       ...payload,
+    })
+    return response.data
+  }
+
+  static getAll = async () => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.get('/Member/getAll', {
+      params: {
+        id: churchId,
+      },
     })
     return response.data
   }

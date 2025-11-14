@@ -7,10 +7,10 @@ export const useMarriagesMutations = () => {
   const createMarriage = useMutation({
     mutationKey: ['createMarriage'],
     mutationFn: MarriageService.createMarriage,
-    onSuccess: () => {
+    onSuccess: async () => {
       const queryClient = getContext().queryClient
       toast.success('Marriage created successfully')
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['marriages'],
       })
     },
@@ -18,7 +18,36 @@ export const useMarriagesMutations = () => {
       toast.error('Failed to create marriage')
     },
   })
+
+  const updateMarriage = useMutation({
+    mutationKey: ['updateMarriage'],
+    mutationFn: MarriageService.updateMarriage,
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['marriages'] })
+      toast.success('Marriage record updated successfully')
+    },
+    onError: () => {
+      toast.error('Failed to update marriage')
+    },
+  })
+
+  const removeMarriage = useMutation({
+    mutationKey: ['removeMarriage'],
+    mutationFn: MarriageService.removeMarriage,
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['marriages'] })
+      toast.success('Marriage record removed successfully')
+    },
+    onError: () => {
+      toast.error('Failed to remove marriage record')
+    },
+  })
+
   return {
     createMarriage,
+    updateMarriage,
+    removeMarriage,
   }
 }

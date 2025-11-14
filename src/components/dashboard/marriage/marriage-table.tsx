@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { Suspense, memo, useCallback, useMemo, useState } from 'react'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -30,14 +31,23 @@ import {
   InputGroupInput,
 } from '@/components/ui/input-group'
 import AddMarriageDialog from '@/components/dashboard/marriage/add-mariage-dialog'
+import EditMarriageDialog from '@/components/dashboard/marriage/edit-marriage-dialog'
+import MarriageDetails from '@/components/dashboard/marriage/marriage-details'
 import { getMarriagesOptions } from '@/services/marriages/queries'
 import { Pagination } from '@/components/ui/pagination'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { ButtonSkeleton } from '@/components/skeletons/button-skeleton'
 import { EmptyComponent } from '@/components/empty-component'
 import { useDebounce } from '@/lib/hooks/use-debounce'
+import { useMarriagesMutations } from '@/services/marriages/mutations'
+import { AlertDialogComponent } from '@/components/alert-dialog'
+import { useExcelExport } from '@/lib/hooks/use-excel-export'
+import { MarriageService } from '@/services/marriages/marriage.service'
 
 const MarriageTable = memo(() => {
+  const {
+    removeMarriage: { mutateAsync, isPending },
+  } = useMarriagesMutations()
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 400)
   const [page, setPage] = useState(1)
@@ -47,6 +57,75 @@ const MarriageTable = memo(() => {
   )
   const { isOpen } = useSidebar()
   const [selectedMarriages, setSelectedMarriages] = useState<Array<string>>([])
+  const [editingMarriage, setEditingMarriage] = useState<any>(null)
+  const [viewingMarriage, setViewingMarriage] = useState<any>(null)
+
+  const { exportToExcel, isExporting } = useExcelExport({
+    fetchData: MarriageService.getAllMarriages,
+    columns: [
+      { header: 'ID', accessor: (item: any) => item.id },
+      {
+        header: 'Marriage Number',
+        accessor: (item: any) => item.marriageNumber || '-',
+      },
+      {
+        header: 'Couple Name',
+        accessor: (item: any) => item.coupleName || '-',
+      },
+      {
+        header: 'Groom ID',
+        accessor: (item: any) => item.groomId || '-',
+      },
+      {
+        header: 'Groom Name',
+        accessor: (item: any) => item.groomName || '-',
+      },
+      {
+        header: 'Groom Witness',
+        accessor: (item: any) => item.groomWitness || '-',
+      },
+      {
+        header: 'Groom Parent Name',
+        accessor: (item: any) => item.groomParentName || '-',
+      },
+      {
+        header: 'Bride ID',
+        accessor: (item: any) => item.brideId || '-',
+      },
+      {
+        header: 'Bride Name',
+        accessor: (item: any) => item.brideName || '-',
+      },
+      {
+        header: 'Bride Witness',
+        accessor: (item: any) => item.brideWitness || '-',
+      },
+      {
+        header: 'Bride Parent Name',
+        accessor: (item: any) => item.brideParentName || '-',
+      },
+      {
+        header: 'Place of Marriage',
+        accessor: (item: any) => item.placeOfMarriage || '-',
+      },
+      {
+        header: 'Place of Stay',
+        accessor: (item: any) => item.placeOfStay || '-',
+      },
+      {
+        header: 'Rev. Minister',
+        accessor: (item: any) => item.revMinister || '-',
+      },
+      {
+        header: 'Marriage Date',
+        accessor: (item: any) =>
+          item.marriageDate
+            ? format(new Date(item.marriageDate), 'MMM dd, yyyy')
+            : '-',
+      },
+    ],
+    filename: 'marriages',
+  })
 
   const toggleSelect = useCallback(
     (id: string) => {
@@ -149,9 +228,18 @@ const MarriageTable = memo(() => {
                 )}
               </div>
 
-              <Button variant="outline" size={isOpen ? 'icon' : 'default'}>
+              <Button
+                variant="outline"
+                size={isOpen ? 'icon' : 'default'}
+                onClick={exportToExcel}
+                disabled={isExporting}
+              >
                 <DownloadIcon className="w-5 h-5" />
-                {!isOpen && <span className="font-medium text-sm">Export</span>}
+                {!isOpen && (
+                  <span className="font-medium text-sm">
+                    {isExporting ? 'Exporting...' : 'Export'}
+                  </span>
+                )}
               </Button>
             </div>
           </div>
@@ -249,20 +337,41 @@ const MarriageTable = memo(() => {
                             align="end"
                             className="w-[149px] bg-[#ffffff] rounded-xl border border-solid border-[#ececec] shadow-[0px_24px_48px_-12px_#0f172814] p-3"
                           >
-                            <DropdownMenuItem className="h-10 px-2 py-2 bg-gray-100 rounded-lg cursor-pointer">
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 rounded-lg cursor-pointer"
+                              onClick={() => setViewingMarriage(marriage)}
+                            >
                               <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-dark-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
                                 View Details
                               </span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="h-10 px-2 py-2 rounded-lg cursor-pointer">
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 rounded-lg cursor-pointer"
+                              onClick={() => setEditingMarriage(marriage)}
+                            >
                               <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-dark-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
                                 Edit
                               </span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="h-10 px-2 py-2 cursor-pointer">
-                              <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-red-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
-                                Remove
-                              </span>
+                            <DropdownMenuItem
+                              className="h-10 px-2 py-2 cursor-pointer"
+                              onSelect={(e) => e.preventDefault()}
+                            >
+                              <AlertDialogComponent
+                                title="Remove Marriage Record"
+                                description="Are you sure you want to remove this marriage record?"
+                                onConfirm={() => {
+                                  mutateAsync(marriage.id.toString())
+                                }}
+                                disabled={isPending}
+                                variant="destructive"
+                                confirmText="Remove"
+                                cancelText="Cancel"
+                              >
+                                <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-red-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
+                                  Remove
+                                </span>
+                              </AlertDialogComponent>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -291,6 +400,22 @@ const MarriageTable = memo(() => {
           onPageSizeChange={setPageSize}
         />
       </div>
+
+      {editingMarriage && (
+        <EditMarriageDialog
+          marriage={editingMarriage}
+          open={!!editingMarriage}
+          onOpenChange={(open) => !open && setEditingMarriage(null)}
+        />
+      )}
+
+      {viewingMarriage && (
+        <MarriageDetails
+          marriage={viewingMarriage}
+          open={!!viewingMarriage}
+          onOpenChange={(open) => !open && setViewingMarriage(null)}
+        />
+      )}
     </section>
   )
 })

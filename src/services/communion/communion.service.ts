@@ -1,6 +1,6 @@
 import { sessionOptions } from '../auth/queries'
 import type { CommunionResponse } from './types'
-import type { Communion } from './communion.dto'
+import type { Communion, UpdateCommunion } from './communion.dto'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { protectedApi } from '@/server/protected-api'
 
@@ -52,6 +52,32 @@ export class CommunionService {
         churchId,
       },
     )
+    return response.data
+  }
+
+  static updateCommunion = async (communion: UpdateCommunion) => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.post('/FirstCommunion/Update', {
+      ...communion,
+      churchId,
+    })
+    return response.data
+  }
+
+  static removeCommunion = async (communionId: string) => {
+    const response = await protectedApi.delete(
+      `/FirstCommunion/delete?id=${communionId}`,
+    )
+    return response.data
+  }
+
+  static getAllCommunions = async () => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.get('/FirstCommunion/getAll', {
+      params: {
+        id: churchId,
+      },
+    })
     return response.data
   }
 }

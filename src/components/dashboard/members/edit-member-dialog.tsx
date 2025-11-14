@@ -133,7 +133,6 @@ const EditMemberDialog = ({ member, children }: EditMemberDialogProps) => {
     resolver: standardSchemaResolver(updateMemberSchema),
     defaultValues: getDefaultValues(),
   })
-  console.log('isOpen', isOpen)
 
   const nextFormStep = useCallback(async () => {
     const section = MEMBER_FORM_SECTIONS.find((s) => s.title === formStep)

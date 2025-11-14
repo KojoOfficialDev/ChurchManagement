@@ -42,6 +42,8 @@ import { Badge } from '@/components/ui/badge'
 import { formatCurrency } from '@/lib/utils'
 import { contributionsMutations } from '@/services/contributions/contributions-mutations'
 import { AlertDialogComponent } from '@/components/alert-dialog'
+import { useExcelExport } from '@/lib/hooks/use-excel-export'
+import { ContributionService } from '@/services/contributions/contributions.service'
 
 const ContributionsTable = memo(() => {
   const {
@@ -65,6 +67,56 @@ const ContributionsTable = memo(() => {
     () => contributionsData.data,
     [contributionsData],
   )
+
+  const { exportToExcel, isExporting } = useExcelExport({
+    fetchData: ContributionService.getAllContributions,
+    columns: [
+      { header: 'ID', accessor: (item: any) => item.id },
+      { header: 'Name', accessor: (item: any) => item.name || '-' },
+      {
+        header: 'Description',
+        accessor: (item: any) => item.description || '-',
+      },
+      {
+        header: 'Contribution Type ID',
+        accessor: (item: any) => item.contributionTypeId || '-',
+      },
+      {
+        header: 'Amount',
+        accessor: (item: any) => item.amount,
+      },
+      {
+        header: 'Amount (Formatted)',
+        accessor: (item: any) => formatCurrency(item.amount),
+      },
+      { header: 'Channel', accessor: (item: any) => item.channel || '-' },
+      { header: 'Reference', accessor: (item: any) => item.reference || '-' },
+      {
+        header: 'Tax Deductible',
+        accessor: (item: any) => (item.taxDeductable ? 'Yes' : 'No'),
+      },
+      {
+        header: 'Mobile Number',
+        accessor: (item: any) => item.mobileNumber || '-',
+      },
+      {
+        header: 'Payment Date',
+        accessor: (item: any) =>
+          item.paymentDate
+            ? format(new Date(item.paymentDate), 'MMM dd, yyyy')
+            : '-',
+      },
+      {
+        header: 'Is Active',
+        accessor: (item: any) => (item.isActive ? 'Yes' : 'No'),
+      },
+      {
+        header: 'Active',
+        accessor: (item: any) => (item.active ? 'Yes' : 'No'),
+      },
+    ],
+    filename: 'contributions',
+  })
 
   const toggleSelect = useCallback(
     (id: string) => {
@@ -177,9 +229,18 @@ const ContributionsTable = memo(() => {
                 )}
               </div>
 
-              <Button variant="outline" size={isOpen ? 'icon' : 'default'}>
+              <Button
+                variant="outline"
+                size={isOpen ? 'icon' : 'default'}
+                onClick={exportToExcel}
+                disabled={isExporting}
+              >
                 <DownloadIcon className="w-5 h-5" />
-                {!isOpen && <span className="font-medium text-sm">Export</span>}
+                {!isOpen && (
+                  <span className="font-medium text-sm">
+                    {isExporting ? 'Exporting...' : 'Export'}
+                  </span>
+                )}
               </Button>
             </div>
           </div>
@@ -304,26 +365,26 @@ const ContributionsTable = memo(() => {
                                 Edit
                               </span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="h-10 px-2 py-2 cursor-pointer"
-                              onSelect={(e) => e.preventDefault()}
+                            <AlertDialogComponent
+                              title="Delete Contribution"
+                              description="Are you sure you want to delete this contribution?"
+                              onConfirm={() =>
+                                handleDelete(contribution.id.toString())
+                              }
+                              disabled={isPending}
+                              variant="destructive"
+                              confirmText="Delete"
+                              cancelText="Cancel"
                             >
-                              <AlertDialogComponent
-                                title="Delete Contribution"
-                                description="Are you sure you want to delete this contribution?"
-                                onConfirm={() =>
-                                  handleDelete(contribution.id.toString())
-                                }
-                                disabled={isPending}
-                                variant="destructive"
-                                confirmText="Delete"
-                                cancelText="Cancel"
+                              <DropdownMenuItem
+                                className="h-10 px-2 py-2 cursor-pointer"
+                                onSelect={(e) => e.preventDefault()}
                               >
                                 <span className="font-body-text-s-regular text-red-700">
                                   Delete
                                 </span>
-                              </AlertDialogComponent>
-                            </DropdownMenuItem>
+                              </DropdownMenuItem>
+                            </AlertDialogComponent>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>

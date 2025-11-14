@@ -10,6 +10,8 @@ export const MemberProfileSidebar = ({ member }: MemberProfileSidebarProps) => {
   const initials =
     `${member.firstName.charAt(0)}${member.lastName.charAt(0)}`.toUpperCase()
 
+  console.log(member.imageUrl)
+
   return (
     <aside className="flex flex-col items-center gap-[22px] w-[266px] bg-[#b9b9ba1f] rounded-3xl pt-[37px] pb-8">
       <Avatar className="w-[147px] h-[147px]">

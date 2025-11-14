@@ -36,6 +36,8 @@ import { EmptyComponent } from '@/components/empty-component'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { ButtonSkeleton } from '@/components/skeletons/button-skeleton'
 import { Badge } from '@/components/ui/badge'
+import { useExcelExport } from '@/lib/hooks/use-excel-export'
+import { ExpenseCategoryService } from '@/services/expenses/expense-categories.service'
 
 const ExpenseCategoriesTable = memo(() => {
   const [search, setSearch] = useState('')
@@ -55,6 +57,23 @@ const ExpenseCategoriesTable = memo(() => {
       category.name.toLowerCase().includes(search.toLowerCase()),
     )
   }, [expenseCategoriesData, search])
+
+  const { exportToExcel, isExporting } = useExcelExport({
+    fetchData: ExpenseCategoryService.getAllExpenseCategories,
+    columns: [
+      { header: 'ID', accessor: (item: any) => item.id },
+      { header: 'Name', accessor: (item: any) => item.name },
+      {
+        header: 'Is Active',
+        accessor: (item: any) => (item.isActive ? 'Yes' : 'No'),
+      },
+      {
+        header: 'Active',
+        accessor: (item: any) => (item.active ? 'Yes' : 'No'),
+      },
+    ],
+    filename: 'expense-categories',
+  })
 
   const toggleSelect = useCallback(
     (id: string) => {
@@ -154,9 +173,18 @@ const ExpenseCategoriesTable = memo(() => {
                 )}
               </div>
 
-              <Button variant="outline" size={isOpen ? 'icon' : 'default'}>
+              <Button
+                variant="outline"
+                size={isOpen ? 'icon' : 'default'}
+                onClick={exportToExcel}
+                disabled={isExporting}
+              >
                 <DownloadIcon className="w-5 h-5" />
-                {!isOpen && <span className="font-medium text-sm">Export</span>}
+                {!isOpen && (
+                  <span className="font-medium text-sm">
+                    {isExporting ? 'Exporting...' : 'Export'}
+                  </span>
+                )}
               </Button>
             </div>
           </div>
@@ -230,7 +258,7 @@ const ExpenseCategoriesTable = memo(() => {
                             className="w-[149px] bg-[#ffffff] rounded-xl border border-solid border-[#ececec] shadow-[0px_24px_48px_-12px_#0f172814] p-3"
                           >
                             <DropdownMenuItem
-                              className="h-10 px-2 py-2 bg-gray-100 rounded-lg cursor-pointer"
+                              className="h-10 px-2 py-2 rounded-lg cursor-pointer"
                               onClick={() => setViewingCategory(category)}
                             >
                               <span className="font-body-text-s-regular">

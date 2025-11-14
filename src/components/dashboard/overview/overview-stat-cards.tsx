@@ -1,7 +1,7 @@
 import { ArrowRight, TrendingDownIcon, TrendingUpIcon } from 'lucide-react'
 import { memo } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { Card, CardContent } from '@/components/ui/card'
 import { dashboardStatCountsQuery } from '@/services/analytics/queries'
 
 const OverviewStatCards = memo(() => {
@@ -9,7 +9,7 @@ const OverviewStatCards = memo(() => {
 
   return (
     <section className="flex items-center gap-5 w-full">
-      {data?.map((stat, index) => (
+      {data.map((stat, index) => (
         <Card
           key={index}
           className="flex-1 bg-white rounded-xl border border-solid border-[#cfd4dc] shadow-none"

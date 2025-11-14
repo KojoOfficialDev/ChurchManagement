@@ -1,7 +1,7 @@
 import type {
+  PaginatedUsersResponse,
   UserTableData,
   UsersQueryParams,
-  PaginatedUsersResponse,
 } from './types'
 
 // Mock data for users
@@ -255,5 +255,3 @@ export class UsersService {
     }
   }
 }
-
-

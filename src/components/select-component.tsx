@@ -55,8 +55,7 @@ const SelectInputComponent = <TFieldValues extends FieldValues>({
   const handleValueCreated = useCallback(
     (newValue: SelectType, onChange: (value: string) => void) => {
       onChange(newValue.value)
-      console.log('field.value', onChange)
-      console.log('newValue', newValue)
+
       setCreatedItems((prev) => [...prev, newValue])
     },
     [],
@@ -65,81 +64,94 @@ const SelectInputComponent = <TFieldValues extends FieldValues>({
     <Controller
       control={control}
       name={name}
-      render={({ field }) => (
-        <div className={cn(label && 'space-y-2')}>
-          {label && (
-            <Label
-              htmlFor={name}
-              className={cn(
-                `block text-sm font-medium text-foreground `,
-                labelClassName,
-              )}
+      render={({ field }) => {
+        // Handle both string and number values
+        const handleChange = (value: string) => {
+          // If original field value was a number, convert back to number
+          if (typeof field.value === 'number') {
+            field.onChange(Number(value))
+          } else {
+            field.onChange(value)
+          }
+        }
+
+        // Update handler for created values to use consistent type handling
+        const handleCreatedValue = (newValue: SelectType) => {
+          handleValueCreated(newValue, handleChange)
+        }
+
+        return (
+          <div className={cn(label && 'space-y-2')}>
+            {label && (
+              <Label
+                htmlFor={name}
+                className={cn(
+                  `block text-sm font-medium text-foreground `,
+                  labelClassName,
+                )}
+              >
+                {label}
+              </Label>
+            )}
+            <Select
+              onValueChange={handleChange}
+              defaultValue={field.value?.toString()}
+              value={field.value?.toString()}
             >
-              {label}
-            </Label>
-          )}
-          <Select
-            onValueChange={field.onChange}
-            defaultValue={field.value}
-            value={field.value}
-          >
-            <SelectTrigger
-              id={name}
-              aria-invalid={!!error}
-              className={cn(
-                'text-muted-foreground w-full py-2 sm:py-6 focus-visible:ring-primary focus-visible:ring-2 focus-visible:border-0 aria-invalid:border-1 aria-invalid:border-destructive',
-                field.value && 'text-black dark:text-white',
-                triggerClassName,
-              )}
-            >
-              <SelectValue placeholder={placeholder} />
-            </SelectTrigger>
-            <SelectContent>
-              {itemsList.length > 0 ? (
-                <>
-                  {itemsList.map((item, index) => (
-                    <SelectItem value={item.value.toString()} key={index}>
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                  {allowCreate && (
+              <SelectTrigger
+                id={name}
+                aria-invalid={!!error}
+                className={cn(
+                  'text-muted-foreground w-full py-2 sm:py-6 focus-visible:ring-primary focus-visible:ring-2 focus-visible:border-0 aria-invalid:border-1 aria-invalid:border-destructive',
+                  field.value && 'text-black dark:text-white',
+                  triggerClassName,
+                )}
+              >
+                <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+              <SelectContent>
+                {itemsList.length > 0 ? (
+                  <>
+                    {itemsList.map((item, index) => (
+                      <SelectItem value={item.value.toString()} key={index}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                    {allowCreate && (
+                      <SelectCreatable
+                        config={createConfig!}
+                        onValueCreated={handleCreatedValue}
+                      />
+                    )}
+                  </>
+                ) : allowCreate ? (
+                  <>
                     <SelectCreatable
                       config={createConfig!}
-                      onValueCreated={(newValue) =>
-                        handleValueCreated(newValue, field.onChange)
-                      }
+                      onValueCreated={handleCreatedValue}
                     />
-                  )}
-                </>
-              ) : allowCreate ? (
-                <>
-                  <SelectCreatable
-                    config={createConfig!}
-                    onValueCreated={(newValue) =>
-                      handleValueCreated(newValue, field.onChange)
-                    }
-                  />
-                </>
-              ) : (
-                <div>
-                  <p className="text-sm text-muted-foreground text-center py-2">
-                    {empty || 'no items to choose from'}
-                  </p>
-                </div>
-              )}
-            </SelectContent>
-          </Select>
-          {description && (
-            <p className="text-sm text-muted-foreground pt-0.5 px-2">
-              {description}
-            </p>
-          )}
-          {/* Error message */}
-          {error && (
-            <p className="text-sm text-destructive pt-0.5 px-2">{error}</p>
-          )}
-        </div>
-      )}
+                  </>
+                ) : (
+                  <div>
+                    <p className="text-sm text-muted-foreground text-center py-2">
+                      {empty || 'no items to choose from'}
+                    </p>
+                  </div>
+                )}
+              </SelectContent>
+            </Select>
+            {description && (
+              <p className="text-sm text-muted-foreground pt-0.5 px-2">
+                {description}
+              </p>
+            )}
+            {/* Error message */}
+            {error && (
+              <p className="text-sm text-destructive pt-0.5 px-2">{error}</p>
+            )}
+          </div>
+        )
+      }}
     />
   )
 }

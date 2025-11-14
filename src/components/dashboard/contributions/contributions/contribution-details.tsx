@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
+import { formatCurrency } from '@/lib/utils'
 
 type ContributionDetailsProps = {
   contribution: any
@@ -61,7 +62,7 @@ const ContributionDetails = ({
                   Amount
                 </p>
                 <p className="text-base">
-                  ${contribution.amount?.toFixed(2) || '0.00'}
+                  {formatCurrency(contribution.amount)}
                 </p>
               </div>
               <div className="space-y-2">
@@ -111,6 +112,3 @@ const ContributionDetails = ({
 }
 
 export default ContributionDetails
-
-
-

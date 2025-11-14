@@ -18,6 +18,7 @@ import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/s
 import { Route as DashboardMembersIndexRouteImport } from './routes/dashboard/members/index'
 import { Route as DashboardMarriageIndexRouteImport } from './routes/dashboard/marriage/index'
 import { Route as DashboardExpensesIndexRouteImport } from './routes/dashboard/expenses/index'
+import { Route as DashboardEventsIndexRouteImport } from './routes/dashboard/events/index'
 import { Route as DashboardContributionIndexRouteImport } from './routes/dashboard/contribution/index'
 import { Route as DashboardConfirmationIndexRouteImport } from './routes/dashboard/confirmation/index'
 import { Route as DashboardCommunionIndexRouteImport } from './routes/dashboard/communion/index'
@@ -67,6 +68,11 @@ const DashboardExpensesIndexRoute = DashboardExpensesIndexRouteImport.update({
   path: '/expenses/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardEventsIndexRoute = DashboardEventsIndexRouteImport.update({
+  id: '/events/',
+  path: '/events/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 const DashboardContributionIndexRoute =
   DashboardContributionIndexRouteImport.update({
     id: '/contribution/',
@@ -99,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/communion': typeof DashboardCommunionIndexRoute
   '/dashboard/confirmation': typeof DashboardConfirmationIndexRoute
   '/dashboard/contribution': typeof DashboardContributionIndexRoute
+  '/dashboard/events': typeof DashboardEventsIndexRoute
   '/dashboard/expenses': typeof DashboardExpensesIndexRoute
   '/dashboard/marriage': typeof DashboardMarriageIndexRoute
   '/dashboard/members': typeof DashboardMembersIndexRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/dashboard/communion': typeof DashboardCommunionIndexRoute
   '/dashboard/confirmation': typeof DashboardConfirmationIndexRoute
   '/dashboard/contribution': typeof DashboardContributionIndexRoute
+  '/dashboard/events': typeof DashboardEventsIndexRoute
   '/dashboard/expenses': typeof DashboardExpensesIndexRoute
   '/dashboard/marriage': typeof DashboardMarriageIndexRoute
   '/dashboard/members': typeof DashboardMembersIndexRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/dashboard/communion/': typeof DashboardCommunionIndexRoute
   '/dashboard/confirmation/': typeof DashboardConfirmationIndexRoute
   '/dashboard/contribution/': typeof DashboardContributionIndexRoute
+  '/dashboard/events/': typeof DashboardEventsIndexRoute
   '/dashboard/expenses/': typeof DashboardExpensesIndexRoute
   '/dashboard/marriage/': typeof DashboardMarriageIndexRoute
   '/dashboard/members/': typeof DashboardMembersIndexRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/dashboard/communion'
     | '/dashboard/confirmation'
     | '/dashboard/contribution'
+    | '/dashboard/events'
     | '/dashboard/expenses'
     | '/dashboard/marriage'
     | '/dashboard/members'
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
     | '/dashboard/communion'
     | '/dashboard/confirmation'
     | '/dashboard/contribution'
+    | '/dashboard/events'
     | '/dashboard/expenses'
     | '/dashboard/marriage'
     | '/dashboard/members'
@@ -172,6 +183,7 @@ export interface FileRouteTypes {
     | '/dashboard/communion/'
     | '/dashboard/confirmation/'
     | '/dashboard/contribution/'
+    | '/dashboard/events/'
     | '/dashboard/expenses/'
     | '/dashboard/marriage/'
     | '/dashboard/members/'
@@ -249,6 +261,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardExpensesIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/events/': {
+      id: '/dashboard/events/'
+      path: '/events'
+      fullPath: '/dashboard/events'
+      preLoaderRoute: typeof DashboardEventsIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/dashboard/contribution/': {
       id: '/dashboard/contribution/'
       path: '/contribution'
@@ -298,6 +317,7 @@ interface DashboardRouteRouteChildren {
   DashboardCommunionIndexRoute: typeof DashboardCommunionIndexRoute
   DashboardConfirmationIndexRoute: typeof DashboardConfirmationIndexRoute
   DashboardContributionIndexRoute: typeof DashboardContributionIndexRoute
+  DashboardEventsIndexRoute: typeof DashboardEventsIndexRoute
   DashboardExpensesIndexRoute: typeof DashboardExpensesIndexRoute
   DashboardMarriageIndexRoute: typeof DashboardMarriageIndexRoute
   DashboardMembersIndexRoute: typeof DashboardMembersIndexRoute
@@ -310,6 +330,7 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardCommunionIndexRoute: DashboardCommunionIndexRoute,
   DashboardConfirmationIndexRoute: DashboardConfirmationIndexRoute,
   DashboardContributionIndexRoute: DashboardContributionIndexRoute,
+  DashboardEventsIndexRoute: DashboardEventsIndexRoute,
   DashboardExpensesIndexRoute: DashboardExpensesIndexRoute,
   DashboardMarriageIndexRoute: DashboardMarriageIndexRoute,
   DashboardMembersIndexRoute: DashboardMembersIndexRoute,

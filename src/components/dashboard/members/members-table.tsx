@@ -6,7 +6,9 @@ import {
 } from 'lucide-react'
 import { Suspense, memo, useCallback, useMemo, useState } from 'react'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { format } from 'date-fns'
 import { MemberDetails } from './member-details'
+import type { Member } from '@/services/members/types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -41,6 +43,8 @@ import { useMembersMutations } from '@/services/members/mutations'
 import EditMemberDialog from '@/components/dashboard/members/edit-member-dialog'
 import { Skeleton } from '@/components/ui/skeleton'
 import { AlertDialogComponent } from '@/components/alert-dialog'
+import { useExcelExport } from '@/lib/hooks/use-excel-export'
+import { MembersService } from '@/services/members/members.service'
 
 const MembersTable = memo(() => {
   const [page, setPage] = useState(1)
@@ -89,6 +93,66 @@ const MembersTable = memo(() => {
       handleSelectAll()
     }
   }, [selectedMembers, memberData])
+
+  const { exportToExcel, isExporting } = useExcelExport<Member>({
+    fetchData: MembersService.getAll,
+    columns: [
+      { header: 'ID', accessor: (item) => item.id },
+      {
+        header: 'Membership Number',
+        accessor: (item) => item.membershipNumber,
+      },
+      { header: 'First Name', accessor: (item) => item.firstName },
+      { header: 'Middle Name', accessor: (item) => item.middleName || '-' },
+      { header: 'Last Name', accessor: (item) => item.lastName },
+      {
+        header: 'Full Name',
+        accessor: (item) =>
+          `${item.firstName} ${item.middleName ? item.middleName + ' ' : ''}${item.lastName}`,
+      },
+      { header: 'Gender', accessor: (item) => item.gender },
+      {
+        header: 'Date of Birth',
+        accessor: (item) =>
+          item.dateOfBirth
+            ? format(new Date(item.dateOfBirth), 'MMM dd, yyyy')
+            : '-',
+      },
+      {
+        header: 'Place of Birth',
+        accessor: (item) => item.placeOfBirth || '-',
+      },
+      { header: 'Nationality', accessor: (item) => item.nationality || '-' },
+      { header: 'Region', accessor: (item) => item.region || '-' },
+      { header: 'Home District', accessor: (item) => item.homeDistrict || '-' },
+      { header: 'Place of Stay', accessor: (item) => item.placeOfStay || '-' },
+      { header: 'House Number', accessor: (item) => item.houseNumber || '-' },
+      { header: 'Email', accessor: (item) => item.email },
+      { header: 'Phone Number', accessor: (item) => item.phoneNumber },
+      {
+        header: 'Educational Level',
+        accessor: (item) => item.educationalLevel || '-',
+      },
+      { header: 'Occupation', accessor: (item) => item.occupation || '-' },
+      {
+        header: 'Belongs to Society',
+        accessor: (item) => (item.belongsToSociety ? 'Yes' : 'No'),
+      },
+      {
+        header: 'Society Names',
+        accessor: (item) =>
+          item.societyName && item.societyName.length > 0
+            ? item.societyName.join(', ')
+            : '-',
+      },
+      {
+        header: 'Status',
+        accessor: (item) => (item.isActive ? 'Active' : 'Inactive'),
+      },
+      { header: 'Image URL', accessor: (item) => item.imageUrl || '-' },
+    ],
+    filename: 'members',
+  })
 
   if (memberData.length === 0 && !debouncedSearch) {
     return (
@@ -159,9 +223,18 @@ const MembersTable = memo(() => {
                 )}
               </div>
 
-              <Button variant="outline" size={isOpen ? 'icon' : 'default'}>
+              <Button
+                variant="outline"
+                size={isOpen ? 'icon' : 'default'}
+                onClick={exportToExcel}
+                disabled={isExporting}
+              >
                 <DownloadIcon className="w-5 h-5" />
-                {!isOpen && <span className="font-medium text-sm">Export</span>}
+                {!isOpen && (
+                  <span className="font-medium text-sm">
+                    {isExporting ? 'Exporting...' : 'Export'}
+                  </span>
+                )}
               </Button>
             </div>
           </div>
@@ -309,26 +382,26 @@ const MembersTable = memo(() => {
                                 </DropdownMenuItem>
                               </EditMemberDialog>
                             </Suspense>
-                            <DropdownMenuItem
-                              className="h-10 px-2 py-2 cursor-pointer"
-                              onSelect={(e) => e.preventDefault()}
+                            <AlertDialogComponent
+                              title="Remove Member"
+                              description="Are you sure you want to remove this member?"
+                              onConfirm={() => {
+                                mutateAsync(member.id.toString())
+                              }}
+                              disabled={isPending}
+                              variant="destructive"
+                              confirmText="Remove"
+                              cancelText="Cancel"
                             >
-                              <AlertDialogComponent
-                                title="Remove Member"
-                                description="Are you sure you want to remove this member?"
-                                onConfirm={() => {
-                                  mutateAsync(member.id.toString())
-                                }}
-                                disabled={isPending}
-                                variant="destructive"
-                                confirmText="Remove"
-                                cancelText="Cancel"
+                              <DropdownMenuItem
+                                className="h-10 px-2 py-2 cursor-pointer"
+                                onSelect={(e) => e.preventDefault()}
                               >
                                 <span className="font-normal text-sm">
                                   Remove
                                 </span>
-                              </AlertDialogComponent>
-                            </DropdownMenuItem>
+                              </DropdownMenuItem>
+                            </AlertDialogComponent>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>

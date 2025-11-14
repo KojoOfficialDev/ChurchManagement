@@ -9,7 +9,7 @@ export const genderEnum = z.enum(['male', 'female'], {
 
 // Base member schema - always required fields
 const baseMemberSchema = z.object({
-  image: z.any().optional(),
+  imageUrl: z.any().optional(),
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
   middleName: z.string().optional(),

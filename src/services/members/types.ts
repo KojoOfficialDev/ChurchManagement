@@ -2,6 +2,7 @@ import type { Pagination } from '@/lib/types'
 
 export type Member = {
   id: string
+  imageUrl: string
   firstName: string
   lastName: string
   middleName: string

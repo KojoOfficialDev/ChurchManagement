@@ -42,13 +42,23 @@ export class ExpenseCategoryService {
     expenseCategory: ExpenseCategory & { id: string },
   ) => {
     const churchId = await this.getChurchId()
-    const response = await protectedApi.put<ExpenseCategory>(
+    const response = await protectedApi.post<ExpenseCategory>(
       '/ExpensesCategory/update',
       {
         ...expenseCategory,
         churchId,
       },
     )
+    return response.data
+  }
+
+  static getAllExpenseCategories = async () => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.get<
+      Array<ExpenseCategory & { id: string }>
+    >('/ExpensesCategory/getAll', {
+      params: { id: churchId },
+    })
     return response.data
   }
 }

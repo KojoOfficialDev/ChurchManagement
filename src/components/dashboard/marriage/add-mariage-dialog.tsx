@@ -25,15 +25,12 @@ const AddMarriageDialog = () => {
       groomWitness: '',
       brideId: '',
       brideWitness: '',
-      placeOfBirth: '',
       placeOfStay: '',
-      homeDistrict: '',
       groomParentName: '',
       brideParentName: '',
       revMinister: '',
     },
   })
-  console.log(form.formState.errors)
 
   return (
     <Dialog>

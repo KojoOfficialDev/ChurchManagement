@@ -66,7 +66,7 @@ export const CONFIRMATION_FORM_SECTIONS: Array<FormSection> = [
             placeholder: 'Enter place of confirmation',
           },
           {
-            name: 'GodParent',
+            name: 'godParent',
             label: 'God Parent',
             type: 'text',
             placeholder: 'Enter name of GodParent',

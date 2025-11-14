@@ -62,7 +62,7 @@ export type FormField = {
   type: FormFieldType
   placeholder?: string
   rows?: number
-  options?: Array<{ label: string; value: string }>
+  options?: Array<{ label: string; value: string | number }>
   disabled?: boolean | ((value?: string | Date) => boolean)
   dependsOn?: FormField['name']
   dependsOnValue?: Array<string | boolean | number | Date>

@@ -1,7 +1,7 @@
 import { Link, useLocation } from '@tanstack/react-router'
 import { memo, useMemo } from 'react'
-import { cn } from '@/lib/utils'
 import { TooltipBuilder } from './tooltip-builder'
+import { cn } from '@/lib/utils'
 
 type NavItemProps = {
   item: {

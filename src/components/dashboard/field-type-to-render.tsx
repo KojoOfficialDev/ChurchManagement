@@ -62,7 +62,12 @@ export const FieldTypeToRender = <TFieldValues extends FieldValues>({
         <SelectInput
           control={control}
           name={field.name as Path<TFieldValues>}
-          items={field.options!}
+          items={
+            field.options?.map((option) => ({
+              label: option.label,
+              value: option.value.toString() || '',
+            })) || []
+          }
           placeholder={field.placeholder || 'Select an option'}
           allowCreate={field.allowCreate}
           label={field.label}
@@ -160,7 +165,12 @@ export const FieldTypeToRender = <TFieldValues extends FieldValues>({
           control={control}
           name={field.name as Path<TFieldValues>}
           label={field.label}
-          items={field.options!}
+          items={
+            field.options?.map((option) => ({
+              label: option.label,
+              value: option.value.toString() || '',
+            })) || []
+          }
           placeholder={field.placeholder || 'Select an option'}
           allowCreate={field.allowCreate}
           createConfig={field.createConfig}

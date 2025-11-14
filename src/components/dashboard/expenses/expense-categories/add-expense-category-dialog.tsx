@@ -41,6 +41,3 @@ const AddExpenseCategoryDialog = () => {
 }
 
 export default AddExpenseCategoryDialog
-
-
-

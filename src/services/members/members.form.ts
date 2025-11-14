@@ -315,7 +315,7 @@ export const useMemberForm = ({
       title: 'Membership & Societies Information ',
       fields: [
         {
-          name: 'image',
+          name: 'imageUrl',
           label: 'Profile Picture',
           type: 'file',
           placeholder: 'Upload member image',

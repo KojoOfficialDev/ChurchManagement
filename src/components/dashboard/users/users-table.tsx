@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import type { UserRole, UserStatus } from '@/services/users/types'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -37,7 +38,6 @@ import {
 import { Pagination } from '@/components/ui/pagination'
 import { useDebounce } from '@/lib/hooks/use-debounce'
 import { getAllUsersOptions } from '@/services/users/queries'
-import type { UserRole, UserStatus } from '@/services/users/types'
 
 const UsersTable = memo(() => {
   const [page, setPage] = useState(1)

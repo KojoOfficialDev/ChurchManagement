@@ -1,19 +1,19 @@
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useForm } from 'react-hook-form'
+import { UploadCloud, X } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
+import { useLoaderData } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import type { ChurchProfile } from '@/services/setup/setup.dto'
 import { PhoneInput } from '@/components/phone-input'
 import { TextInput } from '@/components/text-input'
 import { churchProfileSchema } from '@/services/setup/setup.dto'
-import { UploadCloud, X } from 'lucide-react'
 import { Label } from '@/components/ui/label'
-import { useEffect, useRef, useState } from 'react'
 import { useAssetsMutations } from '@/services/assets/mutations'
-import { toast } from 'sonner'
 import { Spinner } from '@/components/ui/spinner'
 import { Button } from '@/components/ui/button'
 import { useSetupMutations } from '@/services/setup/mutations'
-import { useLoaderData } from '@tanstack/react-router'
-import { useQueryClient } from '@tanstack/react-query'
 import { churchProfileQuery } from '@/services/setup/queries'
 
 export const ChurchProfileForm = () => {
@@ -33,10 +33,10 @@ export const ChurchProfileForm = () => {
   const form = useForm<ChurchProfile>({
     resolver: standardSchemaResolver(churchProfileSchema),
     defaultValues: {
-      churchContact: data?.churchContact || '',
-      churchEmail: data?.churchEmail || '',
-      logoUrl: data?.logoUrl || '',
-      name: data?.name || '',
+      churchContact: data.churchContact || '',
+      churchEmail: data.churchEmail || '',
+      logoUrl: data.logoUrl || '',
+      name: data.name || '',
     },
   })
   const logoInputRef = useRef<HTMLInputElement>(null)
@@ -111,8 +111,8 @@ export const ChurchProfileForm = () => {
     }
   }
 
-  const handleSubmit = (data: ChurchProfile) => {
-    updateChurchProfileMutation(data, {
+  const handleSubmit = (formdata: ChurchProfile) => {
+    updateChurchProfileMutation(formdata, {
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: churchProfileQuery.queryKey,

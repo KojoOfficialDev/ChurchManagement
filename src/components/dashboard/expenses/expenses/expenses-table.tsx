@@ -38,6 +38,9 @@ import { EmptyComponent } from '@/components/empty-component'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { ButtonSkeleton } from '@/components/skeletons/button-skeleton'
 import { useDebounce } from '@/lib/hooks/use-debounce'
+import { formatCurrency } from '@/lib/utils'
+import { useExcelExport } from '@/lib/hooks/use-excel-export'
+import { ExpenseService } from '@/services/expenses/expenses.service'
 
 const ExpensesTable = memo(() => {
   const [search, setSearch] = useState('')
@@ -53,6 +56,44 @@ const ExpensesTable = memo(() => {
   const [viewingExpense, setViewingExpense] = useState<any>(null)
 
   const expenses = useMemo(() => expensesData.data, [expensesData])
+
+  const { exportToExcel, isExporting } = useExcelExport({
+    fetchData: ExpenseService.getAllExpenses,
+    columns: [
+      { header: 'ID', accessor: (item: any) => item.id },
+      { header: 'Name', accessor: (item: any) => item.name },
+      {
+        header: 'Description',
+        accessor: (item: any) => item.description || '-',
+      },
+      {
+        header: 'Expense Category ID',
+        accessor: (item: any) => item.expensesCategoryId || '-',
+      },
+      {
+        header: 'Amount Spent',
+        accessor: (item: any) => item.amountSpent,
+      },
+      {
+        header: 'Amount Spent (Formatted)',
+        accessor: (item: any) => formatCurrency(item.amountSpent),
+      },
+      {
+        header: 'Supplier',
+        accessor: (item: any) => item.suppliersName || '-',
+      },
+      { header: 'Payment Method', accessor: (item: any) => item.paymentMethod },
+      {
+        header: 'Expense Date',
+        accessor: (item: any) => format(item.expenseDate, 'MMM dd, yyyy'),
+      },
+      {
+        header: 'Is Active',
+        accessor: (item: any) => (item.isActive ? 'Yes' : 'No'),
+      },
+    ],
+    filename: 'expenses',
+  })
 
   const toggleSelect = useCallback(
     (id: string) => {
@@ -153,9 +194,18 @@ const ExpensesTable = memo(() => {
                 )}
               </div>
 
-              <Button variant="outline" size={isOpen ? 'icon' : 'default'}>
+              <Button
+                variant="outline"
+                size={isOpen ? 'icon' : 'default'}
+                onClick={exportToExcel}
+                disabled={isExporting}
+              >
                 <DownloadIcon className="w-5 h-5" />
-                {!isOpen && <span className="font-medium text-sm">Export</span>}
+                {!isOpen && (
+                  <span className="font-medium text-sm">
+                    {isExporting ? 'Exporting...' : 'Export'}
+                  </span>
+                )}
               </Button>
             </div>
           </div>
@@ -224,7 +274,7 @@ const ExpensesTable = memo(() => {
                       </TableCell>
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
-                          ${expense.amountSpent.toLocaleString()}
+                          {formatCurrency(expense.amountSpent)}
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-3">

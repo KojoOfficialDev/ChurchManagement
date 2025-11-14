@@ -26,7 +26,7 @@ const AddConfirmationDialog = () => {
       homeDistrict: '',
       confirmationDate: undefined,
       placeOfConfirmation: '',
-      GodParent: '',
+      godParent: '',
       revMinister: '',
       isMember: false,
     },

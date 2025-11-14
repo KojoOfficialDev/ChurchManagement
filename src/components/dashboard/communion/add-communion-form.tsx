@@ -54,6 +54,8 @@ export const AddCommunionForm = ({ form }: AddCommunionFormProps) => {
     return modifiedSection
   }, [handleMemberSelect])
 
+  console.log(form.formState.errors)
+
   const shouldShowField = useCallback(
     (field: FormField) => {
       if (!field.dependsOn) return true

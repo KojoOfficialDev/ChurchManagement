@@ -17,7 +17,35 @@ export const confirmationMutations = () => {
       toast.error('Failed to create confirmation')
     },
   })
+
+  const updateConfirmation = useMutation({
+    mutationFn: ConfirmationService.updateConfirmation,
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['confirmations'] })
+      toast.success('Confirmation updated successfully')
+    },
+    onError: () => {
+      toast.error('Failed to update confirmation')
+    },
+  })
+
+  const removeConfirmation = useMutation({
+    mutationKey: ['removeConfirmation'],
+    mutationFn: ConfirmationService.removeConfirmation,
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['confirmations'] })
+      toast.success('Confirmation record removed successfully')
+    },
+    onError: () => {
+      toast.error('Failed to remove confirmation record')
+    },
+  })
+
   return {
     createConfirmation,
+    updateConfirmation,
+    removeConfirmation,
   }
 }

@@ -28,7 +28,7 @@ export const AddMarriageForm = ({ form }: AddMarriageFormProps) => {
       const dependsOnValue = form.watch(
         childSection.dependsOn as FieldPath<CreateMarriage>,
       )
-      return childSection.dependsOnValue?.includes(dependsOnValue)
+      return childSection.dependsOnValue?.includes(dependsOnValue!)
     },
     [form],
   )

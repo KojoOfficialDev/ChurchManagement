@@ -1,7 +1,7 @@
 import { queryOptions } from '@tanstack/react-query'
+import { UsersService } from './users.service'
 import type { User, UsersQueryParams } from '@/services/users/types'
 import { protectedApi } from '@/server/api'
-import { UsersService } from './users.service'
 
 export class UsersQueries {
   static getUserProfile = async () => {
