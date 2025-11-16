@@ -13,6 +13,7 @@ type TextAreaInputProps<TFieldValues extends FieldValues> = {
   name: Path<TFieldValues>
   labelClassName?: string
   className?: string
+  containerClassName?: string
 }
 const TextAreaInputComponent = <TFieldValues extends FieldValues>({
   control,
@@ -24,13 +25,14 @@ const TextAreaInputComponent = <TFieldValues extends FieldValues>({
   label,
   labelClassName,
   className,
+  containerClassName,
 }: TextAreaInputProps<TFieldValues>) => {
   return (
     <Controller
       control={control}
       name={name}
       render={({ field: { onChange, value, onBlur } }) => (
-        <div>
+        <div className={cn(containerClassName)}>
           <div className="space-y-2">
             {label && (
               <label

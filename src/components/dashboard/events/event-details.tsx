@@ -101,3 +101,4 @@ const EventDetails = ({ event, open, onOpenChange }: EventDetailsProps) => (
 )
 
 export default EventDetails
+

@@ -23,6 +23,7 @@ import { Route as DashboardContributionIndexRouteImport } from './routes/dashboa
 import { Route as DashboardConfirmationIndexRouteImport } from './routes/dashboard/confirmation/index'
 import { Route as DashboardCommunionIndexRouteImport } from './routes/dashboard/communion/index'
 import { Route as DashboardBaptismIndexRouteImport } from './routes/dashboard/baptism/index'
+import { Route as DashboardAlertCenterIndexRouteImport } from './routes/dashboard/alert-center/index'
 
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: '/dashboard',
@@ -95,12 +96,19 @@ const DashboardBaptismIndexRoute = DashboardBaptismIndexRouteImport.update({
   path: '/baptism/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardAlertCenterIndexRoute =
+  DashboardAlertCenterIndexRouteImport.update({
+    id: '/alert-center/',
+    path: '/alert-center/',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/login': typeof _authLoginRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/alert-center': typeof DashboardAlertCenterIndexRoute
   '/dashboard/baptism': typeof DashboardBaptismIndexRoute
   '/dashboard/communion': typeof DashboardCommunionIndexRoute
   '/dashboard/confirmation': typeof DashboardConfirmationIndexRoute
@@ -115,6 +123,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof _authLoginRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/alert-center': typeof DashboardAlertCenterIndexRoute
   '/dashboard/baptism': typeof DashboardBaptismIndexRoute
   '/dashboard/communion': typeof DashboardCommunionIndexRoute
   '/dashboard/confirmation': typeof DashboardConfirmationIndexRoute
@@ -132,6 +141,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/__auth/login': typeof _authLoginRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/alert-center/': typeof DashboardAlertCenterIndexRoute
   '/dashboard/baptism/': typeof DashboardBaptismIndexRoute
   '/dashboard/communion/': typeof DashboardCommunionIndexRoute
   '/dashboard/confirmation/': typeof DashboardConfirmationIndexRoute
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/dashboard/'
+    | '/dashboard/alert-center'
     | '/dashboard/baptism'
     | '/dashboard/communion'
     | '/dashboard/confirmation'
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/dashboard'
+    | '/dashboard/alert-center'
     | '/dashboard/baptism'
     | '/dashboard/communion'
     | '/dashboard/confirmation'
@@ -179,6 +191,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/__auth/login'
     | '/dashboard/'
+    | '/dashboard/alert-center/'
     | '/dashboard/baptism/'
     | '/dashboard/communion/'
     | '/dashboard/confirmation/'
@@ -296,6 +309,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardBaptismIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/alert-center/': {
+      id: '/dashboard/alert-center/'
+      path: '/alert-center'
+      fullPath: '/dashboard/alert-center'
+      preLoaderRoute: typeof DashboardAlertCenterIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
   }
 }
 
@@ -313,6 +333,7 @@ const _authRouteRouteWithChildren = _authRouteRoute._addFileChildren(
 
 interface DashboardRouteRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardAlertCenterIndexRoute: typeof DashboardAlertCenterIndexRoute
   DashboardBaptismIndexRoute: typeof DashboardBaptismIndexRoute
   DashboardCommunionIndexRoute: typeof DashboardCommunionIndexRoute
   DashboardConfirmationIndexRoute: typeof DashboardConfirmationIndexRoute
@@ -326,6 +347,7 @@ interface DashboardRouteRouteChildren {
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardAlertCenterIndexRoute: DashboardAlertCenterIndexRoute,
   DashboardBaptismIndexRoute: DashboardBaptismIndexRoute,
   DashboardCommunionIndexRoute: DashboardCommunionIndexRoute,
   DashboardConfirmationIndexRoute: DashboardConfirmationIndexRoute,
