@@ -19,7 +19,7 @@ export const alertMessagesOptions = ({
 }) =>
   queryOptions({
     queryKey: ['alertMessages', { page, pageSize, search }],
-    queryFn: () => AlertsService.getAllMessage(),
+    queryFn: () => AlertsService.getAllMessage({ page, pageSize, search }),
     staleTime: 1000 * 60 * 2,
     refetchOnWindowFocus: false,
   })

@@ -1,14 +1,7 @@
-import {
-  DownloadIcon,
-  MoreVerticalIcon,
-  SearchIcon,
-  Trash2Icon,
-} from 'lucide-react'
-import { memo, useCallback, useMemo, useState } from 'react'
+import { MoreVerticalIcon } from 'lucide-react'
+import { memo } from 'react'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import type { UserRole, UserStatus } from '@/services/users/types'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,169 +16,35 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from '@/components/ui/input-group'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Pagination } from '@/components/ui/pagination'
-import { useDebounce } from '@/lib/hooks/use-debounce'
 import { getAllUsersOptions } from '@/services/users/queries'
+import { AddUserDialog } from './add-user-dialog'
 
 const UsersTable = memo(() => {
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(15)
-  const [search, setSearch] = useState('')
-  const [roleFilter, setRoleFilter] = useState<UserRole | 'All Category'>(
-    'All Category',
-  )
-  const [statusFilter, setStatusFilter] = useState<UserStatus | 'All Status'>(
-    'All Status',
-  )
-  const debouncedSearch = useDebounce(search, 400)
-  const { data: usersResponse } = useSuspenseQuery(
-    getAllUsersOptions({
-      page,
-      pageSize,
-      search: debouncedSearch,
-      role: roleFilter,
-      status: statusFilter,
-    }),
-  )
-  const userData = usersResponse.data
-  const [selectedUsers, setSelectedUsers] = useState<Array<string>>([])
-
-  const toggleSelect = useCallback(
-    (id: string) => {
-      if (selectedUsers.includes(id)) {
-        setSelectedUsers((prev) =>
-          prev.filter((selectedId) => selectedId !== id),
-        )
-      } else {
-        setSelectedUsers((prev) => [...prev, id])
-      }
-    },
-    [selectedUsers],
-  )
-
-  const handleSelectAll = useCallback(() => {
-    setSelectedUsers(userData.map((user) => user.id))
-  }, [userData])
-
-  const handleDeselectAll = useCallback(() => {
-    setSelectedUsers([])
-  }, [])
-
-  const isAllSelected = useMemo(
-    () => selectedUsers.length === userData.length && userData.length > 0,
-    [selectedUsers, userData],
-  )
-
-  const toggleSelectAll = useCallback(() => {
-    if (isAllSelected) {
-      handleDeselectAll()
-    } else {
-      handleSelectAll()
-    }
-  }, [isAllSelected, handleSelectAll, handleDeselectAll])
+  const { data: users } = useSuspenseQuery(getAllUsersOptions())
 
   return (
-    <section className="flex flex-col w-full items-start gap-6">
+    <section className="flex flex-col w-full items-start gap-6 mt-8">
       <header className="flex items-center justify-between w-full gap-10">
         <h1 className="text-gray-800 font-text-xl-bold font-[number:var(--text-xl-bold-font-weight)] text-[length:var(--text-xl-bold-font-size)] tracking-[var(--text-xl-bold-letter-spacing)] leading-[var(--text-xl-bold-line-height)] [font-style:var(--text-xl-bold-font-style)]">
           Users Management
         </h1>
-        <Button className="bg-primary-600 hover:bg-primary-700">
-          <span className="font-medium text-sm">Add New user</span>
-        </Button>
+
+        <AddUserDialog>
+          <Button>Add New user</Button>
+        </AddUserDialog>
       </header>
 
       <div className="flex flex-col items-start gap-2 w-full">
         <div className="flex flex-col items-start w-full bg-[#ffffff] rounded-2xl overflow-hidden border border-solid border-[#eaecf0]">
           <div className="flex items-center justify-between w-full bg-[#ffffff] border-b border-solid border-[#eaecf0] pt-5 pb-[19px] px-6">
             <h2 className="text-gray-600 font-bold text-xl">All Users</h2>
-
-            <div className="flex items-center gap-4">
-              <div className="flex items-start gap-2">
-                <InputGroup>
-                  <InputGroupInput
-                    placeholder="Search by Name"
-                    className="border-gray-500"
-                    onChange={(e) => setSearch(e.target.value)}
-                    value={search}
-                  />
-                  <InputGroupAddon>
-                    <SearchIcon />
-                  </InputGroupAddon>
-                </InputGroup>
-
-                <Select
-                  value={roleFilter}
-                  onValueChange={(value) =>
-                    setRoleFilter(value as UserRole | 'All Category')
-                  }
-                >
-                  <SelectTrigger className="w-[160px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="All Category">All Category</SelectItem>
-                    <SelectItem value="Admin">Admin</SelectItem>
-                    <SelectItem value="Finance">Finance</SelectItem>
-                    <SelectItem value="Auditor">Auditor</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select
-                  value={statusFilter}
-                  onValueChange={(value) =>
-                    setStatusFilter(value as UserStatus | 'All Status')
-                  }
-                >
-                  <SelectTrigger className="w-[150px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="All Status">All Status</SelectItem>
-                    <SelectItem value="Active">Active</SelectItem>
-                    <SelectItem value="Inactive">Inactive</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                {selectedUsers.length > 0 && (
-                  <Button variant="destructive" size="default">
-                    <Trash2Icon className="w-5 h-5" />
-                    <span className="font-medium text-sm">Delete</span>
-                  </Button>
-                )}
-              </div>
-
-              <Button variant="outline" size="default">
-                <DownloadIcon className="w-5 h-5" />
-                <span className="font-medium text-sm">Export</span>
-              </Button>
-            </div>
           </div>
 
           <div className="w-full overflow-x-auto">
-            {userData.length > 0 ? (
+            {users.length > 0 ? (
               <Table>
                 <TableHeader>
                   <TableRow className="bg-[#fbfcfc] border-b border-[#eaecf0] hover:bg-[#fbfcfc]">
-                    <TableHead className="w-[75px] px-6 py-3">
-                      <Checkbox
-                        checked={isAllSelected}
-                        onCheckedChange={toggleSelectAll}
-                        className="cursor-pointer"
-                      />
-                    </TableHead>
                     <TableHead className="px-6 py-3">
                       <span className="font-medium text-gray-800 text-xs">
                         Full Name
@@ -210,21 +69,14 @@ const UsersTable = memo(() => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {userData.map((user) => (
+                  {users.map((user) => (
                     <TableRow
                       key={user.id}
                       className="border-b border-[#eaecf0]"
                     >
                       <TableCell className="px-6 py-3">
-                        <Checkbox
-                          checked={selectedUsers.includes(user.id)}
-                          onCheckedChange={() => toggleSelect(user.id)}
-                          className="cursor-pointer"
-                        />
-                      </TableCell>
-                      <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
-                          {user.fullName}
+                          {user.userName}
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-3">
@@ -234,12 +86,7 @@ const UsersTable = memo(() => {
                       </TableCell>
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
-                          {user.role}
-                        </span>
-                      </TableCell>
-                      <TableCell className="px-6 py-3">
-                        <span className="font-normal text-gray-800 text-xs">
-                          {user.addedOn}
+                          {user.accessRole ?? '-'}
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-3">
@@ -287,23 +134,12 @@ const UsersTable = memo(() => {
             ) : (
               <div className="flex items-center justify-center w-full h-full">
                 <span className="font-medium text-xs py-4 px-2 text-muted-foreground">
-                  No users found matching your search "{search}"
+                  No users found
                 </span>
               </div>
             )}
           </div>
         </div>
-
-        <Pagination
-          currentPage={usersResponse.page}
-          pageSize={usersResponse.pageSize}
-          totalCount={usersResponse.totalCount}
-          totalPages={usersResponse.totalPages}
-          hasPrevious={usersResponse.hasPrevious}
-          hasNext={usersResponse.hasNext}
-          onPageChange={setPage}
-          onPageSizeChange={setPageSize}
-        />
       </div>
     </section>
   )

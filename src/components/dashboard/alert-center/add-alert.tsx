@@ -78,12 +78,16 @@ const AddAlert = ({ children }: { children: React.ReactNode }) => {
       await createAlertMessage(data, {
         onSuccess: () => {
           form.reset()
+          setMessageTemplateId(null)
+          setMessageType('template')
+          setSendTo('all')
         },
       })
     },
     [form, createAlertMessage],
   )
 
+  console.log(form.getValues())
   const handleTemplateChange = useCallback(
     (value: string) => {
       setMessageTemplateId(Number(value))
@@ -97,6 +101,7 @@ const AddAlert = ({ children }: { children: React.ReactNode }) => {
     [form, alertTemplates],
   )
 
+  console.log(form.formState.errors)
   const handleChangeMessageType = useCallback(() => {
     setMessageTemplateId(null)
     form.setValue('message', '')
@@ -231,7 +236,12 @@ const AddAlert = ({ children }: { children: React.ReactNode }) => {
               </p>
             </div>
           )}
-          <Button>
+          {form.formState.errors.message?.message && (
+            <p className="text-sm text-destructive">
+              {form.formState.errors.message?.message}
+            </p>
+          )}
+          <Button disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting ? 'Creating...' : 'Create Alert'}
           </Button>
         </form>

@@ -20,8 +20,9 @@ export type Member = {
   occupation: string
   isActive: boolean
   membershipNumber: string
-  belongsToSociety: boolean
+  isBelongToSociety: boolean
   societyName: Array<string>
+  societies: Array<{ id: string; name: string }>
 }
 
 export type GetAllMembersResponse = Pagination & {

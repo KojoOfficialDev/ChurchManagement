@@ -52,8 +52,11 @@ export const MemberDetails = ({ children, member }: MemberDetailsProps) => {
   const societyMembershipData = [
     { label: 'Membership Number', value: member.membershipNumber },
     { label: 'Nationality', value: member.nationality },
-    { label: 'Belongs to Society', value: member.belongsToSociety },
-    { label: 'Society Name(s)', value: member.societyName },
+    { label: 'Belongs to Society', value: member.isBelongToSociety },
+    {
+      label: 'Society Name(s)',
+      value: member.societies?.map((society) => society.name).join(', '),
+    },
   ]
 
   return (

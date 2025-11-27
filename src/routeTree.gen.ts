@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as _authRouteRouteImport } from './routes/__auth/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -25,6 +26,11 @@ import { Route as DashboardCommunionIndexRouteImport } from './routes/dashboard/
 import { Route as DashboardBaptismIndexRouteImport } from './routes/dashboard/baptism/index'
 import { Route as DashboardAlertCenterIndexRouteImport } from './routes/dashboard/alert-center/index'
 
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -106,6 +112,7 @@ const DashboardAlertCenterIndexRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/pricing': typeof PricingRoute
   '/login': typeof _authLoginRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/alert-center': typeof DashboardAlertCenterIndexRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/pricing': typeof PricingRoute
   '/login': typeof _authLoginRoute
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/alert-center': typeof DashboardAlertCenterIndexRoute
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/__auth': typeof _authRouteRouteWithChildren
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/pricing': typeof PricingRoute
   '/__auth/login': typeof _authLoginRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/alert-center/': typeof DashboardAlertCenterIndexRoute
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/pricing'
     | '/login'
     | '/dashboard/'
     | '/dashboard/alert-center'
@@ -172,6 +182,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/pricing'
     | '/login'
     | '/dashboard'
     | '/dashboard/alert-center'
@@ -189,6 +200,7 @@ export interface FileRouteTypes {
     | '/'
     | '/__auth'
     | '/dashboard'
+    | '/pricing'
     | '/__auth/login'
     | '/dashboard/'
     | '/dashboard/alert-center/'
@@ -207,10 +219,18 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   _authRouteRoute: typeof _authRouteRouteWithChildren
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
+  PricingRoute: typeof PricingRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -367,6 +387,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   _authRouteRoute: _authRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  PricingRoute: PricingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

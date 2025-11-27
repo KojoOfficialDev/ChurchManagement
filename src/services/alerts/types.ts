@@ -10,13 +10,21 @@ export type AlertTemplate = CreateAlertTemplate & {
 }
 
 export type AlertMessage = {
-  societyIds: number[]
-  memberId: number | null
-  message: string
+  id: number
+  messageTemplateId: number | null
+  messageTemplate: string | null
+  messageContent: string
+  sentToMemberId: string | null
+  sentToSocietyIds: number[] | null
+  sentAt: string
+  isSentToIndividual: boolean
+  count: number
+  churchId: number
   createdDate: string
   createdBy: string
   modifiedDate: string
   modifiedBy: string
+  isActive: boolean
 }
 
 export type AlertMessagesResponse = Pagination & {

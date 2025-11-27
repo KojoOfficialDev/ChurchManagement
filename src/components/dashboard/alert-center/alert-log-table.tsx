@@ -65,12 +65,12 @@ const AlertLogTable = memo(() => {
   )
 
   const { exportToExcel, isExporting } = useExcelExport({
-    fetchData: AlertsService.getAllMessage,
+    fetchData: AlertsService.getAll,
     columns: [
-      { header: 'ID', accessor: (item: any) => item.id },
+      { header: 'ID', accessor: (item) => item.id },
       {
         header: 'Recipient Name',
-        accessor: (item: any) => item.recipientName || '-',
+        accessor: (item) => item.sentToSocietyIds?.join(' ,') || '-',
       },
       {
         header: 'Phone Number',
@@ -94,9 +94,9 @@ const AlertLogTable = memo(() => {
       },
       {
         header: 'Sent Date',
-        accessor: (item: any) =>
-          item.sentDate
-            ? format(new Date(item.sentDate), 'MMM dd, yyyy HH:mm')
+        accessor: (item) =>
+          item.sentAt
+            ? format(new Date(item.sentAt), 'MMM dd, yyyy HH:mm')
             : '-',
       },
       {
@@ -237,11 +237,6 @@ const AlertLogTable = memo(() => {
                     </TableHead>
                     <TableHead className="px-6 py-3">
                       <span className="font-medium text-gray-800 text-xs">
-                        Phone Number
-                      </span>
-                    </TableHead>
-                    <TableHead className="px-6 py-3">
-                      <span className="font-medium text-gray-800 text-xs">
                         Message
                       </span>
                     </TableHead>
@@ -282,17 +277,18 @@ const AlertLogTable = memo(() => {
                       </TableCell>
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
-                          {message.recipientName || '-'}
+                          {message.sentToMemberId
+                            ? message.sentToMemberId
+                            : message.sentToSocietyIds?.length &&
+                                message.sentToSocietyIds?.length > 0
+                              ? message.sentToSocietyIds?.join(', ')
+                              : 'General Congregation'}
                         </span>
                       </TableCell>
-                      <TableCell className="px-6 py-3">
-                        <span className="font-normal text-gray-800 text-xs">
-                          {message.phoneNumber || '-'}
-                        </span>
-                      </TableCell>
+
                       <TableCell className="px-6 py-3 max-w-[300px]">
                         <span className="font-normal text-gray-800 text-xs line-clamp-2">
-                          {message.message || '-'}
+                          {message.messageContent || '-'}
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-3">
@@ -302,13 +298,16 @@ const AlertLogTable = memo(() => {
                       </TableCell>
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
-                          {message.status || '-'}
+                          {message.isActive || '-'}
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-[11px]">
                         <span className="font-normal text-gray-800 text-xs">
-                          {message.sentDate
-                            ? format(new Date(message.sentDate), 'MMM dd, yyyy')
+                          {message.sentAt
+                            ? format(
+                                new Date(message.sentAt),
+                                'MMM dd, yyyy HH:mm a',
+                              )
                             : '-'}
                         </span>
                       </TableCell>
@@ -413,4 +412,3 @@ const AlertLogTable = memo(() => {
 
 AlertLogTable.displayName = 'AlertLogTable'
 export default AlertLogTable
-

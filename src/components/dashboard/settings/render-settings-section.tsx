@@ -5,6 +5,7 @@ import type { SettingsTabValue } from '@/lib/types/settings'
 import UsersTable from '@/components/dashboard/users/users-table'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { TableSkeleton } from '@/components/skeletons/table.skeleton'
+import SmsManagement from '@/components/dashboard/settings/sms-management'
 
 type RenderSettingsSectionProps = {
   tab: SettingsTabValue
@@ -22,6 +23,14 @@ export const RenderSettingsSection = ({ tab }: RenderSettingsSectionProps) => {
         </ErrorBoundary>
       )
     case 'subscriptions':
-      return <Subscriptions />
+      return (
+        <ErrorBoundary level="section">
+          <Suspense fallback={<TableSkeleton />}>
+            <Subscriptions />
+          </Suspense>
+        </ErrorBoundary>
+      )
+    case 'sms-credit':
+      return <SmsManagement />
   }
 }

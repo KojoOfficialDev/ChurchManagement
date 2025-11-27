@@ -111,3 +111,9 @@ const MarriageDetails = ({
 
 export default MarriageDetails
 
+
+
+
+
+
+

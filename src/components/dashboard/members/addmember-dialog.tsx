@@ -104,14 +104,14 @@ const AddmemberDialog = () => {
       houseNumber: '',
       educationalLevel: '',
       occupation: '',
-      isActive: false,
+      isActive: true,
       // Discriminated unions - default to false for all
       isBaptized: false,
       isFirstCommunion: false,
       isConfirmed: false,
       employmentStatus: undefined,
       maritalStatus: undefined,
-      belongsToSociety: false,
+      isBelongToSociety: false,
       societyName: [],
     },
   })

@@ -39,9 +39,9 @@ const baseMemberSchema = z.object({
     ),
   educationalLevel: z.string().optional(),
   occupation: z.string().optional(),
-  isActive: z.boolean().default(false),
+  isActive: z.boolean().default(true),
   membershipNumber: z.string().optional(),
-  belongsToSociety: z.boolean().default(false),
+  isBelongToSociety: z.boolean().default(false),
   societyName: z.array(z.coerce.number()).optional(),
 })
 

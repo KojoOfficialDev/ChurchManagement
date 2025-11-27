@@ -1,6 +1,10 @@
 import { protectedApi } from '@/server/protected-api'
 import { type CreateAlertTemplate } from './alerts.dto'
-import type { AlertTemplate } from './types'
+import type {
+  AlertMessage,
+  AlertMessagesResponse,
+  AlertTemplate,
+} from './types'
 import { sessionOptions } from '../auth/queries'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 
@@ -41,8 +45,42 @@ export class AlertsService {
     return response.data
   }
 
-  static getAllMessage = async () => {
-    const response = await protectedApi.get('Messaging/GetAllMessages')
+  static getAllMessage = async ({
+    page = 1,
+    pageSize = 15,
+    search,
+  }: {
+    page: number
+    pageSize: number
+    search?: string
+  }) => {
+    const churchId = await this.getChurchId()
+    const searchParams = new URLSearchParams()
+    searchParams.append('page', page.toString())
+    searchParams.append('pageSize', pageSize.toString())
+    if (search) {
+      searchParams.append('search', search)
+    }
+    searchParams.append('id', churchId)
+    const response = await protectedApi.get<AlertMessagesResponse>(
+      'Messaging/GetAllMessages',
+      {
+        params: searchParams,
+      },
+    )
+    return response.data
+  }
+
+  static getAll = async () => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.get<AlertMessage[]>(
+      'Messaging/GetAllMessages',
+      {
+        params: {
+          churchId,
+        },
+      },
+    )
     return response.data
   }
 
@@ -59,7 +97,11 @@ export class AlertsService {
   }
 
   static createAlertMessage = async (message: any) => {
-    const response = await protectedApi.post('/Messaging/send', message)
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.post('/Messaging/send', {
+      ...message,
+      churchId: Number(churchId),
+    })
     return response.data
   }
 }

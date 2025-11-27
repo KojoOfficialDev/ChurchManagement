@@ -238,6 +238,12 @@ export const useMemberForm = ({
               type: 'text',
               placeholder: 'Enter place of work',
             },
+            {
+              name: 'occupation',
+              label: 'Occupation',
+              type: 'text',
+              placeholder: 'Enter occupation',
+            },
           ],
         },
         {
@@ -295,14 +301,6 @@ export const useMemberForm = ({
           placeholder: 'Select employment status',
         },
         {
-          name: 'occupation',
-          label: 'Occupation',
-          type: 'text',
-          placeholder: 'Enter occupation',
-          dependsOn: 'employmentStatus',
-          dependsOnValue: ['employed', 'self-employed'],
-        },
-        {
           name: 'maritalStatus',
           label: 'Marital Status',
           type: 'select',
@@ -325,7 +323,7 @@ export const useMemberForm = ({
           },
         },
         {
-          name: 'belongsToSociety',
+          name: 'isBelongToSociety',
           label: 'Do you belong to any society',
           type: 'checkbox',
         },
@@ -342,7 +340,7 @@ export const useMemberForm = ({
           },
           options: societies,
           placeholder: 'Select societies',
-          dependsOn: 'belongsToSociety',
+          dependsOn: 'isBelongToSociety',
           dependsOnValue: [true],
         },
       ],
@@ -351,15 +349,3 @@ export const useMemberForm = ({
 
   return { MEMBER_FORM_SECTIONS }
 }
-
-// export const getFormFields = async () => {
-//   const { queryClient } = getContext()
-//   const data = await queryClient.ensureQueryData(getNationalitiesOptions)
-
-//   const nationalities = data.map((nation) => {
-//     return {
-//       label: nation.name,
-//       value: nation.id,
-//     }
-//   })
-// }

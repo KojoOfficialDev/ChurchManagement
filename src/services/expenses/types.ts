@@ -5,3 +5,9 @@ export type ExpenseResponse = Pagination & {
   data: Array<Expense & { id: string }>
 }
 
+
+
+
+
+
+

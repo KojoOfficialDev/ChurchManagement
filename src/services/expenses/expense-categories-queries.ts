@@ -8,3 +8,9 @@ export const expenseCategoriesQueryOptions = () =>
     staleTime: 5 * 60 * 1000,
   })
 
+
+
+
+
+
+

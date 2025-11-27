@@ -61,7 +61,7 @@ export class MembersService {
     const membershipNumber = await this.generateMemberId()
     const payload = {
       ...member,
-      churchId: churchId,
+      churchId,
       membershipNumber: membershipNumber,
     }
     const response = await protectedApi.post('/Member/Save', {

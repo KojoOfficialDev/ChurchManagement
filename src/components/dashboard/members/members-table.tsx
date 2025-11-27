@@ -136,13 +136,13 @@ const MembersTable = memo(() => {
       { header: 'Occupation', accessor: (item) => item.occupation || '-' },
       {
         header: 'Belongs to Society',
-        accessor: (item) => (item.belongsToSociety ? 'Yes' : 'No'),
+        accessor: (item) => (item.isBelongToSociety ? 'Yes' : 'No'),
       },
       {
         header: 'Society Names',
         accessor: (item) =>
-          item.societyName && item.societyName.length > 0
-            ? item.societyName.join(', ')
+          item.societies && item.societies.length > 0
+            ? item.societies.map((society) => society.name).join(', ')
             : '-',
       },
       {
@@ -334,14 +334,16 @@ const MembersTable = memo(() => {
                             <div className="w-2 h-2 mr-1.5">
                               <div className="w-1.5 h-1.5 bg-[#14b96c] rounded-[3px]" />
                             </div>
-                            <span className="font-medium text-xs">Active</span>
+                            <span className="font-medium text-xs text-[#037847]">
+                              Active
+                            </span>
                           </Badge>
                         ) : (
                           <Badge className="bg-[#ffe8e8] hover:bg-[#ffe8e8] text-crimson border-0 rounded-2xl px-2 py-0.5 h-auto">
                             <div className="w-2 h-2 mr-1.5">
-                              <div className="w-1.5 h-1.5 bg-crimson rounded-[3px]" />
+                              <div className="w-1.5 h-1.5 bg-red-500 rounded-[3px]" />
                             </div>
-                            <span className="font-medium text-xs">
+                            <span className="font-medium text-xs text-red-500">
                               Inactive
                             </span>
                           </Badge>
