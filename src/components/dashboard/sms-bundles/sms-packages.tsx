@@ -1,6 +1,8 @@
-import { Button } from '@/components/ui/button'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { MessageCircle } from 'lucide-react'
+import { useState } from 'react'
+import type { PurchaseSmsBundle } from '@/services/sms-bundles/smsBundles.dto'
+import { Button } from '@/components/ui/button'
 import { getSmsBundlesOptions } from '@/services/sms-bundles/queries'
 import { formatCurrency } from '@/lib/utils'
 import {
@@ -12,8 +14,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { useState } from 'react'
-import type { PurchaseSmsBundle } from '@/services/sms-bundles/smsBundles.dto'
 import { useSmsBundlesMutations } from '@/services/sms-bundles/mutations'
 
 export const SMSPackages = () => {

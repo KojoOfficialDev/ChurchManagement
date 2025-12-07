@@ -1,15 +1,20 @@
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { useCallback, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import type { CreateAlertMessage } from '@/services/alerts/alerts.dto'
 import { MemberSearchInput } from '@/components/member-search-input'
 import { MultiSelectInput } from '@/components/multiselect-input'
-import { SelectInput } from '@/components/select-component'
 import { TextAreaInput } from '@/components/text-area-Input'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
-  DialogTitle,
-  DialogHeader,
   DialogContent,
-  DialogTrigger,
   DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -20,19 +25,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  alertMessageSchema,
-  type CreateAlertMessage,
-} from '@/services/alerts/alerts.dto'
+import { alertMessageSchema } from '@/services/alerts/alerts.dto'
 import { useAlertsMutations } from '@/services/alerts/mutations'
 import { alertTemplatesOptions } from '@/services/alerts/queries'
 import { useSocietiesMutations } from '@/services/societies/mutations'
 import { getSocietiesOptions } from '@/services/societies/queries'
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { useCallback, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
 
 const AddAlert = ({ children }: { children: React.ReactNode }) => {
   const { data: societies = [] } = useSuspenseQuery(getSocietiesOptions)
@@ -91,11 +88,11 @@ const AddAlert = ({ children }: { children: React.ReactNode }) => {
   const handleTemplateChange = useCallback(
     (value: string) => {
       setMessageTemplateId(Number(value))
-      const template = alertTemplates.find(
+      const foundTemplate = alertTemplates.find(
         (template) => template.id.toString() === value,
       )
-      if (template) {
-        form.setValue('message', template.message)
+      if (foundTemplate) {
+        form.setValue('message', foundTemplate.message)
       }
     },
     [form, alertTemplates],
@@ -167,17 +164,15 @@ const AddAlert = ({ children }: { children: React.ReactNode }) => {
                 control={form.control}
                 name="societyIds"
                 label="Societies"
-                items={
-                  societies.map((option) => ({
-                    label: option.name,
-                    value: option.id.toString() || '',
-                  })) || []
-                }
+                items={societies.map((option) => ({
+                  label: option.name,
+                  value: option.id.toString() || '',
+                }))}
                 placeholder={'Select an option'}
                 allowCreate={true}
                 createConfig={{
                   onCreate: async (value) => {
-                    const response = await createSociety(value)
+                    const response = await createSociety({ name: value })
                     return response
                   },
                 }}
@@ -238,7 +233,7 @@ const AddAlert = ({ children }: { children: React.ReactNode }) => {
           )}
           {form.formState.errors.message?.message && (
             <p className="text-sm text-destructive">
-              {form.formState.errors.message?.message}
+              {form.formState.errors.message.message}
             </p>
           )}
           <Button disabled={form.formState.isSubmitting}>

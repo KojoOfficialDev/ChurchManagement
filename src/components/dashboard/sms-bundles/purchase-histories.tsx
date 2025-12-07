@@ -1,7 +1,8 @@
-import { DownloadIcon, CalendarIcon } from 'lucide-react'
+import { CalendarIcon, DownloadIcon } from 'lucide-react'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
+import type { PurchaseHistory } from '@/services/sms-bundles/types'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -13,7 +14,7 @@ import {
 } from '@/components/ui/table'
 import { useSidebar } from '@/lib/contexts/sidebar.context'
 import { getPurchaseHistoriesOptions } from '@/services/sms-bundles/queries'
-import { formatCurrency } from '@/lib/utils'
+import { cn, formatCurrency } from '@/lib/utils'
 import { useExcelExport } from '@/lib/hooks/use-excel-export'
 import { SmsBundlesService } from '@/services/sms-bundles/smsbundles.service'
 import { Calendar } from '@/components/ui/calendar'
@@ -22,8 +23,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { cn } from '@/lib/utils'
-import type { PurchaseHistory } from '@/services/sms-bundles/types'
 
 const PurchaseHistories = memo(() => {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined)
@@ -84,7 +83,7 @@ const PurchaseHistories = memo(() => {
       { header: 'Bundle ID', accessor: (item) => item.bundle.id },
       {
         header: 'Church Name',
-        accessor: (item) => item.church?.name || '-',
+        accessor: (item) => item.church.name || '-',
       },
     ],
     filename: 'purchase-histories',

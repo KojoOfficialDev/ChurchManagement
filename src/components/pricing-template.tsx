@@ -1,60 +1,7 @@
-import { formatCurrency } from '@/lib/utils'
-import type { Plan } from '@/services/subscriptions/types'
-import { useNavigate, useRouter } from '@tanstack/react-router'
+import { useRouter } from '@tanstack/react-router'
 import { Check, ChevronLeft } from 'lucide-react'
-
-// const plans = [
-//   {
-//     name: 'Free',
-//     badge: 'Free',
-//     badgeColor: 'bg-emerald-100 text-emerald-600',
-//     price: 'GHC 0',
-//     period: 'For One month',
-//     isActive: true,
-//     features: [
-//       'Membership records',
-//       'Finance management',
-//       'Alerts and sms',
-//       'And more',
-//     ],
-//     hasSubscribe: false,
-//     description: null,
-//   },
-//   {
-//     name: 'Standard',
-//     badge: 'Standard',
-//     badgeColor: 'bg-orange-100 text-orange-500',
-//     price: 'GH₵1,400',
-//     period: '/Month',
-//     isActive: false,
-//     features: [
-//       'Membership records',
-//       '1,500 SMS',
-//       'Finance management',
-//       'Alerts and sms',
-//       '24/7 Support',
-//     ],
-//     hasSubscribe: true,
-//     description: 'For church less than 1000 members',
-//   },
-//   {
-//     name: 'Premium',
-//     badge: 'Premium',
-//     badgeColor: 'bg-violet-100 text-violet-700',
-//     price: 'GH₵3,200',
-//     period: '/Month',
-//     isActive: false,
-//     features: [
-//       'Membership records',
-//       '1,500 SMS',
-//       'Finance management',
-//       'Alerts and sms',
-//       '24/7 Support',
-//     ],
-//     hasSubscribe: true,
-//     description: 'For church less than 1000 members',
-//   },
-// ]
+import type { Plan } from '@/services/subscriptions/types'
+import { formatCurrency } from '@/lib/utils'
 
 export function PricingSection({ plans }: { plans: Array<Plan> }) {
   const router = useRouter()

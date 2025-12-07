@@ -50,10 +50,3 @@ const ExpenseCategoryDetails = ({
 }
 
 export default ExpenseCategoryDetails
-
-
-
-
-
-
-

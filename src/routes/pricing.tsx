@@ -1,6 +1,6 @@
+import { createFileRoute } from '@tanstack/react-router'
 import { PricingSection } from '@/components/pricing-template'
 import { plansQueryOptions } from '@/services/subscriptions/queries'
-import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/pricing')({
   component: RouteComponent,

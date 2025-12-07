@@ -1,15 +1,15 @@
 // Mock data for users
 
-import { protectedApi } from '@/server/protected-api'
-import type { User } from './types'
-import type { CreateUser } from './users.dto'
 import { sessionOptions } from '../auth/queries'
+import type { User } from './types'
+import type { CreateUser, UpdateUser } from './users.dto'
+import { protectedApi } from '@/server/protected-api'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 
 export class usersService {
-  private static getChurchId = async () => {
-    const queryClient = getContext().queryClient
-    const churchId = await queryClient
+  private static queryClient = getContext().queryClient
+  private static async getChurchId() {
+    const churchId = await this.queryClient
       .ensureQueryData(sessionOptions)
       .then((data) => data.churchId)
       .catch(() => null)
@@ -18,14 +18,37 @@ export class usersService {
     }
     return churchId.toString()
   }
+
   static async getAllUsers() {
-    const response = await protectedApi.get<User[]>('ChurchUsers/GetAppUsers')
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.get<Array<User>>(
+      'ChurchUsers/GetAppUsers',
+      {
+        params: {
+          churchId,
+        },
+      },
+    )
     return response.data
   }
 
   static async createUser(user: CreateUser) {
     const churchId = await this.getChurchId()
     const response = await protectedApi.post<User>('ChurchUsers/postUser', {
+      ...user,
+      churchId,
+    })
+    return response.data
+  }
+
+  static async removeUser(id: string) {
+    const response = await protectedApi.delete(`/ChurchUsers/${id}`)
+    return response.data
+  }
+
+  static async updateUser(user: UpdateUser) {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.put<User>(`/ChurchUsers/putUser`, {
       ...user,
       churchId,
     })

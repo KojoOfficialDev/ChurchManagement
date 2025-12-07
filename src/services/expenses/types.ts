@@ -4,10 +4,3 @@ import type { Expense } from './expenses.dto'
 export type ExpenseResponse = Pagination & {
   data: Array<Expense & { id: string }>
 }
-
-
-
-
-
-
-

@@ -3,8 +3,7 @@ import { useForm } from 'react-hook-form'
 import { UploadCloud, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
-import { useLoaderData } from '@tanstack/react-router'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query'
 import type { ChurchProfile } from '@/services/setup/setup.dto'
 import { PhoneInput } from '@/components/phone-input'
 import { TextInput } from '@/components/text-input'
@@ -17,9 +16,7 @@ import { useSetupMutations } from '@/services/setup/mutations'
 import { churchProfileQuery } from '@/services/setup/queries'
 
 export const ChurchProfileForm = () => {
-  const data = useLoaderData({
-    from: '/dashboard/settings/',
-  })
+  const { data } = useSuspenseQuery(churchProfileQuery)
   const {
     uploadImage: { mutate: uploadImageMutation, isPending: isUploading },
   } = useAssetsMutations()

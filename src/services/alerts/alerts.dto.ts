@@ -15,11 +15,7 @@ export const alertMessageSchema = z
   })
   .refine(
     (data) => {
-      if (
-        data.memberId &&
-        data?.societyIds?.length &&
-        data?.societyIds?.length > 0
-      ) {
+      if (data.memberId && data.societyIds && data.societyIds.length > 0) {
         return false
       }
       return true

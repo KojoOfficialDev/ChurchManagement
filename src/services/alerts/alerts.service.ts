@@ -1,11 +1,11 @@
-import { protectedApi } from '@/server/protected-api'
-import { type CreateAlertTemplate } from './alerts.dto'
+import { sessionOptions } from '../auth/queries'
+import type { CreateAlertTemplate } from './alerts.dto'
 import type {
   AlertMessage,
   AlertMessagesResponse,
   AlertTemplate,
 } from './types'
-import { sessionOptions } from '../auth/queries'
+import { protectedApi } from '@/server/protected-api'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 
 export class AlertsService {
@@ -34,7 +34,7 @@ export class AlertsService {
   }
   static getAlertTemplates = async () => {
     const churchId = await this.getChurchId()
-    const response = await protectedApi.get<AlertTemplate[]>(
+    const response = await protectedApi.get<Array<AlertTemplate>>(
       '/MessageTemplates/GetAll',
       {
         params: {
@@ -73,7 +73,7 @@ export class AlertsService {
 
   static getAll = async () => {
     const churchId = await this.getChurchId()
-    const response = await protectedApi.get<AlertMessage[]>(
+    const response = await protectedApi.get<Array<AlertMessage>>(
       'Messaging/GetAllMessages',
       {
         params: {

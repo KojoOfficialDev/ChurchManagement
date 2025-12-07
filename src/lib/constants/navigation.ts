@@ -2,6 +2,7 @@ import {
   AlertCircle,
   Banknote,
   Crown,
+  FileText,
   LayoutDashboard,
   ListChecks,
   Martini,
@@ -65,6 +66,11 @@ const FINANCE_ITEMS = [
     icon: Banknote,
     label: 'Expenses',
     link: '/dashboard/expenses',
+  },
+  {
+    icon: FileText,
+    label: 'Reports',
+    link: '/dashboard/reports',
   },
 ]
 

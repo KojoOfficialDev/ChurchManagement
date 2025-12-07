@@ -130,10 +130,3 @@ const ContributionTypeDetails = ({
 }
 
 export default ContributionTypeDetails
-
-
-
-
-
-
-

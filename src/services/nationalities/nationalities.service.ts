@@ -30,8 +30,9 @@ export class NationalitiesService {
 
     const payload = {
       name: nationality,
-      churchId: churchId,
+      churchId,
       id: 0,
+      active: true,
     }
 
     const response = await protectedApi.post<Nationalities>(
@@ -39,5 +40,25 @@ export class NationalitiesService {
       payload,
     )
     return { value: response.data.id, label: response.data.name }
+  }
+
+  static updateNationality = async (id: string, name: string) => {
+    const churchId = await this.getChurchId()
+    const payload = {
+      id,
+      name,
+      churchId,
+      active: true,
+    }
+    const response = await protectedApi.post<Nationalities>(
+      '/nationalities/update',
+      payload,
+    )
+    return response.data
+  }
+
+  static deleteNationality = async (id: string) => {
+    const response = await protectedApi.delete(`/nationalities/${id}`)
+    return response.data
   }
 }

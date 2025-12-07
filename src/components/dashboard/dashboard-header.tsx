@@ -1,8 +1,11 @@
-import { memo } from 'react'
-import { UserIcon } from 'lucide-react'
+import { memo, useState } from 'react'
+import { Bell, UserIcon } from 'lucide-react'
 import { useLoaderData } from '@tanstack/react-router'
+import { Button } from '../ui/button'
+import { NotificationPopover } from '../notification-popver'
 
 const DashboardHeader = memo(() => {
+  const [open, setOpen] = useState(false)
   const session = useLoaderData({
     from: '/dashboard',
   })
@@ -22,8 +25,16 @@ const DashboardHeader = memo(() => {
             <p className="text-sm font-medium">{session.name}</p>
           </div>
         </div>
+        <Button
+          variant="outline"
+          size="icon"
+          className="relative bg-transparent"
+          onClick={() => setOpen(true)}
+        >
+          <Bell className="w-5 h-5" />
+        </Button>
       </div>
-      {/* Mobile sidebar toggle */}
+      <NotificationPopover onClose={() => setOpen(false)} open={open} />
     </header>
   )
 })

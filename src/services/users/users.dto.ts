@@ -18,9 +18,19 @@ export const createUserSchema = z.object({
         message: 'Invalid phone number',
       },
     ),
-  churchId: z.number().min(1, 'Church id is required'),
   active: z.boolean().default(true),
   accessRole: z.string().min(1, 'Access role is required'),
+  password: z
+    .string()
+    .min(1, 'Password is required')
+    .min(8, 'Password must be at least 8 characters long'),
+})
+
+export const updateUserSchema = createUserSchema.extend({
+  id: z.string().min(1, 'ID is required'),
+  password: z.string().optional(),
 })
 
 export type CreateUser = z.infer<typeof createUserSchema>
+
+export type UpdateUser = z.infer<typeof updateUserSchema>

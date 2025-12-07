@@ -22,3 +22,9 @@ export type Church = {
   logoUrl: string
   churchId: number
 }
+
+export type ChurchNotificationSettings = {
+  sendSms: boolean
+  sendAnnouncements: boolean
+  sendBirthdayAlerts: boolean
+}

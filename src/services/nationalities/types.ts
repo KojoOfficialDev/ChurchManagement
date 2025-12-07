@@ -6,4 +6,5 @@ export type Nationalities = {
   churchId: string
   active: boolean
   church: Church
+  isActive: boolean
 }

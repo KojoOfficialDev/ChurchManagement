@@ -4,9 +4,11 @@ import {
   SearchIcon,
   Trash2Icon,
 } from 'lucide-react'
-import { Suspense, memo, useCallback, useMemo, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
+import AlertLogDetails from './alert-log-details'
+import EditAlertLogDialog from './edit-alert-log-dialog'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -32,16 +34,12 @@ import {
 } from '@/components/ui/input-group'
 import { alertMessagesOptions } from '@/services/alerts/queries'
 import { Pagination } from '@/components/ui/pagination'
-import { ErrorBoundary } from '@/components/error-boundary'
-import { ButtonSkeleton } from '@/components/skeletons/button-skeleton'
 import { EmptyComponent } from '@/components/empty-component'
 import { useDebounce } from '@/lib/hooks/use-debounce'
 import { useAlertsMutations } from '@/services/alerts/mutations'
 import { AlertDialogComponent } from '@/components/alert-dialog'
 import { useExcelExport } from '@/lib/hooks/use-excel-export'
 import { AlertsService } from '@/services/alerts/alerts.service'
-import AlertLogDetails from './alert-log-details'
-import EditAlertLogDialog from './edit-alert-log-dialog'
 
 const AlertLogTable = memo(() => {
   const {
@@ -60,7 +58,7 @@ const AlertLogTable = memo(() => {
   const [viewingMessage, setViewingMessage] = useState<any>(null)
 
   const messages = useMemo(
-    () => alertMessagesResponse.data || [],
+    () => alertMessagesResponse.data,
     [alertMessagesResponse],
   )
 
@@ -70,7 +68,7 @@ const AlertLogTable = memo(() => {
       { header: 'ID', accessor: (item) => item.id },
       {
         header: 'Recipient Name',
-        accessor: (item) => item.sentToSocietyIds?.join(' ,') || '-',
+        accessor: (item) => item.sentToSocietyIds.join(' ,') || '-',
       },
       {
         header: 'Phone Number',
@@ -242,11 +240,6 @@ const AlertLogTable = memo(() => {
                     </TableHead>
                     <TableHead className="px-6 py-3">
                       <span className="font-medium text-gray-800 text-xs">
-                        Type
-                      </span>
-                    </TableHead>
-                    <TableHead className="px-6 py-3">
-                      <span className="font-medium text-gray-800 text-xs">
                         Status
                       </span>
                     </TableHead>
@@ -279,9 +272,9 @@ const AlertLogTable = memo(() => {
                         <span className="font-normal text-gray-800 text-xs">
                           {message.sentToMemberId
                             ? message.sentToMemberId
-                            : message.sentToSocietyIds?.length &&
-                                message.sentToSocietyIds?.length > 0
-                              ? message.sentToSocietyIds?.join(', ')
+                            : message.sentToSocietyIds.length &&
+                                message.sentToSocietyIds.length > 0
+                              ? message.sentToSocietyIds.join(', ')
                               : 'General Congregation'}
                         </span>
                       </TableCell>
@@ -289,11 +282,6 @@ const AlertLogTable = memo(() => {
                       <TableCell className="px-6 py-3 max-w-[300px]">
                         <span className="font-normal text-gray-800 text-xs line-clamp-2">
                           {message.messageContent || '-'}
-                        </span>
-                      </TableCell>
-                      <TableCell className="px-6 py-3">
-                        <span className="font-normal text-gray-800 text-xs">
-                          {message.messageType || '-'}
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-3">

@@ -91,4 +91,14 @@ export class MembersService {
     })
     return response.data
   }
+
+  static getMemberStatistics = async () => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.get('/Member/getMemberStats', {
+      params: {
+        id: churchId,
+      },
+    })
+    return response.data
+  }
 }

@@ -1,6 +1,6 @@
 import { keepPreviousData, queryOptions } from '@tanstack/react-query'
-import { SubscriptionsService } from './subscriptions.service'
 import { AxiosError } from 'axios'
+import { SubscriptionsService } from './subscriptions.service'
 
 export const subscriptionQueryOptions = () =>
   queryOptions({

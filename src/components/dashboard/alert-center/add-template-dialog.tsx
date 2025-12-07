@@ -1,3 +1,7 @@
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import type { CreateAlertTemplate } from '@/services/alerts/alerts.dto'
 import { TextAreaInput } from '@/components/text-area-Input'
 import { TextInput } from '@/components/text-input'
 import { Button } from '@/components/ui/button'
@@ -9,14 +13,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import {
-  alertTemplateSchema,
-  type CreateAlertTemplate,
-} from '@/services/alerts/alerts.dto'
+import { alertTemplateSchema } from '@/services/alerts/alerts.dto'
 import { useAlertsMutations } from '@/services/alerts/mutations'
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
 
 const AddTemplateDialog = ({ children }: { children: React.ReactNode }) => {
   const {

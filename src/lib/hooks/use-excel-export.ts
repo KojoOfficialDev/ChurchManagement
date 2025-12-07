@@ -32,7 +32,7 @@ export function useExcelExport<T>({
       // Fetch all data
       const data = await fetchData()
 
-      if (!data || data.length === 0) {
+      if (data.length === 0) {
         toast.error('No data to export')
         return
       }

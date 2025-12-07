@@ -1,7 +1,7 @@
+import type { Plan, SubscriptionHistory } from './types'
 import { protectedApi } from '@/server/protected-api'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { sessionOptions } from '@/services/auth/queries'
-import type { Plan, SubscriptionHistory } from './types'
 
 export class SubscriptionsService {
   private static getChurchId = async () => {

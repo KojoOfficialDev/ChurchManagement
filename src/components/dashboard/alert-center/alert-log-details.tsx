@@ -65,7 +65,9 @@ const AlertLogDetails = ({
               <p className="text-base">{message.messageType || 'N/A'}</p>
             </div>
             <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">Status</p>
+              <p className="text-sm font-medium text-muted-foreground">
+                Status
+              </p>
               <p className="text-base">{message.status || 'N/A'}</p>
             </div>
             <div className="space-y-2">
@@ -124,4 +126,3 @@ const AlertLogDetails = ({
 )
 
 export default AlertLogDetails
-

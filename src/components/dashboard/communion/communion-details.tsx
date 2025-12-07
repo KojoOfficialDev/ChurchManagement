@@ -82,14 +82,8 @@ const CommunionDetails = ({
                 <p className="text-sm font-medium text-muted-foreground">
                   Member
                 </p>
-                <Badge
-                  variant={
-                    communion.memberId ? 'default' : 'secondary'
-                  }
-                >
-                  {communion.memberId
-                    ? 'Registered Member'
-                    : 'Non Member'}
+                <Badge variant={communion.memberId ? 'default' : 'secondary'}>
+                  {communion.memberId ? 'Registered Member' : 'Non Member'}
                 </Badge>
               </div>
             </div>

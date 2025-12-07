@@ -38,10 +38,3 @@ export function AlertTemplatesSkeleton() {
     </section>
   )
 }
-
-
-
-
-
-
-

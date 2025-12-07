@@ -92,7 +92,7 @@ const EditMemberDialog = ({ member, children }: EditMemberDialogProps) => {
       occupation: member.occupation || '',
       isActive: member.isActive || false,
       membershipNumber: member.membershipNumber || '',
-      belongsToSociety: member.belongsToSociety || false,
+      belongsToSociety: member.isBelongToSociety || false,
       societyName: member.societyName.map((id) => Number(id)),
       // Default discriminated union fields - setting valid defaults
       isBaptized: false,

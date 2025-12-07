@@ -112,12 +112,8 @@ const BaptismDetails = ({
                 <p className="text-sm font-medium text-muted-foreground">
                   Member
                 </p>
-                <Badge
-                  variant={baptism.memberId ? 'default' : 'secondary'}
-                >
-                  {baptism.memberId
-                    ? 'Registered Member'
-                    : 'Non Member'}
+                <Badge variant={baptism.memberId ? 'default' : 'secondary'}>
+                  {baptism.memberId ? 'Registered Member' : 'Non Member'}
                 </Badge>
               </div>
             </div>

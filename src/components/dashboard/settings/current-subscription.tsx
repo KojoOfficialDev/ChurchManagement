@@ -1,14 +1,14 @@
+import { useQuery } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
+import { useMemo } from 'react'
+import { AlertCircle, RefreshCw } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { subscriptionQueryOptions } from '@/services/subscriptions/queries'
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
-import { useMemo } from 'react'
-import { AlertCircle, RefreshCw } from 'lucide-react'
-import { Link } from '@tanstack/react-router'
 
 export const CurrentSubscriptionSection = () => {
   const {

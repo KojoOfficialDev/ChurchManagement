@@ -1,6 +1,6 @@
 import { churchProfileQuery } from './queries'
 import type { ChurchProfile } from './setup.dto'
-import type { Church } from './types'
+import type { Church, ChurchNotificationSettings } from './types'
 import { protectedApi } from '@/server/protected-api'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { sessionOptions } from '@/services/auth/queries'
@@ -35,6 +35,17 @@ export class SetupService {
     const churchId = await this.getChurchId()
     const response = await protectedApi.get<Church>('ChurchSetups/Get', {
       params: { id: churchId },
+    })
+    return response.data
+  }
+
+  static updateChurchNotificationSettings = async (
+    payload: ChurchNotificationSettings,
+  ) => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.post('ChurchSetups/Update', {
+      ...payload,
+      id: churchId,
     })
     return response.data
   }

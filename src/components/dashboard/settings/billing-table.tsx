@@ -1,3 +1,7 @@
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { format } from 'date-fns'
+import { DownloadIcon } from 'lucide-react'
+import type { SubscriptionHistory } from '@/services/subscriptions/types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,10 +16,6 @@ import { formatCurrency } from '@/lib/utils'
 import { useExcelExport } from '@/lib/hooks/use-excel-export'
 import { subscriptionHistoryQueryOptions } from '@/services/subscriptions/queries'
 import { SubscriptionsService } from '@/services/subscriptions/subscriptions.service'
-import type { SubscriptionHistory } from '@/services/subscriptions/types'
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { format } from 'date-fns'
-import { DownloadIcon } from 'lucide-react'
 
 export const BillingTable = () => {
   const { data: subscriptionHistory } = useSuspenseQuery(

@@ -1,10 +1,10 @@
 import { ArrowUpRightIcon, MessageSquareText } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { memo, useMemo } from 'react'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { churchProfileQuery } from '@/services/setup/queries'
 import { PurchaseDialog } from '../sms-bundles/purchase-dialog'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { churchProfileQuery } from '@/services/setup/queries'
 
 const iconColors = ['text-purple-600', 'text-yellow-600', 'text-green-600']
 export const AlertStats = memo(() => {

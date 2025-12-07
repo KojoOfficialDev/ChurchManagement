@@ -1,10 +1,10 @@
 import { MoreVertical, PlusIcon } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { alertTemplatesOptions } from '@/services/alerts/queries'
 import { format } from 'date-fns'
 import AddTemplateDialog from './add-template-dialog'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { alertTemplatesOptions } from '@/services/alerts/queries'
 import AddAlert from '@/components/dashboard/alert-center/add-alert'
 
 export const AlertTemplates = () => {

@@ -15,7 +15,7 @@ export type AlertMessage = {
   messageTemplate: string | null
   messageContent: string
   sentToMemberId: string | null
-  sentToSocietyIds: number[] | null
+  sentToSocietyIds: Array<number>
   sentAt: string
   isSentToIndividual: boolean
   count: number

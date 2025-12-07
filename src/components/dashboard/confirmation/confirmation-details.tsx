@@ -91,13 +91,9 @@ const ConfirmationDetails = ({
                   Member
                 </p>
                 <Badge
-                  variant={
-                    confirmation.memberId ? 'default' : 'secondary'
-                  }
+                  variant={confirmation.memberId ? 'default' : 'secondary'}
                 >
-                  {confirmation.memberId
-                    ? 'Registered Member'
-                    : 'Non Member'}
+                  {confirmation.memberId ? 'Registered Member' : 'Non Member'}
                 </Badge>
               </div>
             </div>

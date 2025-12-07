@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as _authLoginRouteImport } from './routes/__auth/login'
 import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
+import { Route as DashboardReportsIndexRouteImport } from './routes/dashboard/reports/index'
 import { Route as DashboardMembersIndexRouteImport } from './routes/dashboard/members/index'
 import { Route as DashboardMarriageIndexRouteImport } from './routes/dashboard/marriage/index'
 import { Route as DashboardExpensesIndexRouteImport } from './routes/dashboard/expenses/index'
@@ -58,6 +59,11 @@ const _authLoginRoute = _authLoginRouteImport.update({
 const DashboardSettingsIndexRoute = DashboardSettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardReportsIndexRoute = DashboardReportsIndexRouteImport.update({
+  id: '/reports/',
+  path: '/reports/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardMembersIndexRoute = DashboardMembersIndexRouteImport.update({
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/expenses': typeof DashboardExpensesIndexRoute
   '/dashboard/marriage': typeof DashboardMarriageIndexRoute
   '/dashboard/members': typeof DashboardMembersIndexRoute
+  '/dashboard/reports': typeof DashboardReportsIndexRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -140,6 +147,7 @@ export interface FileRoutesByTo {
   '/dashboard/expenses': typeof DashboardExpensesIndexRoute
   '/dashboard/marriage': typeof DashboardMarriageIndexRoute
   '/dashboard/members': typeof DashboardMembersIndexRoute
+  '/dashboard/reports': typeof DashboardReportsIndexRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
 }
 export interface FileRoutesById {
@@ -159,6 +167,7 @@ export interface FileRoutesById {
   '/dashboard/expenses/': typeof DashboardExpensesIndexRoute
   '/dashboard/marriage/': typeof DashboardMarriageIndexRoute
   '/dashboard/members/': typeof DashboardMembersIndexRoute
+  '/dashboard/reports/': typeof DashboardReportsIndexRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
 }
 export interface FileRouteTypes {
@@ -178,6 +187,7 @@ export interface FileRouteTypes {
     | '/dashboard/expenses'
     | '/dashboard/marriage'
     | '/dashboard/members'
+    | '/dashboard/reports'
     | '/dashboard/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
     | '/dashboard/expenses'
     | '/dashboard/marriage'
     | '/dashboard/members'
+    | '/dashboard/reports'
     | '/dashboard/settings'
   id:
     | '__root__'
@@ -212,6 +223,7 @@ export interface FileRouteTypes {
     | '/dashboard/expenses/'
     | '/dashboard/marriage/'
     | '/dashboard/members/'
+    | '/dashboard/reports/'
     | '/dashboard/settings/'
   fileRoutesById: FileRoutesById
 }
@@ -271,6 +283,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/dashboard/settings'
       preLoaderRoute: typeof DashboardSettingsIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/reports/': {
+      id: '/dashboard/reports/'
+      path: '/reports'
+      fullPath: '/dashboard/reports'
+      preLoaderRoute: typeof DashboardReportsIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/members/': {
@@ -362,6 +381,7 @@ interface DashboardRouteRouteChildren {
   DashboardExpensesIndexRoute: typeof DashboardExpensesIndexRoute
   DashboardMarriageIndexRoute: typeof DashboardMarriageIndexRoute
   DashboardMembersIndexRoute: typeof DashboardMembersIndexRoute
+  DashboardReportsIndexRoute: typeof DashboardReportsIndexRoute
   DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute
 }
 
@@ -376,6 +396,7 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardExpensesIndexRoute: DashboardExpensesIndexRoute,
   DashboardMarriageIndexRoute: DashboardMarriageIndexRoute,
   DashboardMembersIndexRoute: DashboardMembersIndexRoute,
+  DashboardReportsIndexRoute: DashboardReportsIndexRoute,
   DashboardSettingsIndexRoute: DashboardSettingsIndexRoute,
 }
 

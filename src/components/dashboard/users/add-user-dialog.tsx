@@ -1,3 +1,7 @@
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
+import { useForm } from 'react-hook-form'
+import type { ReactNode } from 'react'
+import type { CreateUser } from '@/services/users/users.dto'
 import { PhoneInput } from '@/components/phone-input'
 import { TextInput } from '@/components/text-input'
 import { Button } from '@/components/ui/button'
@@ -8,12 +12,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { createUserSchema, type CreateUser } from '@/services/users/users.dto'
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
-import type { ReactNode } from 'react'
-import { useForm } from 'react-hook-form'
+import { createUserSchema } from '@/services/users/users.dto'
+import { SelectInput } from '@/components/select-component'
+import { useUsersMutations } from '@/services/users/mutations'
 
+const allowedRoles = [
+  { label: 'Administrator', value: 'Administrator' },
+  { label: 'Financial-Secretary', value: 'Financial-Secretary' },
+  { label: 'Frontdesk', value: 'Frontdesk' },
+]
 export const AddUserDialog = ({ children }: { children: ReactNode }) => {
+  const { createUser } = useUsersMutations()
   const form = useForm<CreateUser>({
     resolver: standardSchemaResolver(createUserSchema),
     defaultValues: {
@@ -22,8 +31,19 @@ export const AddUserDialog = ({ children }: { children: ReactNode }) => {
       phoneNumber: '',
       active: true,
       accessRole: '',
+      password: '',
     },
   })
+
+  const handleSubmit = (formdata: CreateUser) => {
+    createUser.mutateAsync(formdata, {
+      onSuccess: () => {
+        form.reset()
+      },
+    })
+  }
+
+  console.log(form.formState.errors)
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -31,7 +51,10 @@ export const AddUserDialog = ({ children }: { children: ReactNode }) => {
         <DialogHeader>
           <DialogTitle>Add User</DialogTitle>
         </DialogHeader>
-        <form className="flex flex-col gap-4">
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={form.handleSubmit(handleSubmit)}
+        >
           <TextInput
             control={form.control}
             name="userName"
@@ -51,13 +74,23 @@ export const AddUserDialog = ({ children }: { children: ReactNode }) => {
             placeholder="Enter phone number"
           />
 
-          <TextInput
+          <SelectInput
             control={form.control}
             name="accessRole"
-            label="Access Role"
-            placeholder="Enter access role"
+            items={allowedRoles}
+            placeholder="Select access role"
           />
-          <Button type="submit">Add User</Button>
+          <TextInput
+            type="password"
+            control={form.control}
+            name="password"
+            label="Password"
+            placeholder="Enter password"
+            allowCopy={true}
+          />
+          <Button type="submit" disabled={createUser.isPending}>
+            {createUser.isPending ? 'Adding...' : 'Add User'}
+          </Button>
         </form>
       </DialogContent>
     </Dialog>

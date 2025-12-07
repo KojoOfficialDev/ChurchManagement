@@ -1,4 +1,4 @@
-import type { CreateUser } from "./users.dto"
+import type { CreateUser } from './users.dto'
 
 export type User = CreateUser & {
   id: string

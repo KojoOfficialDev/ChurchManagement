@@ -1,6 +1,9 @@
 import { MoreVerticalIcon } from 'lucide-react'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { AddUserDialog } from './add-user-dialog'
+import UserDetails from './user-details'
+import EditUserDialog from './edit-user-dialog'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -17,10 +20,13 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { getAllUsersOptions } from '@/services/users/queries'
-import { AddUserDialog } from './add-user-dialog'
+import { useUsersMutations } from '@/services/users/mutations'
+import { AlertDialogComponent } from '@/components/alert-dialog'
 
 const UsersTable = memo(() => {
   const { data: users } = useSuspenseQuery(getAllUsersOptions())
+  const { removeUser } = useUsersMutations()
+  const [isEditOpen, setIsEditOpen] = useState(false)
 
   return (
     <section className="flex flex-col w-full items-start gap-6 mt-8">
@@ -60,11 +66,6 @@ const UsersTable = memo(() => {
                         Role
                       </span>
                     </TableHead>
-                    <TableHead className="px-6 py-3">
-                      <span className="font-medium text-gray-800 text-xs">
-                        Added on
-                      </span>
-                    </TableHead>
                     <TableHead className="w-[58px]"></TableHead>
                   </TableRow>
                 </TableHeader>
@@ -86,7 +87,7 @@ const UsersTable = memo(() => {
                       </TableCell>
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
-                          {user.accessRole ?? '-'}
+                          {user.accessRole || '-'}
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-3">
@@ -100,30 +101,55 @@ const UsersTable = memo(() => {
                             align="end"
                             className="w-[149px] bg-[#ffffff] rounded-xl border border-solid border-[#ececec] shadow-[0px_24px_48px_-12px_#0f172814] p-3"
                           >
-                            <DropdownMenuItem
-                              className="h-10 px-2 py-2 rounded-lg cursor-pointer"
-                              onSelect={(e) => e.preventDefault()}
+                            <UserDetails user={user}>
+                              <DropdownMenuItem
+                                className="h-10 px-2 py-2 rounded-lg cursor-pointer"
+                                onSelect={(e) => {
+                                  e.preventDefault()
+                                }}
+                              >
+                                <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-dark-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
+                                  View Details
+                                </span>
+                              </DropdownMenuItem>
+                            </UserDetails>
+                            <EditUserDialog
+                              user={user}
+                              open={isEditOpen}
+                              onOpenChange={setIsEditOpen}
                             >
-                              <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-dark-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
-                                View Details
-                              </span>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="h-10 px-2 py-2 rounded-lg cursor-pointer"
-                              onSelect={(e) => e.preventDefault()}
+                              <DropdownMenuItem
+                                className="h-10 px-2 py-2 rounded-lg cursor-pointer"
+                                onSelect={(e) => {
+                                  e.preventDefault()
+                                  setIsEditOpen(true)
+                                }}
+                              >
+                                <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-dark-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
+                                  Edit
+                                </span>
+                              </DropdownMenuItem>
+                            </EditUserDialog>
+                            <AlertDialogComponent
+                              title="Remove User"
+                              description="Are you sure you want to remove this user? This action cannot be undone."
+                              onConfirm={() => {
+                                removeUser.mutateAsync(user.id)
+                              }}
+                              disabled={removeUser.isPending}
+                              variant="destructive"
+                              confirmText="Remove"
+                              cancelText="Cancel"
                             >
-                              <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-dark-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
-                                Edit
-                              </span>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="h-10 px-2 py-2 cursor-pointer"
-                              onSelect={(e) => e.preventDefault()}
-                            >
-                              <span className="font-normal text-sm">
-                                Remove
-                              </span>
-                            </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="h-10 px-2 py-2 cursor-pointer"
+                                onSelect={(e) => e.preventDefault()}
+                              >
+                                <span className="font-normal text-sm">
+                                  Remove
+                                </span>
+                              </DropdownMenuItem>
+                            </AlertDialogComponent>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>

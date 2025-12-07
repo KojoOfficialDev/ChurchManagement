@@ -55,7 +55,9 @@ function LoginRoute() {
   return (
     <div className="flex-1 flex-col flex items-center justify-center p-8">
       <Card className="w-full max-w-md shadow-none border-0">
-        {/* Logo */}
+        <div className="flex flex-col items-center justify-center">
+          <img src="/logo.png" alt="Logo" className="size-48" />
+        </div>
         <CardHeader>
           {/* Welcome Text */}
           <div>
@@ -107,12 +109,6 @@ function LoginRoute() {
           </form>
         </CardContent>
       </Card>
-      {/* Footer */}
-      <div className="mt-16 text-center">
-        <p className="text-[#4a1fb8] text-sm">
-          Powered by FaithBase Technologies
-        </p>
-      </div>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
-import { AlertsService } from './alerts.service'
 import { toast } from 'sonner'
+import { AlertsService } from './alerts.service'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 
 export const useAlertsMutations = () => {

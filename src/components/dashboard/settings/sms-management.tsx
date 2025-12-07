@@ -1,11 +1,11 @@
 import { Suspense } from 'react'
+import { AlertStats } from '../alert-center/alert-stats'
+import SMSPackages from '../sms-bundles/sms-packages'
+import PurchaseHistories from '../sms-bundles/purchase-histories'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { AlertStatsSkeleton } from '@/components/skeletons/alert-stats-skeleton'
 import { SMSPackagesSkeleton } from '@/components/skeletons/sms-packages-skeleton'
-import { AlertStats } from '../alert-center/alert-stats'
-import SMSPackages from '../sms-bundles/sms-packages'
 import { TableSkeleton } from '@/components/skeletons/table.skeleton'
-import PurchaseHistories from '../sms-bundles/purchase-histories'
 
 const SmsManagement = () => {
   return (

@@ -22,3 +22,12 @@ export const getAllMembersOptions = ({
     placeholderData: keepPreviousData,
   })
 }
+
+export const getMemberStatisticsOptions = queryOptions({
+  queryKey: ['memberStatistics'],
+  queryFn: async () => await MembersService.getMemberStatistics(),
+  staleTime: 30 * 60 * 1000,
+  placeholderData: keepPreviousData,
+  refetchOnWindowFocus: false,
+  refetchOnMount: false,
+})

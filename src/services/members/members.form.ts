@@ -334,7 +334,7 @@ export const useMemberForm = ({
           allowCreate: true,
           createConfig: {
             onCreate: async (value) => {
-              const response = await createSociety(value)
+              const response = await createSociety({ name: value })
               return response
             },
           },

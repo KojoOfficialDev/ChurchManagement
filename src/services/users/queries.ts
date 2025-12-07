@@ -4,7 +4,7 @@ import { usersService } from './users.service'
 export const getAllUsersOptions = () =>
   queryOptions({
     queryKey: ['users'],
-    queryFn: usersService.getAllUsers,
+    queryFn: async () => await usersService.getAllUsers(),
     staleTime: 1000 * 60 * 2,
     refetchOnWindowFocus: false,
   })
