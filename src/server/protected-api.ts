@@ -2,7 +2,7 @@ import axios from 'axios'
 import { sessionOptions } from '@/services/auth/queries'
 import { RefreshToken } from '@/services/auth/refresh'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
-import { API_URL } from '@/server/api'
+import { API_URL } from '@/lib/constants/api'
 
 export const protectedApi = axios.create({
   baseURL: API_URL,
