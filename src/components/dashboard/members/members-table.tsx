@@ -9,7 +9,6 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { MemberDetails } from './member-details'
 import type { Member } from '@/services/members/types'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -277,11 +276,11 @@ const MembersTable = memo(() => {
                       </span>
                     </TableHead>
 
-                    <TableHead className="px-6 py-3">
+                    {/* <TableHead className="px-6 py-3">
                       <span className="font-medium text-[#667084] text-xs">
                         Status
                       </span>
-                    </TableHead>
+                    </TableHead> */}
                     <TableHead className="w-[58px]"></TableHead>
                   </TableRow>
                 </TableHeader>
@@ -328,27 +327,6 @@ const MembersTable = memo(() => {
                         </span>
                       </TableCell>
 
-                      <TableCell className="px-6 py-[11px]">
-                        {member.isActive ? (
-                          <Badge className="bg-[#ebfdf2] hover:bg-[#ebfdf2] text-[#037847] border-0 rounded-2xl px-2 py-0.5 h-auto">
-                            <div className="w-2 h-2 mr-1.5">
-                              <div className="w-1.5 h-1.5 bg-[#14b96c] rounded-[3px]" />
-                            </div>
-                            <span className="font-medium text-xs text-[#037847]">
-                              Active
-                            </span>
-                          </Badge>
-                        ) : (
-                          <Badge className="bg-[#ffe8e8] hover:bg-[#ffe8e8] text-crimson border-0 rounded-2xl px-2 py-0.5 h-auto">
-                            <div className="w-2 h-2 mr-1.5">
-                              <div className="w-1.5 h-1.5 bg-red-500 rounded-[3px]" />
-                            </div>
-                            <span className="font-medium text-xs text-red-500">
-                              Inactive
-                            </span>
-                          </Badge>
-                        )}
-                      </TableCell>
                       <TableCell className="px-6 py-3">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>

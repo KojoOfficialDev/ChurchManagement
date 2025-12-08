@@ -353,26 +353,26 @@ const MarriageTable = memo(() => {
                                 Edit
                               </span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="h-10 px-2 py-2 cursor-pointer"
-                              onSelect={(e) => e.preventDefault()}
+                            <AlertDialogComponent
+                              title="Remove Marriage Record"
+                              description="Are you sure you want to remove this marriage record?"
+                              onConfirm={() => {
+                                mutateAsync(marriage.id.toString())
+                              }}
+                              disabled={isPending}
+                              variant="destructive"
+                              confirmText="Remove"
+                              cancelText="Cancel"
                             >
-                              <AlertDialogComponent
-                                title="Remove Marriage Record"
-                                description="Are you sure you want to remove this marriage record?"
-                                onConfirm={() => {
-                                  mutateAsync(marriage.id.toString())
-                                }}
-                                disabled={isPending}
-                                variant="destructive"
-                                confirmText="Remove"
-                                cancelText="Cancel"
+                              <DropdownMenuItem
+                                className="h-10 px-2 py-2 cursor-pointer"
+                                onSelect={(e) => e.preventDefault()}
                               >
                                 <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-red-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
                                   Remove
                                 </span>
-                              </AlertDialogComponent>
-                            </DropdownMenuItem>
+                              </DropdownMenuItem>
+                            </AlertDialogComponent>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>

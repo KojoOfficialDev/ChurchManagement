@@ -29,5 +29,5 @@ export const Route = createFileRoute('/')({
 })
 
 function App() {
-  return <div className="text-center">lilttle tings</div>
+  return <div className="text-center"></div>
 }
