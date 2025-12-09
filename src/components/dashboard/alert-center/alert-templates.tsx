@@ -2,13 +2,25 @@ import { MoreVertical, PlusIcon } from 'lucide-react'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import AddTemplateDialog from './add-template-dialog'
+import EditTemplateDialog from './edit-template-dialog'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { alertTemplatesOptions } from '@/services/alerts/queries'
 import AddAlert from '@/components/dashboard/alert-center/add-alert'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { useAlertsMutations } from '@/services/alerts/mutations'
+import { AlertDialogComponent } from '@/components/alert-dialog'
 
 export const AlertTemplates = () => {
   const { data: templates } = useSuspenseQuery(alertTemplatesOptions)
+  const {
+    deleteAlertTemplate: { mutateAsync: deleteTemplate },
+  } = useAlertsMutations()
   return (
     <section className="flex flex-col w-full items-start gap-6 relative">
       <header className="flex items-center justify-between w-full">
@@ -17,13 +29,6 @@ export const AlertTemplates = () => {
         </h1>
 
         <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            className="h-11 bg-[#4a1fb71f] hover:bg-[#4a1fb71f]/80 text-[#4a1fb7] font-medium text-base rounded-lg"
-          >
-            Alert log
-          </Button>
-
           <AddAlert>
             <Button className="h-11 bg-[#4a1fb7] hover:bg-[#4a1fb7]/90 text-white font-medium text-base rounded-lg px-5">
               Add Alert
@@ -55,7 +60,52 @@ export const AlertTemplates = () => {
                       {format(new Date(template.modifiedDate), 'MMM dd, yyyy')}
                     </span>
 
-                    <MoreVertical className="w-4 h-4 text-gray-800 cursor-pointer" />
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          className="hover:bg-transparent"
+                        >
+                          <MoreVertical className="w-4 h-4 text-gray-800 cursor-pointer" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="bg-[#fff6e9]">
+                        <EditTemplateDialog
+                          template={{
+                            id: template.id,
+                            active: template.active,
+                            isActive: template.isActive,
+                            message: template.message,
+                            name: template.name,
+                          }}
+                        >
+                          <DropdownMenuItem
+                            onSelect={(e) => e.preventDefault()}
+                          >
+                            Edit
+                          </DropdownMenuItem>
+                        </EditTemplateDialog>
+                        <AlertDialogComponent
+                          title="Delete Alert Template"
+                          description="Are you sure you want to delete this alert template?"
+                          onConfirm={() =>
+                            deleteTemplate(template.id.toString())
+                          }
+                          confirmText="Delete"
+                          cancelText="Cancel"
+                          variant="destructive"
+                        >
+                          <DropdownMenuItem
+                            onSelect={(e) => e.preventDefault()}
+                          >
+                            <span className="font-body-text-s-regular font-[number:var(--body-text-s-regular-font-weight)] text-red-700 text-[length:var(--body-text-s-regular-font-size)] tracking-[var(--body-text-s-regular-letter-spacing)] leading-[var(--body-text-s-regular-line-height)] [font-style:var(--body-text-s-regular-font-style)]">
+                              Delete
+                            </span>
+                          </DropdownMenuItem>
+                        </AlertDialogComponent>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </CardContent>
               </Card>

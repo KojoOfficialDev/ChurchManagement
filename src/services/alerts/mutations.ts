@@ -57,10 +57,38 @@ export const useAlertsMutations = () => {
     },
   })
 
+  const deleteAlertTemplate = useMutation({
+    mutationKey: ['deleteAlertTemplate'],
+    mutationFn: AlertsService.deleteAlertTemplate,
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['alertTemplates'] })
+      toast.success('Alert template deleted successfully')
+    },
+    onError: () => {
+      toast.error('Failed to delete alert template')
+    },
+  })
+
+  const editAlertTemplate = useMutation({
+    mutationKey: ['updateAlertTemplate'],
+    mutationFn: AlertsService.updateAlertTemplate,
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['alertTemplates'] })
+      toast.success('Alert template updated successfully')
+    },
+    onError: () => {
+      toast.error('Failed to update alert template')
+    },
+  })
+
   return {
     createAlertMessage,
     createAlertTemplate,
     removeAlertMessage,
     updateAlertMessage,
+    deleteAlertTemplate,
+    editAlertTemplate,
   }
 }

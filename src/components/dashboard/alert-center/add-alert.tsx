@@ -164,10 +164,12 @@ const AddAlert = ({ children }: { children: React.ReactNode }) => {
                 control={form.control}
                 name="societyIds"
                 label="Societies"
-                items={societies.map((option) => ({
-                  label: option.name,
-                  value: option.id.toString() || '',
-                }))}
+                items={
+                  societies.map((option) => ({
+                    label: option.name,
+                    value: option.id.toString() || '',
+                  })) || []
+                }
                 placeholder={'Select an option'}
                 allowCreate={true}
                 createConfig={{
@@ -233,7 +235,7 @@ const AddAlert = ({ children }: { children: React.ReactNode }) => {
           )}
           {form.formState.errors.message?.message && (
             <p className="text-sm text-destructive">
-              {form.formState.errors.message.message}
+              {form.formState.errors.message?.message || ''}
             </p>
           )}
           <Button disabled={form.formState.isSubmitting}>

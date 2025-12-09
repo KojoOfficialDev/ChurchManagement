@@ -140,8 +140,8 @@ const MembersTable = memo(() => {
       {
         header: 'Society Names',
         accessor: (item) =>
-          item.societies.length > 0
-            ? item.societies.map((society) => society.name).join(', ')
+          item.societies && item.societies.length > 0
+            ? item.societies?.map((society) => society.name).join(', ') || '-'
             : '-',
       },
       {

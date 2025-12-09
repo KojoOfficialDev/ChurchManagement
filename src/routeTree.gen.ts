@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as _authRouteRouteImport } from './routes/__auth/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -30,6 +31,11 @@ import { Route as DashboardAlertCenterIndexRouteImport } from './routes/dashboar
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
@@ -118,6 +124,7 @@ const DashboardAlertCenterIndexRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/checkout': typeof CheckoutRoute
   '/pricing': typeof PricingRoute
   '/login': typeof _authLoginRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -135,6 +142,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/checkout': typeof CheckoutRoute
   '/pricing': typeof PricingRoute
   '/login': typeof _authLoginRoute
   '/dashboard': typeof DashboardIndexRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/__auth': typeof _authRouteRouteWithChildren
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/checkout': typeof CheckoutRoute
   '/pricing': typeof PricingRoute
   '/__auth/login': typeof _authLoginRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/checkout'
     | '/pricing'
     | '/login'
     | '/dashboard/'
@@ -192,6 +202,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/checkout'
     | '/pricing'
     | '/login'
     | '/dashboard'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/'
     | '/__auth'
     | '/dashboard'
+    | '/checkout'
     | '/pricing'
     | '/__auth/login'
     | '/dashboard/'
@@ -231,6 +243,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   _authRouteRoute: typeof _authRouteRouteWithChildren
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
+  CheckoutRoute: typeof CheckoutRoute
   PricingRoute: typeof PricingRoute
 }
 
@@ -241,6 +254,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -408,6 +428,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   _authRouteRoute: _authRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  CheckoutRoute: CheckoutRoute,
   PricingRoute: PricingRoute,
 }
 export const routeTree = rootRouteImport

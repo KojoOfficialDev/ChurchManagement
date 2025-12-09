@@ -83,7 +83,7 @@ const PurchaseHistories = memo(() => {
       { header: 'Bundle ID', accessor: (item) => item.bundle.id },
       {
         header: 'Church Name',
-        accessor: (item) => item.church.name || '-',
+        accessor: (item) => item.church?.name || '-',
       },
     ],
     filename: 'purchase-histories',

@@ -1,10 +1,11 @@
-import { useRouter } from '@tanstack/react-router'
+import { useNavigate, useRouter } from '@tanstack/react-router'
 import { Check, ChevronLeft } from 'lucide-react'
 import type { Plan } from '@/services/subscriptions/types'
 import { formatCurrency } from '@/lib/utils'
 
 export function PricingSection({ plans }: { plans: Array<Plan> }) {
   const router = useRouter()
+  const navigate = useNavigate()
   const badgeColors = [
     'bg-emerald-100 text-emerald-600',
     'bg-orange-100 text-orange-500',
@@ -56,7 +57,15 @@ export function PricingSection({ plans }: { plans: Array<Plan> }) {
             {/* Subscribe Button */}
             {plan.isActive && (
               <div className="mb-4">
-                <button className="w-full rounded-full bg-[#4338CA] py-3 font-medium text-white transition hover:bg-[#3730A3]">
+                <button
+                  className="w-full rounded-full bg-[#4338CA] py-3 font-medium text-white transition hover:bg-[#3730A3]"
+                  onClick={() =>
+                    navigate({
+                      to: '/checkout',
+                      search: { planId: plan.id },
+                    })
+                  }
+                >
                   Subscribe
                 </button>
               </div>

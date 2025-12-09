@@ -15,7 +15,7 @@ export const alertMessageSchema = z
   })
   .refine(
     (data) => {
-      if (data.memberId && data.societyIds && data.societyIds.length > 0) {
+      if (data?.societyIds?.length && data?.societyIds?.length > 0) {
         return false
       }
       return true
@@ -25,6 +25,10 @@ export const alertMessageSchema = z
       message: 'You cannot select both member and society',
     },
   )
+export const updateAlertTemplateSchema = alertTemplateSchema.extend({
+  id: z.coerce.number(),
+})
 
+export type UpdateAlertTemplate = z.infer<typeof updateAlertTemplateSchema>
 export type CreateAlertTemplate = z.infer<typeof alertTemplateSchema>
 export type CreateAlertMessage = z.infer<typeof alertMessageSchema>

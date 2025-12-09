@@ -70,7 +70,7 @@ export function NotificationPopover({
 function NotificationItem({ notification }: { notification: Notification }) {
   // use first 2 letters of the createdBy
   const initials = useMemo(
-    () => notification.createdBy.slice(0, 2).toUpperCase(),
+    () => notification.createdBy?.slice(0, 2).toUpperCase() || '',
     [notification.id],
   )
   return (

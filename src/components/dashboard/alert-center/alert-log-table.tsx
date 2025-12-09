@@ -58,7 +58,7 @@ const AlertLogTable = memo(() => {
   const [viewingMessage, setViewingMessage] = useState<any>(null)
 
   const messages = useMemo(
-    () => alertMessagesResponse.data,
+    () => alertMessagesResponse.data || [],
     [alertMessagesResponse],
   )
 
@@ -68,7 +68,7 @@ const AlertLogTable = memo(() => {
       { header: 'ID', accessor: (item) => item.id },
       {
         header: 'Recipient Name',
-        accessor: (item) => item.sentToSocietyIds.join(' ,') || '-',
+        accessor: (item) => item.sentToSocietyIds?.join(' ,') || '-',
       },
       {
         header: 'Phone Number',
@@ -272,9 +272,9 @@ const AlertLogTable = memo(() => {
                         <span className="font-normal text-gray-800 text-xs">
                           {message.sentToMemberId
                             ? message.sentToMemberId
-                            : message.sentToSocietyIds.length &&
-                                message.sentToSocietyIds.length > 0
-                              ? message.sentToSocietyIds.join(', ')
+                            : message.sentToSocietyIds?.length &&
+                                message.sentToSocietyIds?.length > 0
+                              ? message.sentToSocietyIds?.join(', ')
                               : 'General Congregation'}
                         </span>
                       </TableCell>

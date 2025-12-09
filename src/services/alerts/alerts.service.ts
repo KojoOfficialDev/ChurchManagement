@@ -1,5 +1,5 @@
 import { sessionOptions } from '../auth/queries'
-import type { CreateAlertTemplate } from './alerts.dto'
+import type { CreateAlertTemplate, UpdateAlertTemplate } from './alerts.dto'
 import type {
   AlertMessage,
   AlertMessagesResponse,
@@ -41,6 +41,25 @@ export class AlertsService {
           id: churchId,
         },
       },
+    )
+    return response.data
+  }
+
+  static updateAlertTemplate = async (template: UpdateAlertTemplate) => {
+    const churchId = await this.getChurchId()
+    const response = await protectedApi.post<AlertTemplate>(
+      '/MessageTemplates/Update',
+      {
+        ...template,
+        churchId,
+      },
+    )
+    return response.data
+  }
+
+  static deleteAlertTemplate = async (templateId: string) => {
+    const response = await protectedApi.delete(
+      `/MessageTemplates/Delete?id=${templateId}`,
     )
     return response.data
   }

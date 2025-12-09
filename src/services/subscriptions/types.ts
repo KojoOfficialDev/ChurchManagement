@@ -26,3 +26,10 @@ export type SubscriptionHistory = {
   modifiedBy: string
   isActive: boolean
 }
+
+export type Suscribe = {
+  churchId: number
+  subscriptionTypeId: number
+  channel: string | null
+  subscriptionTotal: number | null
+}

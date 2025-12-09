@@ -93,14 +93,16 @@ export function ReportSection() {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
     })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `${reportType}_${reportDuration}_report_${format(new Date(), 'yyyy-MM-dd')}.pdf`
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    URL.revokeObjectURL(url)
+    if (blob) {
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `${reportType}_${reportDuration}_report_${format(new Date(), 'yyyy-MM-dd')}.pdf`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+    }
   }
 
   return (

@@ -47,7 +47,7 @@ const EditUserDialog = ({
       userName: user.userName || '',
       email: user.email || '',
       phoneNumber: user.phoneNumber || '',
-      active: user.active,
+      active: user.active || true,
       accessRole: user.accessRole || '',
       password: undefined,
     },

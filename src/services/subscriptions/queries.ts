@@ -5,7 +5,7 @@ import { SubscriptionsService } from './subscriptions.service'
 export const subscriptionQueryOptions = () =>
   queryOptions({
     queryKey: ['subscription'],
-    queryFn: () => SubscriptionsService.getSubscription(),
+    queryFn: async () => await SubscriptionsService.getSubscription(),
     staleTime: 30 * 60 * 1000,
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
@@ -31,7 +31,7 @@ export const subscriptionQueryOptions = () =>
 export const plansQueryOptions = () =>
   queryOptions({
     queryKey: ['plans'],
-    queryFn: () => SubscriptionsService.getPlans(),
+    queryFn: async () => await SubscriptionsService.getPlans(),
     staleTime: 30 * 60 * 1000,
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
@@ -41,7 +41,7 @@ export const plansQueryOptions = () =>
 export const subscriptionHistoryQueryOptions = () =>
   queryOptions({
     queryKey: ['subscription-history'],
-    queryFn: () => SubscriptionsService.getSubsriptionHistory(),
+    queryFn: async () => await SubscriptionsService.getSubsriptionHistory(),
     staleTime: 30 * 60 * 1000,
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,

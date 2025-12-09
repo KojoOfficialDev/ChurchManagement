@@ -10,12 +10,12 @@ import { useSetupMutations } from '@/services/setup/mutations'
 export function Personalization() {
   const { data: churchProfile } = useSuspenseQuery(churchProfileQuery)
 
-  const [smsEnabled, setSmsEnabled] = useState(churchProfile.sendSms)
+  const [smsEnabled, setSmsEnabled] = useState(churchProfile?.sendSms)
   const [eventsAlert, setEventsAlert] = useState(
-    churchProfile.sendAnnouncements,
+    churchProfile?.sendAnnouncements,
   )
   const [birthdayAlert, setBirthdayAlert] = useState(
-    churchProfile.sendBirthdayAlerts,
+    churchProfile?.sendBirthdayAlerts,
   )
   const {
     updateChurchNotificationSettings: { mutateAsync },
