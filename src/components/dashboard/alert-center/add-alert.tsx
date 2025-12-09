@@ -84,7 +84,6 @@ const AddAlert = ({ children }: { children: React.ReactNode }) => {
     [form, createAlertMessage],
   )
 
-  console.log(form.getValues())
   const handleTemplateChange = useCallback(
     (value: string) => {
       setMessageTemplateId(Number(value))
@@ -98,7 +97,6 @@ const AddAlert = ({ children }: { children: React.ReactNode }) => {
     [form, alertTemplates],
   )
 
-  console.log(form.formState.errors)
   const handleChangeMessageType = useCallback(() => {
     setMessageTemplateId(null)
     form.setValue('message', '')

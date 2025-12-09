@@ -43,7 +43,6 @@ export const AddUserDialog = ({ children }: { children: ReactNode }) => {
     })
   }
 
-  console.log(form.formState.errors)
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
