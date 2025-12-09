@@ -18,7 +18,7 @@ function AuthRoute() {
         {/* Church Image */}
         <div className="relative z-10 w-full flex-1 flex items-center justify-center">
           <img
-            src="/image-1.webp"
+            src="/image-1.png"
             alt="Modern church building"
             className="w-full h-auto max-h-[500px] object-cover rounded-2xl object-top"
           />
