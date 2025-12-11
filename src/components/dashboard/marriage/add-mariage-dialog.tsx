@@ -29,6 +29,7 @@ const AddMarriageDialog = () => {
       groomParentName: '',
       brideParentName: '',
       revMinister: '',
+      fileUrl: '',
     },
   })
 

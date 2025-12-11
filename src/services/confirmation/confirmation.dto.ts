@@ -12,6 +12,7 @@ export const confirmationSchema = z.object({
   placeOfConfirmation: z.string().min(1, 'Place of confirmation is required'),
   godParent: z.string().min(1, 'God Parent is required'),
   revMinister: z.string().min(1, 'Name of Minister is required'),
+  fileUrl: z.string().optional(),
 })
 
 export type Confirmation = z.infer<typeof confirmationSchema>

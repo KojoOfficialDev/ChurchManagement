@@ -28,6 +28,7 @@ const AddConfirmationDialog = () => {
       placeOfConfirmation: '',
       godParent: '',
       revMinister: '',
+      fileUrl: '',
       isMember: false,
     },
   })

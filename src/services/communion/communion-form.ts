@@ -71,6 +71,12 @@ export const COMMUNION_FORM_SECTIONS: Array<FormSection> = [
             type: 'text',
             placeholder: 'Enter name of minister',
           },
+          {
+            name: 'fileUrl',
+            label: 'Upload Document',
+            type: 'file',
+            placeholder: 'Upload certificate or document',
+          },
         ],
       },
     ],

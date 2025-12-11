@@ -2,7 +2,7 @@ import { z } from 'zod/v3'
 
 export const createMarriageSchema = z.object({
   marriageNumber: z.string().min(1, 'Marriage number is required'),
-  coupleName: z.string().min(1, 'Couple name is required'),
+  coupleName: z.string().optional(),
   placeOfMarriage: z.string().min(1, 'Place of marriage is required'),
   marriageDate: z.date({ required_error: 'Marriage date is required' }),
   groomId: z.string().min(1, 'Groom ID is required'),
@@ -13,6 +13,7 @@ export const createMarriageSchema = z.object({
   groomParentName: z.string().optional(),
   brideParentName: z.string().optional(),
   revMinister: z.string().min(1, 'Rev minister is required'),
+  fileUrl: z.string().optional(),
 })
 
 export type CreateMarriage = z.infer<typeof createMarriageSchema>

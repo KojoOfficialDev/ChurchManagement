@@ -101,6 +101,12 @@ export const BAPTISM_FORM_SECTIONS: Array<FormSection> = [
             type: 'text',
             placeholder: 'Enter mothers name',
           },
+          {
+            name: 'fileUrl',
+            label: 'Upload Document',
+            type: 'file',
+            placeholder: 'Upload certificate or document',
+          },
         ],
       },
     ],

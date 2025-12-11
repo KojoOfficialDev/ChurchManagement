@@ -279,6 +279,11 @@ const BaptismTable = memo(() => {
                     <TableHead className="px-6 py-3">
                       Rev. Minister Name
                     </TableHead>
+                    <TableHead className="px-6 py-3">
+                      <span className="font-medium text-gray-800 text-xs">
+                        Document
+                      </span>
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -324,6 +329,33 @@ const BaptismTable = memo(() => {
                         <span className="font-normal text-gray-800 text-xs">
                           {baptism.revMinister}
                         </span>
+                      </TableCell>
+                      <TableCell className="px-6 py-3">
+                        {baptism.fileUrl ? (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() =>
+                              window.open(
+                                baptism.fileUrl,
+                                '_blank',
+                                'noopener,noreferrer',
+                              )
+                            }
+                            className="h-8 w-8 p-0"
+                          >
+                            <DownloadIcon className="w-4 h-4 text-gray-600" />
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            disabled
+                            className="h-8 w-8 p-0"
+                          >
+                            <DownloadIcon className="w-4 h-4 text-gray-300" />
+                          </Button>
+                        )}
                       </TableCell>
                       <TableCell className="px-6 py-3">
                         <DropdownMenu>

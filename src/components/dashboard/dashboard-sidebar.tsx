@@ -38,8 +38,13 @@ export const DashboardSidebar = () => {
         )}
       </Button>
 
-      <div className="flex flex-col items-center gap-[60px] w-full p-0">
-        <header className="flex flex-col w-full items-start gap-4 pt-0 pb-[9px] px-0 border-b border-solid border-[#cfd4dc]">
+      <div className="flex flex-col items-center gap-[20px] w-full p-0">
+        <header
+          className={cn(
+            'flex flex-col w-full items-start gap-4 pt-0 pb-[9px] px-0 border-b border-solid border-[#cfd4dc] rounded-md',
+            isOpen && 'bg-gray-200',
+          )}
+        >
           <div className="flex flex-col items-start gap-2 pt-0 pb-3 px-0 w-full">
             <div
               className={cn(
@@ -49,15 +54,17 @@ export const DashboardSidebar = () => {
             >
               <div
                 className={cn(
-                  'rounded-[10px] flex h-[38px] items-center gap-2',
-                  isOpen ? 'w-[232px] px-8 py-2.5' : 'w-12 h-12 justify-center',
+                  'flex items-center gap-2 rounded-md mx-auto mt-2',
+                  isOpen
+                    ? 'w-[150px] h-[150px] py-2.5'
+                    : 'w-12 h-12 justify-center',
                 )}
               >
                 <img
                   className={cn(
-                    'object-cover',
+                    'object-cover rounded-3xl',
                     isOpen
-                      ? 'w-[120px] h-[103px] mt-[-34.00px] mb-[-51.00px]'
+                      ? 'w-full h-full mt-[-34.00px] mb-[-51.00px]'
                       : 'w-10 h-10',
                   )}
                   alt="Logo"

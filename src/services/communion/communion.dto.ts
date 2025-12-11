@@ -11,6 +11,7 @@ export const communionSchema = z.object({
   firstCommunionDate: z.date({ required_error: 'Communion date is required' }),
   placeOfFirstCommunion: z.string().min(1, 'Place of communion is required'),
   revMinister: z.string().min(1, 'Rev minister is required'),
+  fileUrl: z.string().optional(),
 })
 
 export type Communion = z.infer<typeof communionSchema>

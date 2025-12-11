@@ -263,11 +263,6 @@ const MarriageTable = memo(() => {
                     </TableHead>
                     <TableHead className="px-6 py-3">
                       <span className="font-medium text-gray-800 text-xs">
-                        Couple Name
-                      </span>
-                    </TableHead>
-                    <TableHead className="px-6 py-3">
-                      <span className="font-medium text-gray-800 text-xs">
                         Groom Name
                       </span>
                     </TableHead>
@@ -278,6 +273,11 @@ const MarriageTable = memo(() => {
                     </TableHead>
 
                     <TableHead className="px-6 py-3">Rev. Minister</TableHead>
+                    <TableHead className="px-6 py-3">
+                      <span className="font-medium text-gray-800 text-xs">
+                        Document
+                      </span>
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -304,11 +304,6 @@ const MarriageTable = memo(() => {
                       </TableCell>
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
-                          {marriage.coupleName}
-                        </span>
-                      </TableCell>
-                      <TableCell className="px-6 py-3">
-                        <span className="font-normal text-gray-800 text-xs">
                           {marriage.groomId}
                         </span>
                       </TableCell>
@@ -322,6 +317,33 @@ const MarriageTable = memo(() => {
                         <span className="font-normal text-gray-800 text-xs">
                           {marriage.revMinister}
                         </span>
+                      </TableCell>
+                      <TableCell className="px-6 py-3">
+                        {marriage.fileUrl ? (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() =>
+                              window.open(
+                                marriage.fileUrl,
+                                '_blank',
+                                'noopener,noreferrer',
+                              )
+                            }
+                            className="h-8 w-8 p-0"
+                          >
+                            <DownloadIcon className="w-4 h-4 text-gray-600" />
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            disabled
+                            className="h-8 w-8 p-0"
+                          >
+                            <DownloadIcon className="w-4 h-4 text-gray-300" />
+                          </Button>
+                        )}
                       </TableCell>
                       <TableCell className="px-6 py-3">
                         <DropdownMenu>

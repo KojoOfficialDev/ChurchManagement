@@ -10,6 +10,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { DialogFooter } from '@/components/ui/dialog'
 import { useBaptismsMutations } from '@/services/baptism/mutations'
+import { useAssetsMutations } from '@/services/assets/mutations'
 import { BAPTISM_FORM_SECTIONS } from '@/services/baptism/baptism-form'
 
 type AddBaptismFormProps = {
@@ -20,6 +21,10 @@ export const AddBaptismForm = ({ form }: AddBaptismFormProps) => {
   const {
     createBaptism: { mutateAsync, isPending },
   } = useBaptismsMutations()
+
+  const {
+    uploadDocument: { mutateAsync: uploadDocumentAsync },
+  } = useAssetsMutations()
 
   // Handler for when a member is selected
   const handleMemberSelect = useCallback(
@@ -57,9 +62,21 @@ export const AddBaptismForm = ({ form }: AddBaptismFormProps) => {
         }
         return field
       }),
+      childSections: baseSection.childSections?.map((childSection) => ({
+        ...childSection,
+        fields: childSection.fields.map((field) => {
+          if (field.name === 'fileUrl') {
+            return {
+              ...field,
+              onUpload: uploadDocumentAsync,
+            }
+          }
+          return field
+        }),
+      })),
     }
     return modifiedSection
-  }, [handleMemberSelect])
+  }, [handleMemberSelect, uploadDocumentAsync])
 
   const shouldShowField = useCallback(
     (field: FormField) => {

@@ -14,7 +14,19 @@ export const useAssetsMutations = () => {
     },
   })
 
+  const uploadDocument = useMutation({
+    mutationKey: ['uploadDocument'],
+    mutationFn: AssetsService.uploadDocument,
+    onSuccess: () => {
+      toast.success('Document uploaded successfully')
+    },
+    onError: () => {
+      toast.error('Failed to upload document')
+    },
+  })
+
   return {
     uploadImage,
+    uploadDocument,
   }
 }

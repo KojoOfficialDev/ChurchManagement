@@ -27,6 +27,7 @@ const AddCommunionDialog = () => {
       firstCommunionDate: undefined,
       placeOfFirstCommunion: '',
       revMinister: '',
+      fileUrl: '',
       isMember: false,
     },
   })

@@ -1,4 +1,5 @@
 import { ImageInput } from '../image-input'
+import { FileInput } from '../file-input'
 import type { FormField, FormFieldType } from '@/lib/types'
 import type { Control, FieldValues, Path, UseFormReturn } from 'react-hook-form'
 import { CheckboxInput } from '@/components/checkbox-input'
@@ -146,6 +147,22 @@ export const FieldTypeToRender = <TFieldValues extends FieldValues>({
         />
       )
     case 'file':
+      // Use FileInput for document uploads (fileUrl), ImageInput for images (imageUrl)
+      if (field.name === 'fileUrl') {
+        return (
+          <FileInput
+            control={control}
+            name={field.name as Path<TFieldValues>}
+            label={field.label}
+            error={
+              form.formState.errors[field.name as Path<TFieldValues>]
+                ?.message as string
+            }
+            placeholder={field.placeholder || 'Upload document'}
+            onUpload={field.onUpload}
+          />
+        )
+      }
       return (
         <ImageInput
           control={control}

@@ -22,6 +22,7 @@ export type Marriage = {
   modifiedDate: Date
   modifiedBy: string
   isActive: boolean
+  fileUrl?: string
 }
 
 export type MarriageResponse = Pagination & {

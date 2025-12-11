@@ -10,12 +10,6 @@ export const MARRIAGE_FORM_SECTIONS: Array<Omit<FormSection, 'title'>> = [
         placeholder: 'Enter marriage number',
       },
       {
-        name: 'coupleName',
-        label: 'Couple Name',
-        type: 'text',
-        placeholder: 'Enter couple name',
-      },
-      {
         name: 'groomId',
         label: "Groom's Name",
         type: 'text',
@@ -74,6 +68,12 @@ export const MARRIAGE_FORM_SECTIONS: Array<Omit<FormSection, 'title'>> = [
         label: 'Name of Minister',
         type: 'text',
         placeholder: 'Enter name of minister',
+      },
+      {
+        name: 'fileUrl',
+        label: 'Upload Document',
+        type: 'file',
+        placeholder: 'Upload certificate or document',
       },
     ],
   },

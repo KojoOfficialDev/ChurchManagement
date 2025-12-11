@@ -26,11 +26,13 @@ const AddBaptismDialog = () => {
       placeOfBirth: '',
       homeDistrict: '',
       baptismDate: undefined,
+      dateOfBirth: undefined,
       placeOfBaptism: '',
       godParent: '',
       revMinister: '',
       fathersName: '',
       mothersName: '',
+      fileUrl: '',
       isMember: false,
     },
   })
