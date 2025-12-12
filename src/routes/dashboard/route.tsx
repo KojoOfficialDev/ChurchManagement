@@ -55,6 +55,14 @@ export const Route = createFileRoute('/dashboard')({
         {
           title: `${loaderData?.churchName}`,
         },
+        {
+          property: 'og:title',
+          content: 'parish Desk',
+        },
+        {
+          property: 'og:description',
+          content: 'A comprehensive church mamangement system',
+        },
       ],
     }
   },
