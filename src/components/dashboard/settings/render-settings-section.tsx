@@ -10,11 +10,32 @@ import UsersTable from '@/components/dashboard/users/users-table'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { TableSkeleton } from '@/components/skeletons/table.skeleton'
 import SmsManagement from '@/components/dashboard/settings/sms-management'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { sessionOptions } from '@/services/auth/queries'
+import { SETTINGS_TABS } from '@/lib/constants'
 
 type RenderSettingsSectionProps = {
   tab: SettingsTabValue
 }
 export const RenderSettingsSection = ({ tab }: RenderSettingsSectionProps) => {
+  const { data } = useSuspenseQuery(sessionOptions)
+
+  // Check if user has permission to access this tab
+  const tabConfig = SETTINGS_TABS.find((t) => t.value === tab)
+  const hasPermission =
+    !tabConfig?.roles ||
+    tabConfig.roles.length === 0 ||
+    tabConfig.roles.some((role) => data.roles.includes(role))
+
+  if (!hasPermission) {
+    return (
+      <div className="p-6">
+        <p className="text-muted-foreground">
+          You don't have permission to access this section.
+        </p>
+      </div>
+    )
+  }
   switch (tab) {
     case 'church-profile':
       return (

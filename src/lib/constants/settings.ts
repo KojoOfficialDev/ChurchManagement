@@ -4,6 +4,7 @@ export const SETTINGS_TABS: Array<SettingsTabType> = [
   {
     label: 'Church Profile',
     value: 'church-profile',
+    roles: ['Administrator'],
   },
   {
     label: 'Setup',
@@ -12,10 +13,12 @@ export const SETTINGS_TABS: Array<SettingsTabType> = [
   {
     label: 'User Management',
     value: 'user-management',
+    roles: ['Administrator'],
   },
   {
     label: 'Subscriptions',
     value: 'subscriptions',
+    roles: ['Administrator'],
   },
   {
     label: 'SMS Credit',

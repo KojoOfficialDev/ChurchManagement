@@ -1,3 +1,5 @@
+import type { Role } from './general'
+
 // Explicit mapping between values and labels
 export type SettingsTabMapping = {
   'church-profile': 'Church Profile'
@@ -17,4 +19,5 @@ export type SettingsTabLabel = SettingsTabMapping[SettingsTabValue]
 export type SettingsTabType<T extends SettingsTabValue = SettingsTabValue> = {
   label: SettingsTabMapping[T]
   value: T
+  roles?: Array<Role>
 }

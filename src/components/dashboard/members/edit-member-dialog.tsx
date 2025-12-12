@@ -113,6 +113,7 @@ const EditMemberDialog = ({ member, children }: EditMemberDialogProps) => {
     })
   }
 
+  console.log(form.formState.errors)
   const formStepNumber = useMemo(() => {
     return (
       MEMBER_FORM_SECTIONS.findIndex((section) => section.title === formStep) +

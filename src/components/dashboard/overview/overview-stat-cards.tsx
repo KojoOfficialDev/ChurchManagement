@@ -25,7 +25,7 @@ const OverviewStatCards = memo(() => {
                 </div>
               </div>
             </div>
-            <div className="inline-flex items-center gap-2">
+            <div className="inline-flex items-center gap-2 whitespace-nowrap">
               {getTrendIcon(stat.trend)}
               <div className=" font-normal text-transparent tracking-[0] leading-4 text-sm">
                 <span className="font-medium text-green-500 leading-6">
@@ -36,7 +36,7 @@ const OverviewStatCards = memo(() => {
                 <span className="font-medium text-gray-800 leading-6">
                   &nbsp;
                 </span>
-                <span className="font-medium text-gray-800 leading-6">
+                <span className="font-medium text-gray-800 leading-6 whitespace-nowrap">
                   {stat.trend === 'up'
                     ? 'Up last Month'
                     : stat.trend === 'down'

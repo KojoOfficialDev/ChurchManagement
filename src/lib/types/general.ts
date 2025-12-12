@@ -88,6 +88,8 @@ export type SelectType = {
   label: string
 }
 
+export type Role = 'Administrator' | 'Financial-Secretary' | 'Frontdesk'
+
 export type Pagination = {
   page: number
   pageSize: number

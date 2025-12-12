@@ -1,3 +1,5 @@
+import type { Role } from '@/lib/types'
+
 export type Token = {
   name: string
   email: string
@@ -10,7 +12,7 @@ export type Token = {
   expiresIn: number
   refreshToken: string
   claims: Array<any>
-  roles: Array<string>
+  roles: Array<Role>
 }
 export type SessionResponse = {
   token: Token
