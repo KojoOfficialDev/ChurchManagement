@@ -39,6 +39,7 @@ const EditMarriageDialog = ({
       groomParentName: marriage.groomParentName,
       brideParentName: marriage.brideParentName,
       revMinister: marriage.revMinister,
+      fileUrl: marriage.fileUrl ?? '',
     },
   })
 

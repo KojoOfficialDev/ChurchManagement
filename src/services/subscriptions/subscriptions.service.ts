@@ -46,7 +46,7 @@ export class SubscriptionsService {
   static subscribe = async (payload: Omit<Suscribe, 'churchId'>) => {
     const churchId = await this.getChurchId()
     const response = await protectedApi.post<Suscribe>(
-      '/Subscription/Subscribe',
+      '/Subscription/paySubscription',
       { ...payload, churchId },
     )
     return response.data

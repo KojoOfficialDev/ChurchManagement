@@ -9,6 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { DialogFooter } from '@/components/ui/dialog'
 import { useMarriagesMutations } from '@/services/marriages/mutations'
+import { useAssetsMutations } from '@/services/assets/mutations'
 import { MARRIAGE_FORM_SECTIONS } from '@/services/marriages/marriage.form'
 
 type EditMarriageFormProps = {
@@ -21,7 +22,25 @@ const EditMarriageForm = ({ form, onOpenChange }: EditMarriageFormProps) => {
     updateMarriage: { mutateAsync, isPending },
   } = useMarriagesMutations()
 
-  const section = useMemo(() => MARRIAGE_FORM_SECTIONS[0], [])
+  const {
+    uploadDocument: { mutateAsync: uploadDocumentAsync },
+  } = useAssetsMutations()
+
+  const section = useMemo(() => {
+    const baseSection = MARRIAGE_FORM_SECTIONS[0]
+    return {
+      ...baseSection,
+      fields: baseSection.fields.map((field) => {
+        if (field.name === 'fileUrl') {
+          return {
+            ...field,
+            onUpload: uploadDocumentAsync,
+          }
+        }
+        return field
+      }),
+    }
+  }, [uploadDocumentAsync])
 
   const shouldShowChildSection = useCallback(
     (childSection: FormSection) => {

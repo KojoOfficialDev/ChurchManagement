@@ -32,4 +32,5 @@ export type Suscribe = {
   subscriptionTypeId: number
   channel: string | null
   subscriptionTotal: number | null
+  Msisdn: string
 }

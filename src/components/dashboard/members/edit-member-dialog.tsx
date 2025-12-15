@@ -103,7 +103,6 @@ const EditMemberDialog = ({ member, children }: EditMemberDialogProps) => {
     } as unknown as UpdateMember
   }, [member])
 
-  
   const formStepNumber = useMemo(() => {
     return (
       MEMBER_FORM_SECTIONS.findIndex((section) => section.title === formStep) +
@@ -132,7 +131,7 @@ const EditMemberDialog = ({ member, children }: EditMemberDialogProps) => {
     const fieldNames: Array<FieldPath<UpdateMember>> = [
       ...(section?.fields.map((field) => field.name) ?? []),
     ] as Array<FieldPath<UpdateMember>>
-    
+
     // Add fields from childSections if they should be visible
     section?.childSections?.forEach((childSection) => {
       if (childSection.dependsOn) {
@@ -173,7 +172,7 @@ const EditMemberDialog = ({ member, children }: EditMemberDialogProps) => {
 
     // Validate all field names
     const isValid = await form.trigger(fieldNames)
-    
+
     if (!isValid) {
       setAttempedNext(true)
       toast.error('Please fill in all the required fields')
@@ -183,12 +182,12 @@ const EditMemberDialog = ({ member, children }: EditMemberDialogProps) => {
     // If valid, set the next form step
     setFormStep(POSSIBLE_FORM_STEPS[POSSIBLE_FORM_STEPS.indexOf(formStep) + 1])
   }, [formStep, POSSIBLE_FORM_STEPS, form, MEMBER_FORM_SECTIONS])
-  
+
   const prevFormStep = useCallback(() => {
     if (POSSIBLE_FORM_STEPS.indexOf(formStep) === 0) return
     setFormStep(POSSIBLE_FORM_STEPS[POSSIBLE_FORM_STEPS.indexOf(formStep) - 1])
   }, [formStep, POSSIBLE_FORM_STEPS])
-  
+
   const handleSave = (data: UpdateMember) => {
     updateMember.mutateAsync(data, {
       onSuccess() {

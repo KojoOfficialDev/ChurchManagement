@@ -36,6 +36,7 @@ const EditCommunionDialog = ({
         : undefined,
       placeOfFirstCommunion: communion.placeOfFirstCommunion,
       revMinister: communion.revMinister,
+      fileUrl: communion.fileUrl ?? '',
       isMember: Boolean(communion.memberId),
     },
   })

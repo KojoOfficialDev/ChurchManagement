@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { ChurchProfileFormSkeleton } from '../../skeletons/church-profile-form.skeleton'
 import { PersonalizationSkeleton } from '../../skeletons/personalization-skeleton'
 import Subscriptions from './subscriptions'
@@ -10,7 +11,6 @@ import UsersTable from '@/components/dashboard/users/users-table'
 import { ErrorBoundary } from '@/components/error-boundary'
 import { TableSkeleton } from '@/components/skeletons/table.skeleton'
 import SmsManagement from '@/components/dashboard/settings/sms-management'
-import { useSuspenseQuery } from '@tanstack/react-query'
 import { sessionOptions } from '@/services/auth/queries'
 import { SETTINGS_TABS } from '@/lib/constants'
 

@@ -43,6 +43,7 @@ const EditBaptismDialog = ({
       dateOfBirth: baptism.dateOfBirth
         ? new Date(baptism.dateOfBirth)
         : undefined,
+      fileUrl: baptism.fileUrl ?? '',
       isMember: Boolean(baptism.memberId),
     },
   })

@@ -10,6 +10,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { DialogFooter } from '@/components/ui/dialog'
 import { confirmationMutations } from '@/services/confirmation/mutations'
+import { useAssetsMutations } from '@/services/assets/mutations'
 import { CONFIRMATION_FORM_SECTIONS } from '@/services/confirmation/confirmation-form'
 
 type EditConfirmationFormProps = {
@@ -24,6 +25,10 @@ const EditConfirmationForm = ({
   const {
     updateConfirmation: { mutateAsync, isPending },
   } = confirmationMutations()
+
+  const {
+    uploadDocument: { mutateAsync: uploadDocumentAsync },
+  } = useAssetsMutations()
 
   const handleMemberSelect = useCallback(
     (member?: Member) => {
@@ -50,9 +55,21 @@ const EditConfirmationForm = ({
         }
         return field
       }),
+      childSections: baseSection.childSections?.map((childSection) => ({
+        ...childSection,
+        fields: childSection.fields.map((field) => {
+          if (field.name === 'fileUrl') {
+            return {
+              ...field,
+              onUpload: uploadDocumentAsync,
+            }
+          }
+          return field
+        }),
+      })),
     }
     return modifiedSection
-  }, [handleMemberSelect])
+  }, [handleMemberSelect, uploadDocumentAsync])
 
   const shouldShowField = useCallback(
     (field: FormField) => {

@@ -1,14 +1,8 @@
-import {
-  DownloadIcon,
-  MoreVerticalIcon,
-  SearchIcon,
-  Trash2Icon,
-} from 'lucide-react'
-import { Suspense, memo, useCallback, useMemo, useState } from 'react'
+import { DownloadIcon, MoreVerticalIcon, SearchIcon } from 'lucide-react'
+import { Suspense, memo, useMemo, useState } from 'react'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -56,7 +50,6 @@ const BaptismTable = memo(() => {
     getBaptismsOptions({ page, pageSize, search: debouncedSearch }),
   )
   const { isOpen } = useSidebar()
-  const [selectedBaptisms, setSelectedBaptisms] = useState<Array<string>>([])
   const [editingBaptism, setEditingBaptism] = useState<any>(null)
   const [viewingBaptism, setViewingBaptism] = useState<any>(null)
 
@@ -129,38 +122,6 @@ const BaptismTable = memo(() => {
     filename: 'baptisms',
   })
 
-  const toggleSelect = useCallback(
-    (id: string) => {
-      if (selectedBaptisms.includes(id)) {
-        setSelectedBaptisms((prev) =>
-          prev.filter((selectedId) => selectedId !== id),
-        )
-      } else {
-        setSelectedBaptisms((prev) => [...prev, id])
-      }
-    },
-    [selectedBaptisms],
-  )
-  const handleSelectAll = useCallback(() => {
-    setSelectedBaptisms(baptisms.map((baptism) => baptism.id.toString()))
-  }, [baptisms])
-
-  const handleDeselectAll = useCallback(() => {
-    setSelectedBaptisms([])
-  }, [])
-
-  const isAllSelected = useMemo(
-    () => selectedBaptisms.length === baptisms.length,
-    [selectedBaptisms],
-  )
-  const toggleSelectAll = useCallback(() => {
-    if (isAllSelected) {
-      handleDeselectAll()
-    } else {
-      handleSelectAll()
-    }
-  }, [selectedBaptisms])
-
   if (baptisms.length === 0 && !debouncedSearch) {
     return (
       <EmptyComponent
@@ -191,7 +152,6 @@ const BaptismTable = memo(() => {
         <h1 className="text-gray-800 font-text-xl-bold font-[number:var(--text-xl-bold-font-weight)] text-[length:var(--text-xl-bold-font-size)] tracking-[var(--text-xl-bold-letter-spacing)] leading-[var(--text-xl-bold-line-height)] [font-style:var(--text-xl-bold-font-style)]">
           Baptism
         </h1>
-
         <AddBaptismDialog />
       </header>
 
@@ -213,18 +173,6 @@ const BaptismTable = memo(() => {
                     <SearchIcon />
                   </InputGroupAddon>
                 </InputGroup>
-
-                {selectedBaptisms.length > 1 && (
-                  <Button
-                    variant="destructive"
-                    size={isOpen ? 'icon' : 'default'}
-                  >
-                    <Trash2Icon className="w-5 h-5" />
-                    {!isOpen && (
-                      <span className="font-medium text-sm">Delete</span>
-                    )}
-                  </Button>
-                )}
               </div>
 
               <Button
@@ -248,13 +196,6 @@ const BaptismTable = memo(() => {
               <Table>
                 <TableHeader>
                   <TableRow className="bg-[#fbfcfc] border-b border-[#eaecf0] hover:bg-[#fbfcfc]">
-                    <TableHead className="w-[75px] px-6 py-3">
-                      <Checkbox
-                        checked={isAllSelected}
-                        onCheckedChange={toggleSelectAll}
-                        className="cursor-pointer"
-                      />
-                    </TableHead>
                     <TableHead className="px-6 py-3">
                       <span className="font-medium text-gray-800 text-xs">
                         Name
@@ -267,17 +208,14 @@ const BaptismTable = memo(() => {
                     </TableHead>
                     <TableHead className="px-6 py-3">
                       <span className="font-medium text-gray-800 text-xs">
-                        Place of Baptism
-                      </span>
-                    </TableHead>
-                    <TableHead className="px-6 py-3">
-                      <span className="font-medium text-gray-800 text-xs">
                         Baptism Date
                       </span>
                     </TableHead>
 
                     <TableHead className="px-6 py-3">
-                      Rev. Minister Name
+                      <span className="font-medium text-gray-800 text-xs">
+                        Rev. Minister Name
+                      </span>
                     </TableHead>
                     <TableHead className="px-6 py-3">
                       <span className="font-medium text-gray-800 text-xs">
@@ -293,17 +231,6 @@ const BaptismTable = memo(() => {
                       className="border-b border-[#eaecf0]"
                     >
                       <TableCell className="px-6 py-3">
-                        <Checkbox
-                          checked={selectedBaptisms.includes(
-                            baptism.id.toString(),
-                          )}
-                          onCheckedChange={() =>
-                            toggleSelect(baptism.id.toString())
-                          }
-                          className="cursor-pointer"
-                        />
-                      </TableCell>
-                      <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
                           {baptism.lastName} {baptism.middleName}{' '}
                           {baptism.firstName}
@@ -312,11 +239,6 @@ const BaptismTable = memo(() => {
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
                           {baptism.godParent}
-                        </span>
-                      </TableCell>
-                      <TableCell className="px-6 py-3">
-                        <span className="font-normal text-gray-800 text-xs">
-                          {baptism.placeOfBaptism}
                         </span>
                       </TableCell>
                       <TableCell className="px-6 py-3">

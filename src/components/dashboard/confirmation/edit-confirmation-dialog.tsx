@@ -37,6 +37,7 @@ const EditConfirmationDialog = ({
       placeOfConfirmation: confirmation.placeOfConfirmation,
       godParent: confirmation.godParent,
       revMinister: confirmation.revMinister,
+      fileUrl: confirmation.fileUrl ?? '',
       isMember: Boolean(confirmation.memberId),
     },
   })

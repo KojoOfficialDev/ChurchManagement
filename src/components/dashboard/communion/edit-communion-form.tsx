@@ -10,6 +10,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { DialogFooter } from '@/components/ui/dialog'
 import { communionMutations } from '@/services/communion/mutation'
+import { useAssetsMutations } from '@/services/assets/mutations'
 import { COMMUNION_FORM_SECTIONS } from '@/services/communion/communion-form'
 
 type EditCommunionFormProps = {
@@ -21,6 +22,10 @@ const EditCommunionForm = ({ form, onOpenChange }: EditCommunionFormProps) => {
   const {
     updateCommunion: { mutateAsync, isPending },
   } = communionMutations()
+
+  const {
+    uploadDocument: { mutateAsync: uploadDocumentAsync },
+  } = useAssetsMutations()
 
   const handleMemberSelect = useCallback(
     (member?: Member) => {
@@ -47,9 +52,21 @@ const EditCommunionForm = ({ form, onOpenChange }: EditCommunionFormProps) => {
         }
         return field
       }),
+      childSections: baseSection.childSections?.map((childSection) => ({
+        ...childSection,
+        fields: childSection.fields.map((field) => {
+          if (field.name === 'fileUrl') {
+            return {
+              ...field,
+              onUpload: uploadDocumentAsync,
+            }
+          }
+          return field
+        }),
+      })),
     }
     return modifiedSection
-  }, [handleMemberSelect])
+  }, [handleMemberSelect, uploadDocumentAsync])
 
   const shouldShowField = useCallback(
     (field: FormField) => {

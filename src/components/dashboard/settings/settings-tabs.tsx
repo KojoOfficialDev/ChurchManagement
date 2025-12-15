@@ -1,12 +1,11 @@
-import { useMemo, useState, useTransition } from 'react'
+import { useEffect, useMemo, useState, useTransition } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { RenderSettingsSection } from './render-settings-section'
 import type { SettingsTabValue } from '@/lib/types/settings'
 import { SETTINGS_TABS } from '@/lib/constants'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useSuspenseQuery } from '@tanstack/react-query'
 import { sessionOptions } from '@/services/auth/queries'
-import { useEffect } from 'react'
 
 function SettingsTabs() {
   const { data } = useSuspenseQuery(sessionOptions)
