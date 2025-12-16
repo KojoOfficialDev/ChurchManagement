@@ -39,7 +39,7 @@ export const AlertStats = memo(() => {
                   {stat.label}
                 </div>
                 <div className="font-display-xs-bold font-[number:var(--display-xs-bold-font-weight)] text-gray-800 text-[length:var(--display-xs-bold-font-size)] tracking-[var(--display-xs-bold-letter-spacing)] leading-[var(--display-xs-bold-line-height)] [font-style:var(--display-xs-bold-font-style)]">
-                  {stat.value}
+                  {stat.value.toFixed(2)}
                 </div>
               </div>
             </CardContent>

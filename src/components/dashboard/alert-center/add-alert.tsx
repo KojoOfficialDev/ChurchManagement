@@ -152,7 +152,7 @@ const AddAlert = ({ children }: { children: React.ReactNode }) => {
                 placeholder={'Search for a member...'}
                 error={form.formState.errors.memberId?.message}
                 onMemberSelect={(member) => {
-                  form.setValue('memberId', Number(member?.membershipNumber))
+                  form.setValue('memberId', Number(member?.id))
                   form.setValue('societyIds', [])
                 }}
               />
