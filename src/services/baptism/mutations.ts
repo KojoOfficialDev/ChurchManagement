@@ -41,9 +41,23 @@ export const useBaptismsMutations = () => {
     },
   })
 
+  const bulkUpload = useMutation({
+    mutationKey: ['bulkUploadBaptisms'],
+    mutationFn: BaptismService.bulkUpload,
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['baptisms'] })
+      toast.success('Baptism records uploaded successfully')
+    },
+    onError: () => {
+      toast.error('Failed to upload baptism records')
+    },
+  })
+
   return {
     removeBaptism,
     createBaptism,
     updateBaptism,
+    bulkUpload,
   }
 }

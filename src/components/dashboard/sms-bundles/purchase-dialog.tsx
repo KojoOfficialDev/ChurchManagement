@@ -2,6 +2,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { Controller, useForm } from 'react-hook-form'
 import { Suspense, useState } from 'react'
+import { toast } from 'sonner'
 import type { ReactNode } from 'react'
 import type { PurchaseSmsBundle } from '@/services/sms-bundles/smsBundles.dto'
 import {
@@ -63,11 +64,26 @@ const PurchaseForm = ({ onClose }: { onClose: () => void }) => {
   })
 
   const onSubmit = async (data: PurchaseSmsBundle) => {
-    await purchaseSmsBundle.mutateAsync({
-      bundleId: data.bundleId,
-      paymentMethod: data.paymentMethod,
-      transactionReference: data.transactionReference,
-    })
+    await purchaseSmsBundle.mutateAsync(
+      {
+        bundleId: data.bundleId,
+        paymentMethod: data.paymentMethod,
+        transactionReference: data.transactionReference,
+      },
+      {
+        onSuccess: (data) => {
+          if (data?.data) {
+            window.open(
+              data?.data?.checkOutUrl ?? data?.data?.checkoutDirectUrl,
+              '_blank',
+            )
+          }
+        },
+        onError: () => {
+          toast.error('Failed to initiate payments')
+        },
+      },
+    )
     form.reset()
     onClose()
   }

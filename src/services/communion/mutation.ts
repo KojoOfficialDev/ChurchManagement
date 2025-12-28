@@ -43,9 +43,23 @@ export const communionMutations = () => {
     },
   })
 
+  const bulkUpload = useMutation({
+    mutationKey: ['bulkUploadCommunions'],
+    mutationFn: CommunionService.bulkUpload,
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['communions'] })
+      toast.success('Communion records uploaded successfully')
+    },
+    onError: () => {
+      toast.error('Failed to upload communion records')
+    },
+  })
+
   return {
     createCommunion,
     updateCommunion,
     removeCommunion,
+    bulkUpload,
   }
 }

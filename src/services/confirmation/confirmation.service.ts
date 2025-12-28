@@ -80,4 +80,25 @@ export class ConfirmationService {
     })
     return response.data
   }
+
+  static bulkUpload = async (file: File) => {
+    const churchId = await this.getChurchId()
+    const formData = new FormData()
+    formData.append('file', file)
+
+    const response = await protectedApi.post(
+      '/Confirmation/BulkUpload',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        params: {
+          churchId,
+        },
+      },
+    )
+
+    return response.data
+  }
 }

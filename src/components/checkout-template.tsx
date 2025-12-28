@@ -8,6 +8,7 @@ import {
   MessageSquare,
 } from 'lucide-react'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import type { Plan } from '@/services/subscriptions/types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -46,8 +47,16 @@ export function CheckoutSection({ plan }: { plan: Plan }) {
         Msisdn: resolvedMsisdn,
       },
       {
-        onSuccess: () => {
-          navigate({ to: '/dashboard' })
+        onSuccess: (data) => {
+          if (data?.data) {
+            window.open(
+              data?.data?.checkOutUrl ?? data?.data?.checkoutDirectUrl,
+              '_blank',
+            )
+          }
+        },
+        onError: () => {
+          toast.error('Failed to initiate payments')
         },
       },
     )

@@ -43,10 +43,12 @@ import { useExcelExport } from '@/lib/hooks/use-excel-export'
 import { CommunionService } from '@/services/communion/communion.service'
 import EditCommunionDialog from '@/components/dashboard/communion/edit-communion-dialog'
 import CommunionDetails from '@/components/dashboard/communion/communion-details'
+import { BulkUploadDialog } from '@/components/bulk-upload-dialog'
 
 const CommunionTable = memo(() => {
   const {
     removeCommunion: { mutateAsync, isPending },
+    bulkUpload: { mutateAsync: bulkUploadAsync, isPending: isBulkUploading },
   } = communionMutations()
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 400)
@@ -158,6 +160,25 @@ const CommunionTable = memo(() => {
             </Suspense>
           </ErrorBoundary>
         }
+        secondaryButtonText="Bulk Import"
+        secondaryButtonOnClick={
+          <BulkUploadDialog
+            entityName="Communions"
+            templatePath="/communion-template.xlsx"
+            onUpload={bulkUploadAsync}
+            isPending={isBulkUploading}
+            trigger={
+              <Button
+                variant="secondary"
+                size="lg"
+                className="bg-[#4a1fb71f] hover:bg-[#4a1fb71f] "
+              >
+                Bulk Import
+              </Button>
+            }
+          />
+        }
+        secondaryButtonSize="lg"
         media={
           <img
             src="/image-3.svg"

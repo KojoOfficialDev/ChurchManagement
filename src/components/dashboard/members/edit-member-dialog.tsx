@@ -72,7 +72,7 @@ const EditMemberDialog = ({ member, children }: EditMemberDialogProps) => {
   // Transform member data for form defaults
   const getDefaultValues = useCallback(() => {
     return {
-      id: member.id,
+      id: member.id.toString(),
       firstName: member.firstName || '',
       lastName: member.lastName || '',
       middleName: member.middleName || '',
@@ -93,7 +93,7 @@ const EditMemberDialog = ({ member, children }: EditMemberDialogProps) => {
       isActive: member.isActive || false,
       membershipNumber: member.membershipNumber || '',
       belongsToSociety: member.isBelongToSociety || false,
-      societyName: member.societyName.map((id) => Number(id)),
+      societyName: member.societyName?.map((id) => Number(id)) ?? [],
       // Default discriminated union fields - setting valid defaults
       isBaptized: false,
       isFirstCommunion: false,
@@ -197,6 +197,8 @@ const EditMemberDialog = ({ member, children }: EditMemberDialogProps) => {
       },
     })
   }
+
+  console.log(form.formState.errors)
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>

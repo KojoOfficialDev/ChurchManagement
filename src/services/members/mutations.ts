@@ -43,9 +43,23 @@ export const useMembersMutations = () => {
     },
   })
 
+  const bulkUpload = useMutation({
+    mutationKey: ['bulkUploadMembers'],
+    mutationFn: MembersService.bulkUpload,
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['members'] })
+      toast.success('Members uploaded successfully')
+    },
+    onError: () => {
+      toast.error('Failed to upload members')
+    },
+  })
+
   return {
     createMember,
     removeMember,
     updateMember,
+    bulkUpload,
   }
 }

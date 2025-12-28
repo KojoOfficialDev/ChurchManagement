@@ -25,7 +25,7 @@ const MembersStatsCards = memo(() => {
   ]
 
   return (
-    <section className="grid grid-cols-4 gap-5">
+    <section className="grid grid-cols-3 gap-5">
       {membershipData.map((item, index) => (
         <Card
           key={index}
@@ -52,7 +52,7 @@ const MembersStatsCards = memo(() => {
           </CardContent>
         </Card>
       ))}
-      <div className="col-span-2">
+      <div>
         <GenderPieChart genderCount={data.genderCount} />
       </div>
     </section>

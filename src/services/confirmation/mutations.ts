@@ -43,9 +43,23 @@ export const confirmationMutations = () => {
     },
   })
 
+  const bulkUpload = useMutation({
+    mutationKey: ['bulkUploadConfirmations'],
+    mutationFn: ConfirmationService.bulkUpload,
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['confirmations'] })
+      toast.success('Confirmation records uploaded successfully')
+    },
+    onError: () => {
+      toast.error('Failed to upload confirmation records')
+    },
+  })
+
   return {
     createConfirmation,
     updateConfirmation,
     removeConfirmation,
+    bulkUpload,
   }
 }

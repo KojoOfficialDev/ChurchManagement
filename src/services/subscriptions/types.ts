@@ -34,3 +34,15 @@ export type Suscribe = {
   subscriptionTotal: number | null
   Msisdn: string
 }
+
+export type PaymentResponse = {
+  status: string
+  responseCode: string
+  data: {
+    checkOutUrl: string
+    checkOutId: string
+    clientReference: string
+    message: string
+    checkoutDirectUrl: string
+  }
+}

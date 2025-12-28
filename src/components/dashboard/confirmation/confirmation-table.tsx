@@ -43,10 +43,12 @@ import { useExcelExport } from '@/lib/hooks/use-excel-export'
 import { ConfirmationService } from '@/services/confirmation/confirmation.service'
 import EditConfirmationDialog from '@/components/dashboard/confirmation/edit-confirmation-dialog'
 import ConfirmationDetails from '@/components/dashboard/confirmation/confirmation-details'
+import { BulkUploadDialog } from '@/components/bulk-upload-dialog'
 
 const ConfirmationTable = memo(() => {
   const {
     removeConfirmation: { mutateAsync, isPending },
+    bulkUpload: { mutateAsync: bulkUploadAsync, isPending: isBulkUploading },
   } = confirmationMutations()
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 400)
@@ -162,6 +164,25 @@ const ConfirmationTable = memo(() => {
             </Suspense>
           </ErrorBoundary>
         }
+        secondaryButtonText="Bulk Import"
+        secondaryButtonOnClick={
+          <BulkUploadDialog
+            entityName="Confirmations"
+            templatePath="/confirmation-template.xlsx"
+            onUpload={bulkUploadAsync}
+            isPending={isBulkUploading}
+            trigger={
+              <Button
+                variant="secondary"
+                size="lg"
+                className="bg-[#4a1fb71f] hover:bg-[#4a1fb71f] "
+              >
+                Bulk Import
+              </Button>
+            }
+          />
+        }
+        secondaryButtonSize="lg"
         media={
           <img
             src="/image-3.svg"
@@ -235,7 +256,7 @@ const ConfirmationTable = memo(() => {
 
           <div className="w-full overflow-x-auto">
             {confirmations.length > 0 ? (
-              <Table>
+              <Table className="overflow-x-auto">
                 <TableHeader>
                   <TableRow className="bg-[#fbfcfc] border-b border-[#eaecf0] hover:bg-[#fbfcfc]">
                     <TableHead className="w-[75px] px-6 py-3">
@@ -255,16 +276,7 @@ const ConfirmationTable = memo(() => {
                         Name
                       </span>
                     </TableHead>
-                    <TableHead className="px-6 py-3">
-                      <span className="font-medium text-gray-800 text-xs">
-                        Sponsor
-                      </span>
-                    </TableHead>
-                    <TableHead className="px-6 py-3">
-                      <span className="font-medium text-gray-800 text-xs">
-                        Place of Confirmation
-                      </span>
-                    </TableHead>
+
                     <TableHead className="px-6 py-3">
                       <span className="font-medium text-gray-800 text-xs">
                         Confirmation Date
@@ -272,7 +284,9 @@ const ConfirmationTable = memo(() => {
                     </TableHead>
 
                     <TableHead className="px-6 py-3">
-                      Rev. Minister Name
+                      <span className="font-medium text-gray-800 text-xs">
+                        Rev. Minister Name
+                      </span>
                     </TableHead>
                     <TableHead className="px-6 py-3">
                       <span className="font-medium text-gray-800 text-xs">
@@ -309,16 +323,7 @@ const ConfirmationTable = memo(() => {
                           {confirmation.lastName}
                         </span>
                       </TableCell>
-                      <TableCell className="px-6 py-3">
-                        <span className="font-normal text-gray-800 text-xs">
-                          {confirmation.godParent}
-                        </span>
-                      </TableCell>
-                      <TableCell className="px-6 py-3">
-                        <span className="font-normal text-gray-800 text-xs">
-                          {confirmation.placeOfConfirmation}
-                        </span>
-                      </TableCell>
+
                       <TableCell className="px-6 py-3">
                         <span className="font-normal text-gray-800 text-xs">
                           {format(

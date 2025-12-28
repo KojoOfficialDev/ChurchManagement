@@ -1,5 +1,6 @@
 import type { PurchaseHistory, SmsBundle } from './types'
 import type { PurchaseSmsBundle } from './smsBundles.dto'
+import type { PaymentResponse } from '../subscriptions/types'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { sessionOptions } from '@/services/auth/queries'
 import { protectedApi } from '@/server/protected-api'
@@ -28,7 +29,7 @@ export class SmsBundlesService {
 
   static purchaseSmsBundle = async (payload: PurchaseSmsBundle) => {
     const churchId = await this.getChurchId()
-    const response = await protectedApi.post<SmsBundle>(
+    const response = await protectedApi.post<PaymentResponse>(
       '/smsBundles/purchaseBundle',
       { ...payload, churchId },
     )

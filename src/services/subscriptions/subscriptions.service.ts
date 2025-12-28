@@ -1,4 +1,4 @@
-import type { Plan, SubscriptionHistory, Suscribe } from './types'
+import type { PaymentResponse, Plan, SubscriptionHistory, Suscribe  } from './types'
 import { protectedApi } from '@/server/protected-api'
 import { getContext } from '@/integrations/tanstack-query/root-provider'
 import { sessionOptions } from '@/services/auth/queries'
@@ -45,7 +45,7 @@ export class SubscriptionsService {
 
   static subscribe = async (payload: Omit<Suscribe, 'churchId'>) => {
     const churchId = await this.getChurchId()
-    const response = await protectedApi.post<Suscribe>(
+    const response = await protectedApi.post<PaymentResponse>(
       '/Subscription/paySubscription',
       { ...payload, churchId },
     )

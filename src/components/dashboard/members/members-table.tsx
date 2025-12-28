@@ -44,6 +44,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { AlertDialogComponent } from '@/components/alert-dialog'
 import { useExcelExport } from '@/lib/hooks/use-excel-export'
 import { MembersService } from '@/services/members/members.service'
+import { BulkUploadDialog } from '@/components/bulk-upload-dialog'
 
 const MembersTable = memo(() => {
   const [page, setPage] = useState(1)
@@ -55,6 +56,7 @@ const MembersTable = memo(() => {
   )
   const {
     removeMember: { mutateAsync, isPending },
+    bulkUpload: { mutateAsync: bulkUploadAsync, isPending: isBulkUploading },
   } = useMembersMutations()
   const memberData = memberResponse.data
   const { isOpen } = useSidebar()
@@ -159,6 +161,25 @@ const MembersTable = memo(() => {
         title="No members found"
         description="No members found"
         buttonText="Add Member"
+        secondaryButtonText="Bulk Import"
+        secondaryButtonOnClick={
+          <BulkUploadDialog
+            entityName="Members"
+            templatePath="/members-template.xlsx"
+            onUpload={bulkUploadAsync}
+            isPending={isBulkUploading}
+            trigger={
+              <Button
+                variant="secondary"
+                size="lg"
+                className="bg-[#4a1fb71f] hover:bg-[#4a1fb71f] "
+              >
+                Bulk Import
+              </Button>
+            }
+          />
+        }
+        secondaryButtonSize="lg"
         buttonOnClick={
           <ErrorBoundary level="component">
             <Suspense fallback={<ButtonSkeleton />}>

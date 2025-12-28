@@ -45,9 +45,23 @@ export const useMarriagesMutations = () => {
     },
   })
 
+  const bulkUpload = useMutation({
+    mutationKey: ['bulkUploadMarriages'],
+    mutationFn: MarriageService.bulkUpload,
+    onSuccess: async () => {
+      const queryClient = getContext().queryClient
+      await queryClient.invalidateQueries({ queryKey: ['marriages'] })
+      toast.success('Marriage records uploaded successfully')
+    },
+    onError: () => {
+      toast.error('Failed to upload marriage records')
+    },
+  })
+
   return {
     createMarriage,
     updateMarriage,
     removeMarriage,
+    bulkUpload,
   }
 }

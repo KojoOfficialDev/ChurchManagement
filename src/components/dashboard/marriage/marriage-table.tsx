@@ -43,10 +43,12 @@ import { useMarriagesMutations } from '@/services/marriages/mutations'
 import { AlertDialogComponent } from '@/components/alert-dialog'
 import { useExcelExport } from '@/lib/hooks/use-excel-export'
 import { MarriageService } from '@/services/marriages/marriage.service'
+import { BulkUploadDialog } from '@/components/bulk-upload-dialog'
 
 const MarriageTable = memo(() => {
   const {
     removeMarriage: { mutateAsync, isPending },
+    bulkUpload: { mutateAsync: bulkUploadAsync, isPending: isBulkUploading },
   } = useMarriagesMutations()
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 400)
@@ -175,6 +177,25 @@ const MarriageTable = memo(() => {
             </Suspense>
           </ErrorBoundary>
         }
+        secondaryButtonText="Bulk Import"
+        secondaryButtonOnClick={
+          <BulkUploadDialog
+            entityName="Marriages"
+            templatePath="/marriage-template.xlsx"
+            onUpload={bulkUploadAsync}
+            isPending={isBulkUploading}
+            trigger={
+              <Button
+                variant="secondary"
+                size="lg"
+                className="bg-[#4a1fb71f] hover:bg-[#4a1fb71f] "
+              >
+                Bulk Import
+              </Button>
+            }
+          />
+        }
+        secondaryButtonSize="lg"
         media={
           <img
             src="/image-3.svg"

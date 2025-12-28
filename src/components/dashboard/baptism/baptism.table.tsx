@@ -37,10 +37,12 @@ import { useBaptismsMutations } from '@/services/baptism/mutations'
 import { AlertDialogComponent } from '@/components/alert-dialog'
 import { useExcelExport } from '@/lib/hooks/use-excel-export'
 import { BaptismService } from '@/services/baptism/baptism.service'
+import { BulkUploadDialog } from '@/components/bulk-upload-dialog'
 
 const BaptismTable = memo(() => {
   const {
     removeBaptism: { mutateAsync, isPending },
+    bulkUpload: { mutateAsync: bulkUploadAsync, isPending: isBulkUploading },
   } = useBaptismsMutations()
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 400)
@@ -135,6 +137,25 @@ const BaptismTable = memo(() => {
             </Suspense>
           </ErrorBoundary>
         }
+        secondaryButtonText="Bulk Import"
+        secondaryButtonOnClick={
+          <BulkUploadDialog
+            entityName="Baptisms"
+            templatePath="/baptism-template.xlsx"
+            onUpload={bulkUploadAsync}
+            isPending={isBulkUploading}
+            trigger={
+              <Button
+                variant="secondary"
+                size="lg"
+                className="bg-[#4a1fb71f] hover:bg-[#4a1fb71f] "
+              >
+                Bulk Import
+              </Button>
+            }
+          />
+        }
+        secondaryButtonSize="lg"
         media={
           <img
             src="/image-3.svg"
