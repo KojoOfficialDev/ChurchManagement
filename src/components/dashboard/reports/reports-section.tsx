@@ -21,45 +21,54 @@ import { useReportsMutations } from '@/services/reports/mutations'
 
 const possibleReportTypes = [
   {
-    value: 'income',
-    label: 'Income',
+    value: 'financial-summary',
+    label: 'Financial Summary',
   },
   {
-    value: 'expense',
-    label: 'Expense',
+    value: 'income-detail',
+    label: 'Income Detail',
   },
   {
-    value: 'contribution',
-    label: 'Contribution',
+    value: 'income-by-type',
+    label: 'Income By Type',
   },
+  {
+    value: 'expense-by-category',
+    label: 'Expense By Category',
+  },
+  {
+    value: 'expense-detail',
+    label: 'Expense Detail',
+  },
+  {
+    value: 'cashflow',
+    label: 'Cashflow',
+  }
 ]
 
 const possibleReportDurations = [
   {
-    value: 'daily',
-    label: 'Daily',
+    value: 'custom',
+    label: 'custom',
   },
   {
     value: 'monthly',
     label: 'Monthly',
   },
   {
-    value: 'quarterly',
-    label: 'Quarterly',
-  },
-  {
     value: 'yearly',
     label: 'Yearly',
-  },
+  }
+  
 ]
 
-type ReportType = 'income' | 'expense' | 'contribution'
-type ReportDuration = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly'
+type ReportType = 'financial-summary' | 'income-detail' | 'expense-detail' | 'income-by-type' | 'expense-by-category' | 'cashflow'
+type ReportDuration = 'custom' | 'monthly' | 'monthly' | 'yearly'
 
 export function ReportSection() {
-  const [reportType, setReportType] = useState<ReportType>('income')
+  const [reportType, setReportType] = useState<ReportType>('financial-summary')
   const [reportDuration, setReportDuration] =
-    useState<ReportDuration>('monthly')
+    useState<ReportDuration>('custom')
   const [startDate, setStartDate] = useState<Date>()
   const [endDate, setEndDate] = useState<Date>()
   const [dateError, setDateError] = useState<string | null>(null)
